@@ -1,10 +1,10 @@
-# TÍTULO DO PROJETO
+# BRECHO BENEFICENTE
 
-`CURSO`
+`Análise e Desenvolvimento de Sistemas`
 
-`DISCIPLINA`
+`Trabalho Interdisciplinar: Aplicações Inovadoras`
 
-`SEMESTRE`
+`5º SEMESTRE`
 
 Descrever resumidamente, em um ou dois parágrafos, o projeto que está sendo desenvolvido.
 
@@ -12,14 +12,15 @@ ODS Alinhados:
 
 ## Integrantes
 
-* Nome completo do aluno 1
-* Nome completo do aluno 2
-* Nome completo do aluno 3
-* Nome completo do aluno 4
+* Amanda Carolina de Jesus Silva
+* César Augusto de Oliveira Barros Júnior
+* Leonardo de Oliveira Mudrik
+* Luiz Filipe Marques Nascimento
+* Marcella Magalhães Montalvão
 
-## Orientador
+## Orientadora
 
-* Nome completo do professor 1
+* Juliana Padilha
 
 ## Instruções de utilização
 
