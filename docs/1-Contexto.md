@@ -41,4 +41,4 @@ De acordo com o relatório da ONU (2023), mais de 2,3 bilhões de pessoas no mun
 
 ## 1.4 Público-Alvo  
 
-O público-alvo do aplicativo de gestão de doações e distribuição de roupas são principalmente os voluntários e gestores do bazar beneficente, que utilizarão a ferramenta para registrar doações, organizar o estoque, controlar entradas e saídas de peças e acompanhar relatórios de distribuição e impacto social. O sistema também beneficia indiretamente as famílias em situação de vulnerabilidade, garantindo que recebam roupas em bom estado de forma mais eficiente e transparente. Ao centralizar todas as informações em uma plataforma digital, o aplicativo facilita a operação do bazar, reduz retrabalho e aumenta a agilidade no atendimento às necessidades da comunidade, tornando a gestão mais profissional e acessível para todos os envolvidos.
+O aplicativo será voltado a voluntários e gestores de brechós beneficentes, geralmente adultos entre 22 e 60 anos, com conhecimento básico de tecnologia. O uso ocorrerá principalmente em smartphones, durante o recebimento, organização e distribuição de roupas.
