@@ -28,14 +28,18 @@ Descreva **claramente** o problema que o sistema vai resolver.
 ---
 
 ## 1.3 Justificativa  
-Explique **por que** vale a pena desenvolver este projeto.  
+ 
 - Quais benefícios trará?  
+O desenvolvimento do aplicativo para gestão de doações e distribuição de roupas é essencial para o brechó beneficente, pois permitirá maior organização e eficiência no atendimento às famílias em situação de vulnerabilidade. Atualmente, a administração de peças costuma ser feita de forma manual, o que gera desorganização, retrabalho e até perdas de itens, comprometendo o alcance da iniciativa.
+
+Com a digitalização do processo, o brechó terá um controle mais claro sobre as peças recebidas, armazenadas e distribuídas, facilitando o trabalho dos voluntários e aumentando a transparência. Além de melhorar a gestão, a solução ampliará o impacto social do projeto, garantindo que mais pessoas tenham acesso a roupas em bom estado.
+
+Outro ponto relevante é a contribuição para a sustentabilidade, ao incentivar o reuso e a valorização das peças. Dessa forma, o aplicativo não só fortalece o bazar enquanto instrumento de apoio social, como também se alinha aos Objetivos de Desenvolvimento Sustentável, em especial na redução das desigualdades e no combate à pobreza.
+
 - Quais dados ou fatos comprovam que o problema existe?  
 
->💡 *Exemplo:*  
-"Segundo dados da FAO, 30% dos alimentos se perdem no transporte e armazenamento. Nosso sistema ajudará a reduzir perdas e desperdícios."
+De acordo com o relatório da ONU (2023), mais de 2,3 bilhões de pessoas no mundo vivem em situação de insegurança material, com dificuldade de acesso a itens básicos como roupas adequadas para o dia a dia, estudos e oportunidades de trabalho. No Brasil, dados do IBGE (2022) apontam que cerca de 62,5 milhões de pessoas vivem em condição de vulnerabilidade social, evidenciando a importância de iniciativas que promovam inclusão e solidariedade.
 
----
 
 ## 1.4 Público-Alvo  
 Descreva quem vai usar a solução.  
