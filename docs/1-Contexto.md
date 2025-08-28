@@ -17,14 +17,14 @@ Descreva **claramente** o problema que o sistema vai resolver.
 ---
 
 ## 1.2 Objetivos  
-Defina o **objetivo geral** (o que o projeto como um todo pretende) e pelo menos **2 objetivos específicos** (detalhes ou etapas importantes).
-
->💡 *Exemplo:*  
-- **Geral:** Criar um sistema web para controle de estoque de hortifruti.  
-- **Específicos:**  
-  - Implementar controle de validade com alertas automáticos.  
-  - Gerar relatórios mensais de perdas e vendas.
-
+- **Geral:** Desenvolver um aplicativo móvel para gestão de doações e distribuição de roupas em um brechó beneficente, permitindo maior organização do estoque, transparência no processo e apoio eficiente às famílias em situação de vulnerabilidade.
+- **Específicos:**
+  - Implementar o cadastro de peças de roupas com informações como categoria, tamanho, estado de conservação e origem (doação ou venda).
+  
+  - Criar um controle de estoque que registre entradas (doações), saídas (distribuições e vendas beneficentes) e movimentações internas.
+  
+  - Disponibilizar relatórios de impacto social e financeiro, permitindo acompanhar o número de peças arrecadadas, distribuídas e vendidas.
+  
 ---
 
 ## 1.3 Justificativa  
