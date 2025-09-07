@@ -2,7 +2,7 @@
 
 O acesso a roupas em bom estado é uma necessidade básica que muitas pessoas em situação de vulnerabilidade não conseguem suprir. Pequenos brechós beneficientes têm se tornado uma forma eficiente de arrecadar vestimentas por meio de doações e disponibilizá-las a quem mais precisa. Entretanto, muitos desses brechós enfrentam dificuldades na gestão do fluxo de roupas recebidas, armazenadas e distribuídas, utilizando ainda controles manuais que resultam em falta de organização, retrabalho e até perda de itens.
 
-Com base nesse cenário, propõe-se o desenvolvimento de um aplicativo móvel para gestão de doações e distribuição de roupas. Esse sistema será utilizado por voluntários e responsáveis pelo brechó, permitindo cadastrar peças, organizar estoque e acompanhar a entrega das roupas. Além de simplificar a administração, a solução contribuirá para um impacto social direto ao apoiar famílias em situação de vulnerabilidade, alinhando-se aos Objetivos de Desenvolvimento Sustentável (ODS) da ONU, em especial o ODS 1 (Erradicação da Pobreza) e o ODS 10 (Redução das Desigualdades).
+Com base nesse cenário, propõe-se o desenvolvimento de um aplicativo móvel para gestão de doações e distribuição de roupas. Esse sistema será utilizado por voluntários e responsáveis pelo brechó, permitindo cadastrar peças, organizar estoque e registrar a distribuição das roupas. Além de simplificar a administração, a solução contribuirá para um impacto social direto ao apoiar famílias em situação de vulnerabilidade, alinhando-se aos Objetivos de Desenvolvimento Sustentável (ODS) da ONU, em especial o ODS 1 (Erradicação da Pobreza) e o ODS 10 (Redução das Desigualdades).
 
 ---
 
@@ -16,7 +16,7 @@ Atualmente o brechó gerencia seus processos de forma manual, realizando todo o 
 
 - **Geral:** Desenvolver um aplicativo móvel para gestão de doações e distribuição de roupas em um brechó beneficente, permitindo maior organização do estoque, transparência no processo e apoio eficiente às famílias em situação de vulnerabilidade.
 - **Específicos:**
-  - Implementar o cadastro de peças de roupas com informações como categoria, tamanho, estado de conservação e origem (doação ou venda).
+  - Implementar o cadastro de peças de roupas com informações como tamanho, estado de conservação e origem (doação ou venda).
   
   - Criar um controle de estoque que registre entradas (doações), saídas (distribuições e vendas beneficentes) e movimentações internas.
   
