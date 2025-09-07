@@ -13,18 +13,17 @@ Preencha o Quadro abaixo com os requisitos funcionais que **detalham as funciona
 Cada requisito deve representar uma característica única da solução e ser claro para orientar o desenvolvimento.
 
 
-|ID     | Descrição do Requisito                                                                                            | Prioridade |
+|ID     | Descrição do Requisito                                                                                          | Prioridade |
 |-------|-----------------------------------------------------------------------------------------------------------------|------------|
-|RF-01  | O sistema deve permitir que os usuários criem uma conta informando nome, e-mail, senha e endereço.                | ALTA       | 
-|RF-02  | O sistema deve permitir que os usuários adicionem produtos ao carrinho de compras.                                | MÉDIA      |
-|RF-03  | *(Descreva aqui o requisito funcional 3 do seu sistema)*                                                        | *(Alta/Média/Baixa)*  |
-|RF-04  | *(Descreva aqui o requisito funcional 4 do seu sistema)*                                                        | *(Alta/Média/Baixa)*  |
-|RF-05  | *(Descreva aqui o requisito funcional 5 do seu sistema)*                                                        | *(Alta/Média/Baixa)*  |
-|RF-06  | *(Descreva aqui o requisito funcional 6 do seu sistema)*                                                        | *(Alta/Média/Baixa)*  |
-|RF-07  | *(Descreva aqui o requisito funcional 7 do seu sistema)*                                                        | *(Alta/Média/Baixa)*  |
-|RF-08  | *(Descreva aqui o requisito funcional 8 do seu sistema)*                                                        | *(Alta/Média/Baixa)*  |
-|RF-09  | *(Descreva aqui o requisito funcional 9 do seu sistema)*                                                        | *(Alta/Média/Baixa)*  |
-|RF-10  | *(Descreva aqui o requisito funcional 10 do seu sistema)*                                                       | *(Alta/Média/Baixa)*  |
+|RF-01  | O sistema deve permitir o cadastro, edição e exclusão de peças de roupa, incluindo tamanho, estado de conservação e origem (doação ou venda).                                                                                                        | ALTA       | 
+|RF-02  | O sistema deve registrar automaticamente a entrada de doações e a saída de peças distribuídas ou vendidas beneficientemente, atualizando o estoque em tempo real.                                                                                      | ALTA       |
+|RF-03  | O sistema deve permitir a atualização e manutenção do catálogo digital de peças disponíveis para distribuição ou venda beneficiente.                                                                                                             | ALTA       |
+|RF-04  | O sistema deve possuir um layout intuitivo e simples, facilitando o uso dos voluntários e gestão do brechó.     | ALTA       |
+|RF-05  | O sistema deve permitir relatórios de acompanhamento de impacto social, mostrando número de peças arrecadadas, distribuídas e vendidas beneficentemente.                                                                                                | MÉDIA      |
+|RF-06  | O sistema deve permitir registrar observações ou notas sobre cada peça, como defeitos e/ou particularidades.    | BAIXA      |
+|RF-07  | O sistema deve permitir anexar fotos às peças de roupa para facilitar identificação e controle visual.          | ALTA       |
+|RF-08  | O sistema deve controlar peças reservadas para distribuição ou venda beneficente.                               | MÉDIA      |
+|RF-09  | O sistema deve permitir exportação de relatórios em formato simples para acompanhamento externo.                | MÉDIA      |
 
 ---
 
