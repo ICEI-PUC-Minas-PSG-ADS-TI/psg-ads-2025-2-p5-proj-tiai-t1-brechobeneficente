@@ -71,13 +71,16 @@ Preencha o Quadro abaixo com os requisitos não funcionais que definem **caracte
 
 |ID     | Descrição do Requisito                                                                              |Prioridade |
 |-------|-----------------------------------------------------------------------------------------------------|-----------|
-|RNF-01 | O sistema deve carregar as páginas em até 3 segundos para garantir uma boa experiência ao usuário.  | MÉDIA     | 
-|RNF-02 | O sistema deve proteger as informações dos clientes por meio de criptografia e medidas de segurança.| ALTA      | 
-|RNF-03 | *(Descreva aqui o requisito não funcional 3 do seu sistema)*                                       | *(Alta/Média/Baixa)*  |
-|RNF-04 | *(Descreva aqui o requisito não funcional 4 do seu sistema)*                                       | *(Alta/Média/Baixa)*  |
-|RNF-05 | *(Descreva aqui o requisito não funcional 5 do seu sistema)*                                       | *(Alta/Média/Baixa)*  |
-|RNF-06 | *(Descreva aqui o requisito não funcional 6 do seu sistema)*                                       | *(Alta/Média/Baixa)*  |
-
+|RNF-01 | O sistema deve ser intuitivo, com tempo de aprendizado não superior a 15 minutos para voluntários com conhecimentos básicos de tecnologia.  | ALTA     | 
+|RNF-02 | O sistema deve manter a consistência dos dados de estoque em tempo real, garantindo que não haja discrepâncias entre entrada e saída de peças. | ALTA      | 
+|RNF-03 | O aplicativo deve responder às ações do usuário em menos de 2 segundos para operações críticas (cadastro, consulta de estoque). | ALTA  |
+|RNF-04 | Os dados devem ser armazenados de forma segura no dispositivo, com proteção contra acesso não autorizado. | ALTA |
+|RNF-05 | O aplicativo deve funcionar adequadamente na versão estável mais recente do Expo Go. | ALTA  |
+|RNF-06 | O sistema deve ser compatível com as versões iOS e Android mais comuns no mercado.| ALTA  |
+|RNF-07 | O aplicativo deve gerenciar eficientemente o espaço de armazenamento, especialmente considerando o armazenamento de imagens das peças.| MÉDIA  |
+|RNF-08 | O código deve ser organizado e documentado para facilitar sua manutenibilidade. | MÉDIA  |
+|RNF-09 | O sistema deve suportar o cadastro de até 200 peças sem degradação significativa de performance.| BAIXA  |
+|RNF-10 | A interface deve permitir customizações básicas como logotipo do brechó e cores institucionais.| BAIXA  |
 ---
 
 ## 3.4 Restrições do Projeto
