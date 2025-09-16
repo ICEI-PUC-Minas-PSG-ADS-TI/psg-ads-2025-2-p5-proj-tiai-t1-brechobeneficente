@@ -29,33 +29,32 @@ Cada requisito deve representar uma característica única da solução e ser cl
 
 ## 3.2 Histórias de Usuário
 
-> Cada história de usuário deve ser escrita no formato:  
->  
-> **Como [persona], eu quero [funcionalidade], para que [benefício/motivo].**  seguindo o modelo e conceitos ensinados na disciplina de       
-> Engenharia de Requisitos.   
----
-⚠️ **ATENÇÃO:** Escreva de forma que cada história de usuário esteja associada a um requisito funcional específico para facilitar o acompanhamento e validação. Por exemplo:
+**História 1 (relacionada ao Requisito RF-01):**
+Como voluntário, eu quero cadastrar, editar e excluir peças de roupa, para que o estoque esteja sempre atualizado e organizado.
 
-> **História 1 (relacionada ao Requisito RF-001):**  
-> Como usuário, quero registrar minhas tarefas para não esquecer de fazê-las.  
->  
-> **História 2 (relacionada ao Requisito RF-002):**  
-> Como administrador, quero alterar permissões para controlar o acesso ao sistema.  
->  
-> Para melhor organização, as histórias podem ser agrupadas por contexto ou módulo funcional.
+**História 2 (relacionada ao Requisito RF-02):**
+Como administrador, eu quero que o sistema registre automaticamente entradas e saídas de roupas, para que o estoque seja atualizado em tempo real sem retrabalho manual.
 
----
+**História 3 (relacionada ao Requisito RF-03):**
+Como gestor do bazar, eu quero manter o catálogo digital de roupas atualizado, para que os voluntários saibam o que está disponível para doação ou venda beneficente.
 
-### ✏️ Escreva aqui as histórias de usuário do seu projeto:
+**História 4 (relacionada ao Requisito RF-04):**
+Como voluntário, eu quero que o sistema tenha um layout simples e intuitivo, para que eu consiga utilizá-lo facilmente sem precisar de muito treinamento.
 
-<div style="border: 2px dashed #999999; padding: 15px; margin: 10px 0;">
-  
-<!-- Espaço para escrever o texto -->  
-**[Escreva aqui as histórias do seu projeto]**
+**História 5 (relacionada ao Requisito RF-05):**
+Como administrador, eu quero gerar relatórios de impacto social, para que eu consiga acompanhar quantas peças foram arrecadadas, distribuídas e vendidas.
 
-- **História 1 (relacionada ao Requisito RF-01):** 
+**História 6 (relacionada ao Requisito RF-06):**
+Como voluntário, eu quero registrar observações em cada peça, para que todos saibam sobre possíveis defeitos ou detalhes importantes.
 
-- **História 2 (relacionada ao Requisito RF-02):** 
+**História 7 (relacionada ao Requisito RF-07):**
+Como voluntário, eu quero anexar fotos às peças cadastradas, para que seja mais fácil identificá-las visualmente no sistema.
+
+**História 8 (relacionada ao Requisito RF-08):**
+Como gestor do bazar, eu quero reservar determinadas peças, para que elas fiquem disponíveis para retirada ou venda beneficente por um período limitado.
+
+**História 9 (relacionada ao Requisito RF-09):**
+Como administrador, eu quero exportar relatórios em formato simples, para que eu consiga compartilhar os resultados com parceiros e apoiadores.
 
 
 
