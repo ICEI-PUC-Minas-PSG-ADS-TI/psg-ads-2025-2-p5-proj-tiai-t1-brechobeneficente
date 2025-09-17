@@ -1,0 +1,60 @@
+Restrições do Projeto
+
+O desenvolvimento do aplicativo móvel para gestão de doações e distribuição de roupas em brechós beneficentes estará sujeito a algumas restrições e limitações, que precisam ser levadas em consideração durante o planejamento e execução. As principais restrições do projeto são:
+
+
+Limitações Técnicas
+
+Plataforma e Sistema Operacional: O aplicativo será desenvolvido inicialmente para plataformas Android e iOS, com prioridade para Android, já que a maioria dos usuários de brechós beneficentes no Brasil utilizam dispositivos Android. Contudo, o aplicativo pode não estar disponível para versões mais antigas de sistemas operacionais, o que pode limitar o acesso de alguns usuários.
+
+Conectividade: O aplicativo pode exigir uma conexão à internet para o registro de dados e a geração de relatórios. Isso pode ser um desafio em áreas rurais ou regiões com infraestrutura limitada de internet. Uma solução parcial seria permitir o uso offline, com sincronização de dados assim que a conexão for restabelecida.
+
+Integração com Outras Ferramentas: O aplicativo não terá integração direta com sistemas de gestão de estoque ou ferramentas contábeis existentes, limitando sua funcionalidade a um sistema isolado para gerenciamento de peças e distribuição de roupas.
+
+
+
+Limitações de Recursos
+
+Orçamento: O orçamento para o desenvolvimento do aplicativo será restrito, o que pode impactar no tempo de desenvolvimento e na inclusão de todas as funcionalidades desejadas. Isso significa que algumas funcionalidades podem ser adicionadas em fases posteriores, dependendo da disponibilidade de recursos financeiros.
+
+Capacidade de Armazenamento de Dados: O aplicativo dependerá de servidores para armazenar dados como cadastro de roupas, movimentações de estoque e relatórios. A capacidade de armazenamento será limitada ao orçamento disponível, o que pode impactar a quantidade de dados que o aplicativo pode processar simultaneamente.
+
+Equipe de Desenvolvimento: A equipe de desenvolvimento será composta por um número limitado de profissionais, o que pode afetar a velocidade de implementação de recursos adicionais ou a resolução de problemas técnicos complexos. Em razão disso, é possível que o tempo de desenvolvimento se estenda.
+
+Limitações Funcionais
+
+Complexidade de Cadastro: O sistema de cadastro de roupas será simples e objetivo, limitando as informações a atributos como tamanho, estado de conservação, origem e categoria. Funcionalidades avançadas, como a análise detalhada de tecidos, podem ser consideradas para futuras atualizações.
+
+Gerenciamento de Relacionamentos: O aplicativo não terá funcionalidades avançadas para gerenciar relações entre doadores, voluntários e beneficiários. A comunicação será simplificada e o foco estará no gerenciamento de itens e doações, não em uma plataforma social de interação entre os usuários.
+
+Relatórios Limitados: Embora o aplicativo forneça relatórios de impacto social e financeiro, esses relatórios serão básicos, com a possibilidade de expansão em fases futuras. O sistema de relatórios não será tão robusto quanto sistemas profissionais de contabilidade ou gestão empresarial.
+
+
+
+Limitações de Usabilidade
+
+Capacitação dos Usuários: A interface do aplicativo será projetada para ser intuitiva, mas a falta de familiaridade com tecnologia por parte de alguns usuários pode demandar treinamento e acompanhamento. O projeto não prevê treinamento contínuo, o que pode impactar a eficácia do uso do aplicativo, especialmente em populações de voluntários com pouca experiência digital.
+
+Acessibilidade: Embora o aplicativo seja projetado para ser inclusivo, funcionalidades como suporte a deficientes auditivos e visuais podem ser limitadas na primeira versão do projeto. A prioridade será garantir que o aplicativo seja acessível à maioria dos usuários e, posteriormente, implementar melhorias nesse aspecto.
+
+
+
+Limitações Legais e Regulatórias
+
+Privacidade e Segurança de Dados: O aplicativo deverá cumprir com as leis locais sobre privacidade e proteção de dados, como a Lei Geral de Proteção de Dados (LGPD) no Brasil. Isso implica que informações pessoais de doadores, voluntários e beneficiários precisam ser gerenciadas com a devida segurança e consentimento, o que pode limitar algumas funcionalidades do sistema.
+
+Licenciamento e Propriedade Intelectual: A equipe de desenvolvimento deverá garantir que o código e o design do aplicativo sejam originais ou devidamente licenciados para evitar problemas de propriedade intelectual. Isso pode limitar o uso de certas bibliotecas ou frameworks de terceiros.
+
+
+
+Limitações de Escalabilidade
+
+Limitação Inicial de Capacidade de Adoção: O aplicativo será inicialmente disponibilizado para um número reduzido de brechós beneficentes. A escalabilidade para novos brechós ou outras localidades pode ser limitada na fase inicial devido à falta de recursos e à necessidade de adaptação local. A expansão do uso do aplicativo para outras regiões será gradual e dependerá do sucesso na fase piloto.
+
+
+
+Limitações de Tempo
+
+Prazo de Implementação: O prazo para a entrega do MVP (Produto Mínimo Viável) será de 6 meses, o que pode limitar a inclusão de todas as funcionalidades desejadas no lançamento. Funcionalidades mais avançadas, como a integração com sistemas de pagamentos ou com plataformas de vendas online, poderão ser adicionadas apenas após o lançamento inicial, dependendo do feedback dos usuários e do sucesso do projeto piloto.
+
+Testes e Feedback: O tempo disponível para testes de usabilidade e feedback será limitado, o que pode impactar a identificação e correção de problemas antes do lançamento. O teste será conduzido em uma versão inicial com um número restrito de usuários, com a possibilidade de ajustes conforme a demanda.
