@@ -47,8 +47,18 @@ Eles ajudam a planejar, comunicar ideias e validar a interface com antecedência
 <img width="752" height="376" alt="image" src="https://github.com/user-attachments/assets/3e4d20fe-f54a-4885-ae3d-08ac20082759" />
 
 
-**Wireframe 2 — Tela de Login**  
-*(inserir imagem ou diagrama)*
+**Wireframe 2 — Telas principais**  
+<img width="785" height="534" alt="image" src="https://github.com/user-attachments/assets/61872692-ddfd-4a4c-89b9-335be45992c9" />
+<img width="777" height="532" alt="image" src="https://github.com/user-attachments/assets/c3bf7461-f334-437f-b7e4-015aff5e0854" />
+<img width="767" height="532" alt="image" src="https://github.com/user-attachments/assets/9a1dec41-2b70-4057-8aa2-0438650de4cb" />
+**Wireframe 3 — Telas de Relatórios**  
+<img width="777" height="620" alt="image" src="https://github.com/user-attachments/assets/a60e0fe4-e67f-4b7e-bbe1-46fa485e6cf6" />
+<img width="514" height="658" alt="image" src="https://github.com/user-attachments/assets/ef5b9a5b-1f5f-494f-8bdb-05777bce16b0" />
+
+
+
+
+
 
 
 ---
