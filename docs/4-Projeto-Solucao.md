@@ -43,8 +43,9 @@ Eles ajudam a planejar, comunicar ideias e validar a interface com antecedência
 
 📌 **Entrega:** incluir imagens ou links para os wireframes/mockups.
 
-**Wireframe 1 — Tela Principal**  
-*(inserir imagem ou diagrama)*
+**Wireframe 1 — Tela login/cadastro**  
+<img width="752" height="376" alt="image" src="https://github.com/user-attachments/assets/3e4d20fe-f54a-4885-ae3d-08ac20082759" />
+
 
 **Wireframe 2 — Tela de Login**  
 *(inserir imagem ou diagrama)*
