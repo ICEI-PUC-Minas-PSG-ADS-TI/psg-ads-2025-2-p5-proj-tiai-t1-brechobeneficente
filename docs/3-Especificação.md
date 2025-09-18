@@ -102,33 +102,100 @@ O Quadro abaixo deve ser preenchida com as restrições específicas que **impac
 ---
 ## 3.5 Regras de Negócio
 
-> Regras de Negócio definem as condições e políticas que o sistema deve seguir para garantir o correto funcionamento alinhado ao negócio.  
->  
-> Elas indicam **quando** e **como** certas ações devem ocorrer, usando o padrão:  
->  
-> **Se (condição) for verdadeira, então (ação) deve ser tomada.**  
->  
-> Exemplo:  
-> - "Um usuário só poderá finalizar um cadastro se todos os dados forem inseridos e validados com sucesso."  
->  
-> Também pode ser escrito assim (if/then):  
-> - "Se o usuário tem saldo acima de X, então a opção de empréstimo estará liberada."
+### Fluxo de Doações (Entradas e Saídas)
+
+- **RB01 – Doação Recebida (Entrada de Estoque)**  
+  Se o brechó receber uma doação, então os itens devem ser adicionados ao estoque vinculados ao cadastro do doador (ou como “Doador Anônimo” se não identificado).  
+
+- **RB02 – Doação Realizada (Saída de Estoque)**  
+  Se o brechó realizar uma doação, então os itens devem ser retirados do estoque e vinculados ao cadastro do beneficiário (ou como “Beneficiário Anônimo” se não identificado).  
+
+- **RB03 – Registro de Origem e Destino**  
+  Se houver movimentação de doação (entrada ou saída), então o sistema deve armazenar obrigatoriamente a **origem** (quem doou) ou o **destino** (quem recebeu).  
+
+- **RB04 – Estoque por Movimentação**  
+  Se houver entrada por doação, então o sistema deve somar a quantidade no estoque.  
+  Se houver saída por doação, então o sistema deve subtrair a quantidade no estoque.  
+
+- **RB05 – Relatórios de Doações**  
+  Se um relatório de doações for gerado, então ele deve apresentar separadamente:  
+  - Entradas → Doações recebidas (com data, doador e quantidade).  
+  - Saídas → Doações realizadas (com data, beneficiário e quantidade).  
+
+- **RB06 – Doações Avulsas**  
+  Se a doação recebida ou realizada não tiver identificação, então o sistema deve registrar como **Anônimo** no campo de origem/destino.  
 
 ---
 
- A tabela abaixo deve ser preenchida com as regras de negócio que **impactam seu projeto**. Os textos no quadro são apenas ilustrativos.
+### Fluxo de Vendas
 
-|ID    | Regra de Negócio                                                       |
-|-------|-----------------------------------------------------------------------|
-|RN-01 | Usuário só pode cadastrar até 10 tarefas por dia.                      |
-|RN-02 | Apenas administradores podem alterar permissões de usuários.           |
-|RN-03 | Tarefas vencidas devem ser destacadas em vermelho no sistema.          |
-|RN-04 | *(Descreva aqui a restrição 4 do seu projeto)*                         |
-|RN-05 | *(Descreva aqui a restrição 5 do seu projeto)*                         |
+- **RB07 – Saída de Estoque por Venda**  
+  Se um pedido de venda for concluído, então o sistema deve dar baixa no estoque de acordo com os itens vendidos.  
 
-💡 **Dica:** Explique sempre o motivo ou impacto da regra no sistema.
+- **RB08 – Cadastro de Pedido**  
+  Se um pedido for iniciado, então ele só poderá ser finalizado se houver produtos disponíveis em estoque.  
+
+- **RB09 – Vendas vs Doações**  
+  Se um item sair do estoque, então o sistema deve classificar a saída como **Venda** ou **Doação**, de forma que os relatórios consigam distinguir ambos os casos.  
 
 ---
-> **Links Úteis**:
-> - [O que são Requisitos Funcionais e Requisitos Não Funcionais?](https://codificar.com.br/requisitos-funcionais-nao-funcionais/)
-> - [O que são requisitos funcionais e requisitos não funcionais?](https://analisederequisitos.com.br/requisitos-funcionais-e-requisitos-nao-funcionais-o-que-sao/)
+
+### Clientes, Beneficiários e Doadores/Fornecedores
+
+- **RB10 – Cadastro de Doadores/Fornecedores**  
+  Se um doador/fornecedor for cadastrado, então o sistema deve permitir registrar dados básicos (nome, telefone, e-mail, observações), mas não deve ser obrigatório para doações avulsas.  
+
+- **RB11 – Cadastro de Clientes/Beneficiários**  
+  Se um cliente ou beneficiário for cadastrado, então o sistema deve permitir registrar dados básicos, mas também aceitar cadastros simples (somente nome ou até anônimo).  
+
+- **RB12 – Vínculo nas Movimentações**  
+  Se uma movimentação de doação for registrada, então ela deve estar vinculada a um doador (entrada) ou a um beneficiário (saída).  
+
+- **RB13 – Relatórios de Doadores/Fornecedores**  
+  Se um relatório de doações recebidas for gerado, então o sistema deve permitir filtrar por doador/fornecedor para identificar quem mais colabora com o brechó.  
+
+- **RB14 – Relatórios de Beneficiários**  
+  Se um relatório de doações realizadas for gerado, então o sistema deve permitir filtrar por beneficiário para identificar quantas vezes e quantos itens foram repassados.  
+
+- **RB15 – Histórico de Relacionamento**  
+  Se um doador/fornecedor ou cliente/beneficiário tiver movimentações registradas, então o sistema deve exibir um histórico completo das doações/vendas vinculadas a ele.  
+
+---
+
+### Regras Gerais do Sistema
+
+- **RB16 – Relatórios de Estoque**  
+  Se um relatório de estoque for gerado, então ele deve apresentar separadamente as entradas por doação e por compra, bem como as saídas por venda e por doação.  
+
+- **RB17 – Regras de Autenticação**  
+  Se o usuário não estiver autenticado no sistema, então ele não poderá registrar doações, vendas, saídas ou acessar relatórios.  
+
+- **RB18 – Exclusão de Registros**  
+  Se uma doação, pedido ou cliente já tiver movimentações vinculadas (ex.: baixa de estoque), então não poderá ser excluído, apenas inativado.  
+
+---
+
+### Tabela Resumo de Regras de Negócio
+
+A tabela abaixo apresenta de forma resumida as regras que **impactam diretamente o projeto**.
+
+| ID     | Regra de Negócio                                                                 | Impacto/Motivo |
+|--------|----------------------------------------------------------------------------------|----------------|
+| RN-01  | Doações recebidas devem adicionar itens ao estoque, vinculados ao doador/anônimo. | Garante rastreabilidade das entradas e mantém o estoque atualizado. |
+| RN-02  | Doações realizadas devem retirar itens do estoque, vinculando ao beneficiário/anônimo. | Controla corretamente as saídas de estoque e garante histórico de beneficiados. |
+| RN-03  | Toda movimentação de doação deve registrar origem (doador) ou destino (beneficiário). | Evita inconsistências e assegura rastreabilidade. |
+| RN-04  | Movimentações de entrada somam no estoque; movimentações de saída subtraem.       | Mantém o saldo de estoque correto. |
+| RN-05  | Relatórios de doações devem separar entradas (recebidas) de saídas (realizadas). | Facilita a análise e prestação de contas. |
+| RN-06  | Doações avulsas podem ser registradas como “Anônimo”.                            | Flexibilidade para doações sem identificação. |
+| RN-07  | Conclusão de vendas gera baixa automática no estoque.                            | Evita divergências entre estoque e vendas. |
+| RN-08  | Pedidos só podem ser finalizados se houver estoque disponível.                   | Impede vendas acima da quantidade real. |
+| RN-09  | Toda saída de estoque deve ser classificada como **Venda** ou **Doação**.        | Permite relatórios distintos entre vendas e doações. |
+| RN-10  | Cadastro de doadores/fornecedores deve permitir dados básicos, mas não é obrigatório. | Facilita cadastro sem burocracia, mas permite detalhamento quando necessário. |
+| RN-11  | Cadastro de clientes/beneficiários pode ser simples (nome ou anônimo).           | Garante inclusão de beneficiários sem exigir dados complexos. |
+| RN-12  | Movimentações de doação devem estar sempre vinculadas a um doador ou beneficiário. | Garante consistência nas operações. |
+| RN-13  | Relatórios de doações recebidas podem ser filtrados por doador/fornecedor.       | Permite identificar os maiores colaboradores. |
+| RN-14  | Relatórios de doações realizadas podem ser filtrados por beneficiário.           | Permite identificar o impacto social do brechó. |
+| RN-15  | O sistema deve manter histórico completo de movimentações por doador e beneficiário. | Facilita controle e transparência no relacionamento. |
+| RN-16  | Relatórios de estoque devem exibir entradas e saídas separadas por tipo.         | Oferece visão clara da movimentação de estoque. |
+| RN-17  | Usuários não autenticados não podem registrar doações, vendas ou acessar relatórios. | Garante segurança e evita uso indevido. |
+| RN-18  | Registros com movimentações vinculadas não podem ser excluídos, apenas inativados. | Mantém integridade histórica dos dados. |
