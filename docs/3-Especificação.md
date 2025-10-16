@@ -17,47 +17,40 @@ Cada requisito deve representar uma característica única da solução e ser cl
 |-------|-----------------------------------------------------------------------------------------------------------------|------------|
 |RF-01  | O sistema deve permitir o cadastro, edição e exclusão de peças de roupa, incluindo tamanho, estado de conservação e origem (doação ou venda).                                                                                                        | ALTA       | 
 |RF-02  | O sistema deve registrar automaticamente a entrada de doações e a saída de peças distribuídas ou vendidas beneficientemente, atualizando o estoque em tempo real.                                                                                      | ALTA       |
-|RF-03  | O sistema deve permitir a atualização e manutenção do catálogo digital de peças disponíveis para distribuição ou venda beneficiente.                                                                                                             | ALTA       |
-|RF-04  | O sistema deve possuir um layout intuitivo e simples, facilitando o uso dos voluntários e gestão do brechó.     | ALTA       |
-|RF-05  | O sistema deve permitir relatórios de acompanhamento de impacto social, mostrando número de peças arrecadadas, distribuídas e vendidas beneficentemente.                                                                                                | MÉDIA      |
-|RF-06  | O sistema deve permitir registrar observações ou notas sobre cada peça, como defeitos e/ou particularidades.    | BAIXA      |
-|RF-07  | O sistema deve permitir anexar fotos às peças de roupa para facilitar identificação e controle visual.          | ALTA       |
-|RF-08  | O sistema deve controlar peças reservadas para distribuição ou venda beneficente.                               | MÉDIA      |
-|RF-09  | O sistema deve permitir exportação de relatórios em formato simples para acompanhamento externo.                | MÉDIA      |
+|RF-03  | O sistema deve disponibilizar um catálogo digital atualizado das peças em estoque, acessível para clientes e voluntários, contendo informações como tamanho, estado de conservação, origem, fotos e preço (quando aplicável).                       | ALTA       |
+|RF-04  | O sistema deve permitir relatórios de acompanhamento de impacto social, mostrando número de peças arrecadadas, distribuídas e vendidas beneficentemente.                                                                                                | MÉDIA      |
+|RF-05  | O sistema deve permitir registrar observações ou notas sobre cada peça, como defeitos e/ou particularidades.    | BAIXA      |
+|RF-06  | O sistema deve permitir anexar fotos às peças de roupa para facilitar identificação e controle visual.          | ALTA       |
+|RF-07  | O sistema deve controlar peças reservadas para distribuição ou venda beneficente.                               | MÉDIA      |
+|RF-08  | O sistema deve permitir exportação de relatórios em formato simples para acompanhamento externo.                | MÉDIA      |
 
 ---
 
 ## 3.2 Histórias de Usuário
 
 **História 1 (relacionada ao Requisito RF-01):**
-Como voluntário, eu quero cadastrar, editar e excluir peças de roupa, para que o estoque esteja sempre atualizado e organizado.
+Como voluntário, eu quero cadastrar novas peças de roupa informando tamanho, estado de conservação e origem, para que elas fiquem disponíveis no controle do estoque.
 
 **História 2 (relacionada ao Requisito RF-02):**
-Como administrador, eu quero que o sistema registre automaticamente entradas e saídas de roupas, para que o estoque seja atualizado em tempo real sem retrabalho manual.
+Como administrador, eu quero que o sistema registre automaticamente doações recebidas e peças distribuídas/vendidas, para que o estoque seja atualizado em tempo real sem necessidade de ajustes manuais.
 
 **História 3 (relacionada ao Requisito RF-03):**
-Como gestor do bazar, eu quero manter o catálogo digital de roupas atualizado, para que os voluntários saibam o que está disponível para doação ou venda beneficente.
+Como cliente ou voluntário, eu quero visualizar um catálogo digital atualizado com todas as peças disponíveis, contendo informações detalhadas e fotos, para escolher as roupas que preciso.
 
 **História 4 (relacionada ao Requisito RF-04):**
-Como voluntário, eu quero que o sistema tenha um layout simples e intuitivo, para que eu consiga utilizá-lo facilmente sem precisar de muito treinamento.
+Como administrador, eu quero gerar relatórios de impacto social mostrando peças arrecadadas, distribuídas e vendidas, para acompanhar os resultados do projeto.
 
 **História 5 (relacionada ao Requisito RF-05):**
-Como administrador, eu quero gerar relatórios de impacto social, para que eu consiga acompanhar quantas peças foram arrecadadas, distribuídas e vendidas.
+Como voluntário, eu quero adicionar observações específicas sobre cada peça (como defeitos ou particularidades), para que outros usuários tenham informações completas sobre o item.
 
 **História 6 (relacionada ao Requisito RF-06):**
-Como voluntário, eu quero registrar observações em cada peça, para que todos saibam sobre possíveis defeitos ou detalhes importantes.
+Como voluntário, eu quero anexar fotos às peças durante o cadastro, para facilitar a identificação visual no catálogo e evitar confusões.
 
 **História 7 (relacionada ao Requisito RF-07):**
-Como voluntário, eu quero anexar fotos às peças cadastradas, para que seja mais fácil identificá-las visualmente no sistema.
+Como voluntário, eu quero marcar peças como reservadas para distribuição ou venda beneficente, para controlar temporariamente sua disponibilidade no estoque.
 
 **História 8 (relacionada ao Requisito RF-08):**
-Como gestor do bazar, eu quero reservar determinadas peças, para que elas fiquem disponíveis para retirada ou venda beneficente por um período limitado.
-
-**História 9 (relacionada ao Requisito RF-09):**
-Como administrador, eu quero exportar relatórios em formato simples, para que eu consiga compartilhar os resultados com parceiros e apoiadores.
-
-
-
+Como administrador, eu quero exportar relatórios em formato simples, para compartilhar informações de acompanhamento com parceiros e apoiadores.
 
 </div>
 
@@ -74,12 +67,12 @@ Preencha o Quadro abaixo com os requisitos não funcionais que definem **caracte
 |RNF-02 | O sistema deve manter a consistência dos dados de estoque em tempo real, garantindo que não haja discrepâncias entre entrada e saída de peças. | ALTA      | 
 |RNF-03 | O aplicativo deve responder às ações do usuário em menos de 2 segundos para operações críticas (cadastro, consulta de estoque). | ALTA  |
 |RNF-04 | Os dados devem ser armazenados de forma segura no dispositivo, com proteção contra acesso não autorizado. | ALTA |
-|RNF-05 | O aplicativo deve funcionar adequadamente na versão estável mais recente do Expo Go. | ALTA  |
-|RNF-06 | O sistema deve ser compatível com as versões iOS e Android mais comuns no mercado.| ALTA  |
-|RNF-07 | O aplicativo deve gerenciar eficientemente o espaço de armazenamento, especialmente considerando o armazenamento de imagens das peças.| MÉDIA  |
-|RNF-08 | O código deve ser organizado e documentado para facilitar sua manutenibilidade. | MÉDIA  |
-|RNF-09 | O sistema deve suportar o cadastro de até 200 peças sem degradação significativa de performance.| BAIXA  |
-|RNF-10 | A interface deve permitir customizações básicas como logotipo do brechó e cores institucionais.| BAIXA  |
+|RNF-05 | O aplicativo deve ser desenvolvido em Expo React Native, compatível com as versões estáveis mais recentes do Expo Go e funcionando adequadamente nas versões iOS e Android mais comuns no mercado. | ALTA  |
+|RNF-06 | O aplicativo deve gerenciar eficientemente o espaço de armazenamento, especialmente considerando o armazenamento de imagens das peças.| MÉDIA  |
+|RNF-07 | O código deve ser organizado e documentado para facilitar sua manutenibilidade. | MÉDIA  |
+|RNF-08 | O sistema deve suportar o cadastro de até 200 peças sem degradação significativa de performance.| BAIXA  |
+|RNF-09 | A interface deve permitir customizações básicas como logotipo do brechó e cores institucionais.| BAIXA  |
+|RNF-10  | O sistema deve possuir um layout intuitivo e simples, facilitando o uso dos voluntários e gestão do brechó.     | ALTA       |
 ---
 
 ## 3.4 Restrições do Projeto
@@ -181,21 +174,21 @@ A tabela abaixo apresenta de forma resumida as regras que **impactam diretamente
 
 | ID     | Regra de Negócio                                                                 | Impacto/Motivo |
 |--------|----------------------------------------------------------------------------------|----------------|
-| RN-01  | Doações recebidas devem adicionar itens ao estoque, vinculados ao doador/anônimo. | Garante rastreabilidade das entradas e mantém o estoque atualizado. |
-| RN-02  | Doações realizadas devem retirar itens do estoque, vinculando ao beneficiário/anônimo. | Controla corretamente as saídas de estoque e garante histórico de beneficiados. |
-| RN-03  | Toda movimentação de doação deve registrar origem (doador) ou destino (beneficiário). | Evita inconsistências e assegura rastreabilidade. |
-| RN-04  | Movimentações de entrada somam no estoque; movimentações de saída subtraem.       | Mantém o saldo de estoque correto. |
-| RN-05  | Relatórios de doações devem separar entradas (recebidas) de saídas (realizadas). | Facilita a análise e prestação de contas. |
-| RN-06  | Doações avulsas podem ser registradas como “Anônimo”.                            | Flexibilidade para doações sem identificação. |
-| RN-07  | Conclusão de vendas gera baixa automática no estoque.                            | Evita divergências entre estoque e vendas. |
-| RN-08  | Pedidos só podem ser finalizados se houver estoque disponível.                   | Impede vendas acima da quantidade real. |
-| RN-09  | Toda saída de estoque deve ser classificada como **Venda** ou **Doação**.        | Permite relatórios distintos entre vendas e doações. |
-| RN-10  | Cadastro de doadores/fornecedores deve permitir dados básicos, mas não é obrigatório. | Facilita cadastro sem burocracia, mas permite detalhamento quando necessário. |
-| RN-11  | Cadastro de clientes/beneficiários pode ser simples (nome ou anônimo).           | Garante inclusão de beneficiários sem exigir dados complexos. |
-| RN-12  | Movimentações de doação devem estar sempre vinculadas a um doador ou beneficiário. | Garante consistência nas operações. |
-| RN-13  | Relatórios de doações recebidas podem ser filtrados por doador/fornecedor.       | Permite identificar os maiores colaboradores. |
-| RN-14  | Relatórios de doações realizadas podem ser filtrados por beneficiário.           | Permite identificar o impacto social do brechó. |
-| RN-15  | O sistema deve manter histórico completo de movimentações por doador e beneficiário. | Facilita controle e transparência no relacionamento. |
-| RN-16  | Relatórios de estoque devem exibir entradas e saídas separadas por tipo.         | Oferece visão clara da movimentação de estoque. |
-| RN-17  | Usuários não autenticados não podem registrar doações, vendas ou acessar relatórios. | Garante segurança e evita uso indevido. |
-| RN-18  | Registros com movimentações vinculadas não podem ser excluídos, apenas inativados. | Mantém integridade histórica dos dados. |
+| RN-01  | Se uma doação for recebida, então os itens devem ser adicionados ao estoque e vinculados ao doador ou marcados como anônimos. | Garante rastreabilidade das entradas e mantém o estoque atualizado. |
+| RN-02  | Se uma doação for realizada, então os itens correspondentes devem ser retirados do estoque e vinculados ao beneficiário ou marcados como anônimos. | Controla corretamente as saídas de estoque e garante histórico de beneficiados. |
+| RN-03  | Se houver movimentação de doação, então a origem (doador) ou destino (beneficiário) deve ser registrada. | Evita inconsistências e assegura rastreabilidade. |
+| RN-04  | Se houver movimentação de entrada, então o estoque deve ser incrementado; se houver movimentação de saída, então o estoque deve ser decrementado.      | Mantém o saldo de estoque correto. |
+| RN-05  | Se um relatório de doações for gerado, então deve separar claramente entradas (recebidas) de saídas (realizadas). | Facilita a análise e prestação de contas. |
+| RN-06  | Se uma doação avulsa for registrada, então pode ser classificada como "Anônimo".                            | Flexibilidade para doações sem identificação. |
+| RN-07  | Se uma venda for concluída, então deve gerar baixa automática no estoque dos itens vendidos.                           | Evita divergências entre estoque e vendas. |
+| RN-08  | Se um pedido de venda for finalizado, então só pode ser processado se houver estoque disponível para todos os itens.                 | Impede vendas acima da quantidade real. |
+| RN-09  | Se ocorrer uma saída de estoque, então deve ser classificada como Venda ou Doação.        | Permite relatórios distintos entre vendas e doações. |
+| RN-10  | Se um doador/fornecedor for cadastrado, então deve permitir dados básicos, mas não é obrigatório o preenchimento completo. | Facilita cadastro sem burocracia, mas permite detalhamento quando necessário. |
+| RN-11  | Se um cliente/beneficiário for cadastrado, então pode ser registrado com dados simples (nome) ou como anônimo.           | Garante inclusão de beneficiários sem exigir dados complexos. |
+| RN-12  |	Se ocorrer uma movimentação de doação, então deve estar obrigatoriamente vinculada a um doador (entrada) ou beneficiário (saída). | Garante consistência nas operações. |
+| RN-13  | 	Se um relatório de doações recebidas for gerado, então deve permitir filtro por doador/fornecedor.       | Permite identificar os maiores colaboradores. |
+| RN-14  | Se um relatório de doações realizadas for gerado, então deve permitir filtro por beneficiário.           | Permite identificar o impacto social do brechó. |
+| RN-15  | 	Se ocorrer qualquer movimentação, então o sistema deve manter histórico completo vinculado ao doador ou beneficiário. | Facilita controle e transparência no relacionamento. |
+| RN-16  | Se um relatório de estoque for gerado, então deve exibir entradas e saídas separadas por tipo de movimentação.         | Oferece visão clara da movimentação de estoque. |
+| RN-17  | Se um usuário não estiver autenticado, então não pode registrar doações, vendas ou acessar relatórios. | Garante segurança e evita uso indevido. |
+| RN-18  | Se um registro tiver movimentações vinculadas, então não pode ser excluído, apenas inativado. | Mantém integridade histórica dos dados. |
