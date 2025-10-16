@@ -30,7 +30,7 @@ Cada requisito deve representar uma característica única da solução e ser cl
 ## 3.2 Histórias de Usuário
 
 **História 1 (relacionada ao Requisito RF-01):**
-Como voluntário, eu quero cadastrar, editar e excluir peças de roupa, para que o estoque esteja sempre atualizado e organizado.
+Como voluntário, eu quero cadastrar uma nova peça de roupa, para que ela fique disponível no estoque.
 
 **História 2 (relacionada ao Requisito RF-02):**
 Como administrador, eu quero que o sistema registre automaticamente entradas e saídas de roupas, para que o estoque seja atualizado em tempo real sem retrabalho manual.
