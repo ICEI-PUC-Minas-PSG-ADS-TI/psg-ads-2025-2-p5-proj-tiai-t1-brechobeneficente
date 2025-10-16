@@ -6,17 +6,40 @@
 **ARQUITETURA DO SOFTWARE**
 ## 4.1. Arquitetura da Solução
 
-Nesta seção, descreva como os componentes do sistema se organizam e interagem.  
-Inclua um **diagrama de arquitetura** mostrando módulos, camadas e tecnologias utilizadas.
+A arquitetura da solução segue o modelo cliente → BaaS (Backend as a Service), utilizando React Native no desenvolvimento do aplicativo mobile e Firebase como provedor de serviços backend, garantindo simplicidade, escalabilidade e baixo custo de manutenção.
 
-**Orientações:**
-- Indique quais módulos compõem a solução (ex.: frontend, backend, banco de dados, APIs externas).
-- Especifique as tecnologias e frameworks adotados (ex.: React, Node.js, MySQL).
-- Explique como ocorre a comunicação entre os módulos.
+**Organização dos Componentes**
 
-**Exemplo de diagrama:**
- 
- ![Exemplo de Arquitetura](./images/arquitetura-exemplo.png)
+A solução é composta por três principais camadas/componentes:
+
+**1. Dispositivo Móvel**
+
+Representa o ambiente onde o aplicativo é executado (celulares Android ou iOS).
+
+O usuário interage com o app através de uma interface intuitiva desenvolvida em React Native.
+
+Todas as ações do usuário (cadastro, consulta, atualização, exclusão de dados) são processadas pelo aplicativo, que se comunica diretamente com o Firebase por meio da internet.
+
+**2. Aplicativo Mobile (React Native + Expo)**
+
+Desenvolvido com React Native e gerenciado pelo Expo, o aplicativo oferece uma experiência fluida e multiplataforma.
+Dentro do app existem módulos internos que organizam as funcionalidades principais:
+
+Módulos Internos:
+
+- Cadastro de Doadores: permite registrar informações sobre pessoas que doam itens.
+
+- Cadastro de Clientes: armazena os dados de pessoas que recebem ou compram os itens.
+
+- Cadastro de Itens Doado: controla os produtos recebidos, incluindo descrição, categoria, quantidade e imagens.
+
+- Relatórios e Estoque: gera visualizações e resumos das doações, movimentações e estoque disponível.
+
+Toda a lógica de interface e parte das validações de dados são executadas no próprio app, que envia e recebe informações do Firebase.
+
+
+Diagrama:
+ <img width="1536" height="1024" alt="arquitetura2" src="https://github.com/user-attachments/assets/ca340d28-ac73-4598-ba4c-145c2782ea02" />
 
  📌 **Entrega:** inserir o diagrama e a descrição detalhada de cada parte.
  
