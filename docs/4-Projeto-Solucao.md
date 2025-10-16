@@ -44,18 +44,18 @@ O Firebase é responsável por toda a infraestrutura de backend, oferecendo serv
 Os principais serviços utilizados:
 
 Firebase Authentication:
-Responsável por gerenciar o registro e login de usuários, permitindo autenticação por e-mail e senha.
+responsável por gerenciar o registro e login de usuários, permitindo autenticação por e-mail e senha.
 Garante a segurança dos acessos e protege as rotas internas do app.
 
 Firebase Firestore - Realtime Database:
-Armazena todas informações do sistema, como dados de doadores, clientes, itens e transações.
+armazena todas informações do sistema, como dados de doadores, clientes, itens e transações.
 O Firestore é um banco de dados NoSQL em nuvem que permite leitura e escrita em tempo real, facilitando a sincronização automática entre os dispositivos conectados.
 
 Firebase Storage:
-Responsável pelo armazenamento de imagens dos itens doados.
+responsável pelo armazenamento de imagens dos itens doados.
 As imagens são enviadas diretamente do app e associadas aos registros do banco de dados.
 
-Comunicação entre os Módulos
+Comunicação entre os Módulos:
 
 A comunicação entre os componentes ocorre de forma direta e segura via SDKs oficiais do Firebase para React Native. Tendo o seguinte fluxo:
 
