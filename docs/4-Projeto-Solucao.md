@@ -128,25 +128,7 @@ Utilize a ferramenta **[BR Modelo Web](https://www.brmodeloweb.com/lang/pt-br/in
 
 ---
 
-### 4.4.2 Esquema Relacional
-
-O **Esquema Relacional** converte o Modelo ER para tabelas relacionais, incluindo chaves primárias, estrangeiras e restrições de integridade.  
-Utilize o **[MySQL Workbench](https://www.mysql.com/products/workbench/)** para gerar o diagrama de tabelas (Modelo Lógico).
-
-**Orientações:**
-- Inclua todos os atributos das entidades.
-- Defina tipos de dados adequados para cada campo.
-- Configure as restrições de integridade (NOT NULL, UNIQUE, FOREIGN KEY, etc.).
-
-📌 **Entrega:** exporte o diagrama do Workbench e adicione a imagem aqui.
-
-**Exemplo de imagem:**
-
-![Esquema Relacional - Exemplo](./images/TabelasBD.png)
-
----
-
-### 4.4.3 Banco de Dados NoSQL
+### 4.4.2 Banco de Dados NoSQL
 
 O projeto BrechóBeneficente utiliza o Firebase Firestore, um banco de dados NoSQL orientado a documentos.
 As informações são organizadas em coleções, e cada coleção contém documentos representados em formato JSON, conforme mostrado a seguir.
