@@ -146,67 +146,85 @@ Utilize o **[MySQL Workbench](https://www.mysql.com/products/workbench/)** para 
 
 ---
 
-### 4.4.3 Modelo Físico
+### 4.4.3 Banco de Dados NoSQL
 
-O **Modelo Físico** é o script SQL que cria as tabelas no banco de dados.  
-Este script pode ser gerado automaticamente no MySQL Workbench a partir do esquema relacional.
-
-**Exemplo:**
-```sql
-CREATE TABLE Medico (
-    MedCodigo INT PRIMARY KEY,
-    MedNome VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE Paciente (
-    PacCodigo INT PRIMARY KEY,
-    PacNome VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE Consulta (
-    ConCodigo INT PRIMARY KEY,
-    MedCodigo INT,
-    PacCodigo INT,
-    Data DATE,
-    FOREIGN KEY (MedCodigo) REFERENCES Medico(MedCodigo),
-    FOREIGN KEY (PacCodigo) REFERENCES Paciente(PacCodigo)
-);
-
-CREATE TABLE Medicamento (
-    MdcCodigo INT PRIMARY KEY,
-    MdcNome VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE Prescricao (
-    ConCodigo INT,
-    MdcCodigo INT,
-    Posologia VARCHAR(200),
-    PRIMARY KEY (ConCodigo, MdcCodigo),
-    FOREIGN KEY (ConCodigo) REFERENCES Consulta(ConCodigo),
-    FOREIGN KEY (MdcCodigo) REFERENCES Medicamento(MdcCodigo)
-);
-```
-## 📌ATENÇÃO: salvar como banco.sql na pasta src/bd
-
----
-### 4.4.4 Banco de Dados NoSQL (Opcional)
-
-> **Atenção:** Preencha esta seção **somente se o seu projeto utilizar Banco de Dados NoSQL**.
-
-Se o projeto adotar NoSQL, a entrega deve incluir:
+O projeto BrechóBeneficente utiliza o Firebase Firestore, um banco de dados NoSQL orientado a documentos.
+As informações são organizadas em coleções, e cada coleção contém documentos representados em formato JSON, conforme mostrado a seguir.
 
 #### 1. Modelo de Coleções / Documentos
-- Descreva como os dados serão organizados em **coleções, documentos ou grafos**.  
+
+*Os dados apresentados a seguir são simulados, uma vez que o desenvolvimento da aplicação ainda não foi iniciado. No Firebase Firestore, as coleções e documentos são criados dinamicamente por meio do código-fonte, de acordo com a interação do sistema com o banco de dados.*
+
+O sistema possui as seguintes coleções principais:
+
+```txt
+clientes
+estoque_historico
+formas_pagamento
+pedidos
+produtos
+usuarios
+```
+Cada coleção contém documentos com campos dinâmicos, criados automaticamente conforme os dados são gravados pela aplicação.
+Por exemplo, a coleção pedidos armazena as vendas realizadas no brechó, com os seguintes campos:
+
+| Campo               | Tipo      | Descrição                                    |
+| ------------------- | --------- | -------------------------------------------- |
+| **cliente**         | string    | Nome do comprador/beneficiario               |
+| **created_at**      | timestamp | Data de criação do registro                  |
+| **dataVenda**       | timestamp | Data e hora do pedido                        |
+| **forma_pagamento** | string    | Meio de pagamento utilizado                  |
+| **produto**         | string    | Nome do produto vendido                      |
+| **quantidade**      | number    | Quantidade de itens vendidos                 |
+| **status**          | string    | Situação da venda (ex: Concluída, Em aberto) |
+| **valor**           | number    | Valor total da venda                         |
+
 
 #### 2. Exemplos de Documentos / Registros
-- Mostre exemplos reais de dados para cada coleção ou entidade.  
+
+*Os documentos exibidos representam exemplos simulados de registros que serão gerados automaticamente pelo sistema durante o uso da aplicação. Como o Firebase cria as estruturas de forma dinâmica, ainda não há dados reais inseridos.*
 
 ```json
 {
-  "_id": "1",
-  "nome": "Juliana",
-  "email": "juliana@email.com",
-  "perfil": "admin"
+  "cliente": "Cliente teste",
+  "created_at": "2025-06-23T00:42:52.596Z",
+  "dataVenda": "2025-06-23T00:42:33.632Z",
+  "forma_pagamento": "Dinheiro"
+  "produto": "Camiseta",
+  "quantidade": 5,
+  "status": "Concluída",
+  "valor": 30.00
 }
 ```
+#### 2. Exemplos de Documentos / Registros
+
+*O script apresentado é ilustrativo e tem como objetivo demonstrar o funcionamento do processo de inserção de dados no Firestore. No momento, não há dados reais, pois a aplicação encontra-se em fase de modelagem e configuração inicial do banco.*
+
+```javascript
+import { addDoc, collection } from 'firebase/firestore'
+import { db } from '../services/firebase'
+
+async function adicionarPedido(pedido) {
+  try {
+    const novoPedido = {
+      cliente: pedido.cliente,
+      produto: pedido.produto,
+      quantidade: pedido.quantidade,
+      valor: pedido.valor,
+      status: pedido.status,
+      forma_pagamento: pedido.forma_pagamento,
+      pagamento: pedido.forma_pagamento,
+      dataVenda: new Date().toISOString(),
+      created_at: new Date().toISOString()
+    }
+
+    const docRef = await addDoc(collection(db, 'pedidos'), novoPedido)
+    console.log('Pedido criado com ID:', docRef.id)
+  } catch (e) {
+    console.error('Erro ao adicionar pedido:', e)
+  }
+}
+```
+*Esse exemplo representa uma simulação do processo de inserção de um documento em uma coleção do Firebase Firestore. As coleções são criadas automaticamente no momento da inserção.*
+
 📌 **Entrega:** Inclua aqui os scripts utilizados para criar coleções e inserir dados.
