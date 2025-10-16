@@ -208,5 +208,3 @@ async function adicionarPedido(pedido) {
 }
 ```
 *Esse exemplo representa uma simulação do processo de inserção de um documento em uma coleção do Firebase Firestore. As coleções são criadas automaticamente no momento da inserção.*
-
-📌 **Entrega:** Inclua aqui os scripts utilizados para criar coleções e inserir dados.
