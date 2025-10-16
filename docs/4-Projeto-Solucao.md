@@ -37,11 +37,40 @@ Módulos Internos:
 
 Toda a lógica de interface e parte das validações de dados são executadas no próprio app, que envia e recebe informações do Firebase.
 
+**3. Firebase (Backend as a Service - BaaS)**
+
+O Firebase é responsável por toda a infraestrutura de backend, oferecendo serviços prontos para autenticação, banco de dados e armazenamento.
+
+Os principais serviços utilizados:
+
+Firebase Authentication:
+Responsável por gerenciar o registro e login de usuários, permitindo autenticação por e-mail e senha.
+Garante a segurança dos acessos e protege as rotas internas do app.
+
+Firebase Firestore - Realtime Database:
+Armazena todas informações do sistema, como dados de doadores, clientes, itens e transações.
+O Firestore é um banco de dados NoSQL em nuvem que permite leitura e escrita em tempo real, facilitando a sincronização automática entre os dispositivos conectados.
+
+Firebase Storage:
+Responsável pelo armazenamento de imagens dos itens doados.
+As imagens são enviadas diretamente do app e associadas aos registros do banco de dados.
+
+Comunicação entre os Módulos
+
+A comunicação entre os componentes ocorre de forma direta e segura via SDKs oficiais do Firebase para React Native. Tendo o seguinte fluxo:
+
+- O usuário interage com o aplicativo mobile em seu dispositivo;
+
+- O aplicativo, por meio de funções assíncronas e chamadas às APIs do Firebase, envia e recebe dados via Internet;
+
+- O Firebase processa as solicitações e retorna os resultados (autenticação, dados, imagens);
+
+- O app exibe as informações atualizadas para o usuário, sem necessidade de um backend intermediário.
+
+Essa arquitetura elimina a necessidade de um servidor próprio, pois o Firebase centraliza toda a parte de backend (autenticação, banco de dados e storage), enquanto o React Native concentra a interface e a lógica de interação do usuário.
 
 Diagrama:
  <img width="1536" height="1024" alt="arquitetura2" src="https://github.com/user-attachments/assets/ca340d28-ac73-4598-ba4c-145c2782ea02" />
-
- 📌 **Entrega:** inserir o diagrama e a descrição detalhada de cada parte.
  
 ---
 **MODELAGEM VISUAL DAS TELAS**
