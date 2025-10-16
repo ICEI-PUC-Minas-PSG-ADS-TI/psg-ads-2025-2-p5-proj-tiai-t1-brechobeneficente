@@ -47,7 +47,7 @@ Firebase Authentication:
 responsável por gerenciar o registro e login de usuários, permitindo autenticação por e-mail e senha.
 Garante a segurança dos acessos e protege as rotas internas do app.
 
-Firebase Firestore - Realtime Database:
+Firebase Firestore (Realtime Database):
 armazena todas informações do sistema, como dados de doadores, clientes, itens e transações.
 O Firestore é um banco de dados NoSQL em nuvem que permite leitura e escrita em tempo real, facilitando a sincronização automática entre os dispositivos conectados.
 
