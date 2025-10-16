@@ -83,14 +83,14 @@ O Quadro abaixo deve ser preenchida com as restrições específicas que **impac
 
 | ID  | Restrição                                                              |
 |------|-----------------------------------------------------------------------|
-| R-01   | O projeto deverá ser entregue até o final do semestre.              |
-| R-02   | O sistema deve funcionar apenas dentro da rede interna da empresa.  |
-| R-03   | O software deve ser compatível com Windows e Linux.                 |
-| R-04   | *(Descreva aqui a restrição 4 do seu projeto)*                      |
-| R-05   | *(Descreva aqui a restrição 5 do seu projeto)*                      |
-| R-06   | *(Descreva aqui a restrição 6 do seu projeto)*                      |
-| R-07   | *(Descreva aqui a restrição 7 do seu projeto)*                      |
-| R-08   | *(Descreva aqui a restrição 8 do seu projeto)*                      |
+| R-01   | O backend do sistema deverá ser inteiramente gerenciado pelo Firebase, sem necessidade de servidor adicional.           |
+| R-02   | Não será permitido o uso de dados sensíveis de usuários sem consentimento explícito, em conformidade com a LGPD (Lei Geral de Proteção de Dados).  |
+| R-03   | O sistema deverá exibir mensagens de erro e sucesso em português do Brasil, seguindo padrão de linguagem simples e inclusiva.                |
+| R-04   | O software deverá ser compatível com dispositivos móveis Android e iOS.                     |
+| R-05   | Somente usuários autenticados poderão registrar doações, vendas, saídas ou gerar relatórios.                   |
+| R-06   | O sistema deverá armazenar no máximo 200 peças simultaneamente, mantendo desempenho adequado.           |
+| R-07   | O aplicativo não poderá utilizar bibliotecas pagas ou dependências com licença comercial restrita.                |
+| R-08   | O projeto não poderá utilizar APIs externas que exijam autenticação paga ou assinatura mensal.                |
 
 ---
 ## 3.5 Regras de Negócio
