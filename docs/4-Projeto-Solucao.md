@@ -122,12 +122,7 @@ Eles ajudam a planejar, comunicar ideias e validar a interface com antecedência
 
 O diagrama de classes ilustra graficamente como será a estrutura do software, e como cada uma das classes da sua estrutura estarão interligadas. Essas classes servem de modelo para materializar os objetos que executarão na memória.
 
-As referências abaixo irão auxiliá-lo na geração do artefato “Diagrama de Classes”.
-
-> - [Diagramas de Classes - Documentação da IBM](https://www.ibm.com/docs/pt-br/rational-soft-arch/9.6.1?topic=diagrams-class)
-> - [O que é um diagrama de classe UML? | Lucidchart](https://www.lucidchart.com/pages/pt/o-que-e-diagrama-de-classe-uml)
-
----
+<img width="571" height="895" alt="image" src="https://github.com/user-attachments/assets/f07e4073-5012-49ca-82df-04eb3b621a58" />
 
 **BANCO DE DADOS**
 
