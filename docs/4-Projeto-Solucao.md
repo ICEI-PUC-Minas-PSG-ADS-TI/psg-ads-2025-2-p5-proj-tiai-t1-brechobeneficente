@@ -76,25 +76,6 @@ Diagrama:
 **MODELAGEM VISUAL DAS TELAS**
 
 ## 4.2. Wireframe / Mockup
-
-Wireframe e Mockup são representações visuais das telas de um sistema **antes** do desenvolvimento do código.  
-Eles ajudam a planejar, comunicar ideias e validar a interface com antecedência.
-
-### Finalidade
-- **Planejamento da interface** → organizar elementos (botões, menus, campos, imagens) e definir a estrutura de navegação.  
-- **Comunicação da ideia** → facilitar o diálogo entre desenvolvedores, designers, clientes e usuários.  
-- **Validação antecipada** → coletar feedback antes de investir tempo e recursos na programação.  
-- **Guia para desenvolvimento** → servir como referência visual durante a implementação.
-
-💡 **_Diferença:_**
-- **Wireframe** → simples, sem cores ou imagens detalhadas; foca na estrutura e posicionamento.  
-- **Mockup** → mais próximo do visual final, com cores, fontes e imagens, mas sem interatividade completa.
-
-**Exemplo de wireframe:**
-![Exemplo de Wireframe](images/wireframe-example.png)
-
-📌 **Entrega:** incluir imagens ou links para os wireframes/mockups.
-
 **Wireframe 1 — Tela login/cadastro**  
 <img width="752" height="376" alt="image" src="https://github.com/user-attachments/assets/3e4d20fe-f54a-4885-ae3d-08ac20082759" />
 
@@ -108,12 +89,6 @@ Eles ajudam a planejar, comunicar ideias e validar a interface com antecedência
 **Wireframe 3 — Telas de Relatórios**  
 <img width="777" height="620" alt="image" src="https://github.com/user-attachments/assets/a60e0fe4-e67f-4b7e-bbe1-46fa485e6cf6" />
 <img width="514" height="658" alt="image" src="https://github.com/user-attachments/assets/ef5b9a5b-1f5f-494f-8bdb-05777bce16b0" />
-
-
-
-
-
-
 
 ---
 **UML**
