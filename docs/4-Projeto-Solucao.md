@@ -6,19 +6,71 @@
 **ARQUITETURA DO SOFTWARE**
 ## 4.1. Arquitetura da Solução
 
-Nesta seção, descreva como os componentes do sistema se organizam e interagem.  
-Inclua um **diagrama de arquitetura** mostrando módulos, camadas e tecnologias utilizadas.
+A arquitetura da solução segue o modelo cliente → BaaS (Backend as a Service), utilizando React Native no desenvolvimento do aplicativo mobile e Firebase como provedor de serviços backend, garantindo simplicidade, escalabilidade e baixo custo de manutenção.
 
-**Orientações:**
-- Indique quais módulos compõem a solução (ex.: frontend, backend, banco de dados, APIs externas).
-- Especifique as tecnologias e frameworks adotados (ex.: React, Node.js, MySQL).
-- Explique como ocorre a comunicação entre os módulos.
+**Organização dos Componentes**
 
-**Exemplo de diagrama:**
- 
- ![Exemplo de Arquitetura](./images/arquitetura-exemplo.png)
+A solução é composta por três principais camadas/componentes:
 
- 📌 **Entrega:** inserir o diagrama e a descrição detalhada de cada parte.
+**1. Dispositivo Móvel**
+
+Representa o ambiente onde o aplicativo é executado (celulares Android ou iOS).
+
+O usuário interage com o app através de uma interface intuitiva desenvolvida em React Native.
+
+Todas as ações do usuário (cadastro, consulta, atualização, exclusão de dados) são processadas pelo aplicativo, que se comunica diretamente com o Firebase por meio da internet.
+
+**2. Aplicativo Mobile (React Native + Expo)**
+
+Desenvolvido com React Native e gerenciado pelo Expo, o aplicativo oferece uma experiência fluida e multiplataforma.
+Dentro do app existem módulos internos que organizam as funcionalidades principais:
+
+Módulos Internos:
+
+- Cadastro de Doadores: permite registrar informações sobre pessoas que doam itens.
+
+- Cadastro de Clientes: armazena os dados de pessoas que recebem ou compram os itens.
+
+- Cadastro de Itens Doado: controla os produtos recebidos, incluindo descrição, categoria, quantidade e imagens.
+
+- Relatórios e Estoque: gera visualizações e resumos das doações, movimentações e estoque disponível.
+
+Toda a lógica de interface e parte das validações de dados são executadas no próprio app, que envia e recebe informações do Firebase.
+
+**3. Firebase (Backend as a Service - BaaS)**
+
+O Firebase é responsável por toda a infraestrutura de backend, oferecendo serviços prontos para autenticação, banco de dados e armazenamento.
+
+Os principais serviços utilizados:
+
+Firebase Authentication:
+responsável por gerenciar o registro e login de usuários, permitindo autenticação por e-mail e senha.
+Garante a segurança dos acessos e protege as rotas internas do app.
+
+Firebase Firestore (Realtime Database):
+armazena todas informações do sistema, como dados de doadores, clientes, itens e transações.
+O Firestore é um banco de dados NoSQL em nuvem que permite leitura e escrita em tempo real, facilitando a sincronização automática entre os dispositivos conectados.
+
+Firebase Storage:
+responsável pelo armazenamento de imagens dos itens doados.
+As imagens são enviadas diretamente do app e associadas aos registros do banco de dados.
+
+Comunicação entre os Módulos:
+
+A comunicação entre os componentes ocorre de forma direta e segura via SDKs oficiais do Firebase para React Native. Tendo o seguinte fluxo:
+
+- O usuário interage com o aplicativo mobile em seu dispositivo;
+
+- O aplicativo, por meio de funções assíncronas e chamadas às APIs do Firebase, envia e recebe dados via Internet;
+
+- O Firebase processa as solicitações e retorna os resultados (autenticação, dados, imagens);
+
+- O app exibe as informações atualizadas para o usuário, sem necessidade de um backend intermediário.
+
+Essa arquitetura elimina a necessidade de um servidor próprio, pois o Firebase centraliza toda a parte de backend (autenticação, banco de dados e storage), enquanto o React Native concentra a interface e a lógica de interação do usuário.
+
+Diagrama:
+ <img width="1536" height="1024" alt="arquitetura2" src="https://github.com/user-attachments/assets/ca340d28-ac73-4598-ba4c-145c2782ea02" />
  
 ---
 **MODELAGEM VISUAL DAS TELAS**
@@ -70,12 +122,7 @@ Eles ajudam a planejar, comunicar ideias e validar a interface com antecedência
 
 O diagrama de classes ilustra graficamente como será a estrutura do software, e como cada uma das classes da sua estrutura estarão interligadas. Essas classes servem de modelo para materializar os objetos que executarão na memória.
 
-As referências abaixo irão auxiliá-lo na geração do artefato “Diagrama de Classes”.
-
-> - [Diagramas de Classes - Documentação da IBM](https://www.ibm.com/docs/pt-br/rational-soft-arch/9.6.1?topic=diagrams-class)
-> - [O que é um diagrama de classe UML? | Lucidchart](https://www.lucidchart.com/pages/pt/o-que-e-diagrama-de-classe-uml)
-
----
+<img width="571" height="895" alt="image" src="https://github.com/user-attachments/assets/f07e4073-5012-49ca-82df-04eb3b621a58" />
 
 **BANCO DE DADOS**
 
