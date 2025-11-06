@@ -18,8 +18,8 @@ const BaseLayout = ({ children, titulo = '', scrollable = false }) => {
             case 'home': router.push('/home'); break
             case 'clientes': router.push('/clientes'); break
             case 'produtos': router.push('/produtos'); break
+            case 'pedidos': router.push('/pedidos'); break
             case 'estoque': router.push('/estoque'); break
-            case 'vendas': router.push('/pedidos'); break
             case 'doacoes': router.push('/doacoes'); break
             case 'formas_pagamento': router.push('/formas_pagamento'); break
             case 'relatorios': router.push('/relatorios'); break
@@ -29,8 +29,8 @@ const BaseLayout = ({ children, titulo = '', scrollable = false }) => {
     const menuItens = [
         { label: 'Início', route: 'home', icon: 'home' },
         { label: 'Produtos', route: 'produtos', icon: 'package' },
+        { label: 'Pedidos', route: 'pedidos', icon: 'shopping-cart' },
         { label: 'Doações', route: 'doacoes', icon: 'heart' },
-        { label: 'Vendas', route: 'vendas', icon: 'shopping-cart' },
         { label: 'Estoque', route: 'estoque', icon: 'archive' },
         { label: 'Clientes', route: 'clientes', icon: 'users' },
         { label: 'Formas de Pagamento', route: 'formas_pagamento', icon: 'credit-card' },
