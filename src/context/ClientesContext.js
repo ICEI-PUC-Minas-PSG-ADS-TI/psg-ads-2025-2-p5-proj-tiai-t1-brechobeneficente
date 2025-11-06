@@ -1,5 +1,5 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc, serverTimestamp } from 'firebase/firestore'
-import { createContext, useEffect, useState, useCallback } from 'react'
+import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import { Alert } from 'react-native'
 import { db } from '../services/firebase'
 
@@ -171,4 +171,12 @@ export const ClientesProvider = ({ children }) => {
       {children}
     </ClientesContext.Provider>
   )
+}
+
+export const useClientes = () => {
+  const context = useContext(ClientesContext)
+  if (!context) {
+    throw new Error('useClientes deve ser usado dentro de ClientesProvider')
+  }
+  return context
 }

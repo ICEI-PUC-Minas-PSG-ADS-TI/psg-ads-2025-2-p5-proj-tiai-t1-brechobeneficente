@@ -4,13 +4,15 @@ import 'react-native-reanimated';
 
 import { AuthProvider } from '../src/context/AuthContext';
 import { ProdutosProvider } from '../src/context/ProdutosContext';
+import { ClientesProvider } from '../src/context/ClientesContext';
 import { PedidosProvider } from '../src/context/PedidosContext';
 
 export default function RootLayout() {
   return (
     <AuthProvider>
       <ProdutosProvider>
-        <PedidosProvider>
+        <ClientesProvider>
+          <PedidosProvider>
           <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="index" />
             {/* Rotas de autenticação */}
@@ -23,11 +25,14 @@ export default function RootLayout() {
             <Stack.Screen name="produtos/form" />
             <Stack.Screen name="pedidos/index" />
             <Stack.Screen name="pedidos/form" />
+            <Stack.Screen name="clientes/index" />
+            <Stack.Screen name="clientes/form" />
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
             <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
           </Stack>
           <StatusBar style="auto" />
-        </PedidosProvider>
+          </PedidosProvider>
+        </ClientesProvider>
       </ProdutosProvider>
     </AuthProvider>
   );

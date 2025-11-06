@@ -25,7 +25,8 @@ const AutoCompleteInput = ({
   erro,
   desabilitarSugestoes = false,
   obrigatorio = false,
-  icone = null
+  icone = null,
+  maxSugestoes = 5
 }) => {
   const [valor, setValor] = useState(valorInicial || '')
   const [mostrarSugestoes, setMostrarSugestoes] = useState(false)
@@ -54,7 +55,8 @@ const AutoCompleteInput = ({
   }
 
   const selecionarItem = (item) => {
-    setValor(item[campoLabel])
+    const novoValor = item[campoLabel] || ''
+    setValor(novoValor)
     setMostrarSugestoes(false)
     animarSugestoes(false)
     Keyboard.dismiss()
@@ -78,6 +80,7 @@ const AutoCompleteInput = ({
   return (
     <TouchableWithoutFeedback onPress={() => {
       setMostrarSugestoes(false)
+      animarSugestoes(false)
       setFocado(false)
       Keyboard.dismiss()
     }}>
@@ -115,9 +118,6 @@ const AutoCompleteInput = ({
                 animarSugestoes(true)
               }
             }}
-            onBlur={() => {
-              setFocado(false)
-            }}
             onChangeText={handleChange}
             autoCapitalize="none"
           />
@@ -143,11 +143,11 @@ const AutoCompleteInput = ({
             <ScrollView
               keyboardShouldPersistTaps="handled"
               nestedScrollEnabled
-              style={styles.scrollSugestoes}
+              style={{ maxHeight: 180 }}
               showsVerticalScrollIndicator={false}
             >
               {filtrados.length > 0 ? (
-                filtrados.slice(0, 10).map((item, index) => (
+                filtrados.slice(0, maxSugestoes).map((item, index) => (
                   <TouchableOpacity
                     key={item[campoChave]}
                     style={[
@@ -155,7 +155,6 @@ const AutoCompleteInput = ({
                       index == filtrados.length - 1 && styles.ultimoItem
                     ]}
                     onPress={() => selecionarItem(item)}
-                    activeOpacity={0.7}
                   >
                     <View style={styles.itemConteudo}>
                       <Text style={styles.itemLabel}>{item[campoLabel]}</Text>
@@ -185,7 +184,7 @@ const AutoCompleteInput = ({
 
 const styles = StyleSheet.create({
   wrapper: {
-    marginBottom: 16,
+    marginBottom: 4,
     position: 'relative',
   },
   label: {
@@ -248,26 +247,20 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   sugestoes: {
-    position: 'absolute',
-    top: '100%',
-    left: 0,
-    right: 0,
-    zIndex: 1000,
-    backgroundColor: cores.white,
-    borderRadius: 12,
-    marginTop: 4,
-    shadowColor: cores.shadowColor,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 8,
     borderWidth: 1,
     borderColor: cores.border,
+    borderRadius: 8,
+    marginTop: 4,
+    backgroundColor: cores.white,
     overflow: 'hidden',
+    elevation: 2,
+    shadowColor: cores.shadowColor,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
-  scrollSugestoes: {
-    maxHeight: 240,
-  },
+
+
   itemSugestao: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -277,6 +270,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: cores.divider,
     backgroundColor: cores.white,
+    minHeight: 50,
   },
   ultimoItem: {
     borderBottomWidth: 0,

@@ -18,6 +18,8 @@ import cores from '../../constants/colors'
 import BaseLayout from '../shared/BaseLayout'
 import { usePedidos } from '../../context/PedidosContext'
 import { useProdutos } from '../../context/ProdutosContext'
+import { useClientes } from '../../context/ClientesContext'
+import AutoCompleteInput from '../shared/AutoCompleteInput'
 
 const formasPagamento = [
   'Dinheiro',
@@ -37,27 +39,27 @@ const FormularioPedido = () => {
   const { id, readonly } = useLocalSearchParams()
   const { adicionarPedido, editarPedido, buscarPedidoPorId } = usePedidos()
   const { produtos, carregarProdutos } = useProdutos()
+  const { clientes, carregarClientes } = useClientes()
 
   const [carregando, setCarregando] = useState(false)
   const [editando, setEditando] = useState(!!id)
   const [modoLeitura, setModoLeitura] = useState(readonly === 'true')
 
-  // Dados do cliente
+  const [clienteId, setClienteId] = useState(null)
   const [nomeCliente, setNomeCliente] = useState('')
   const [telefoneCliente, setTelefoneCliente] = useState('')
+  const [enderecoCliente, setEnderecoCliente] = useState('')
   const [observacoes, setObservacoes] = useState('')
 
-  // Dados do pedido
   const [itens, setItens] = useState([])
   const [formaPagamento, setFormaPagamento] = useState('Dinheiro')
   const [tipoVenda, setTipoVenda] = useState('venda')
 
-  // Estados dos modals
   const [modalProdutoVisivel, setModalProdutoVisivel] = useState(false)
   const [modalFormaPagamentoVisivel, setModalFormaPagamentoVisivel] = useState(false)
   const [modalTipoVendaVisivel, setModalTipoVendaVisivel] = useState(false)
 
-  // Item sendo adicionado/editado
+
   const [itemTemporario, setItemTemporario] = useState({
     produtoId: '',
     produtoNome: '',
@@ -67,22 +69,25 @@ const FormularioPedido = () => {
   })
 
   useEffect(() => {
-    // Carrega produtos quando o componente monta
-    carregarProdutos()
 
-    // Se está editando, carrega os dados do pedido
+    carregarProdutos()
+    carregarClientes()
+
+
     if (id) {
       const pedidoExistente = buscarPedidoPorId(id)
       if (pedidoExistente) {
+        setClienteId(pedidoExistente.clienteId || null)
         setNomeCliente(pedidoExistente.nomeCliente || '')
         setTelefoneCliente(pedidoExistente.telefoneCliente || '')
+        setEnderecoCliente(pedidoExistente.enderecoCliente || '')
         setObservacoes(pedidoExistente.observacoes || '')
         setItens(pedidoExistente.itens || [])
         setFormaPagamento(pedidoExistente.formaPagamento || 'Dinheiro')
         setTipoVenda(pedidoExistente.tipoVenda || 'venda')
       }
     }
-  }, [id, carregarProdutos])
+  }, [id, carregarProdutos, carregarClientes])
 
   const formatarTelefone = (texto) => {
     const apenasNumeros = texto.replace(/\D/g, '')
@@ -105,18 +110,30 @@ const FormularioPedido = () => {
   }
 
   const adicionarItem = () => {
-    if (!itemTemporario.produtoId || !itemTemporario.quantidade || !itemTemporario.valorUnitario) {
-      Alert.alert('Erro', 'Preencha todos os campos do item')
+    if (!itemTemporario.produtoId) {
+      Alert.alert('Erro', 'Selecione um produto cadastrado')
+      return
+    }
+
+    if (!itemTemporario.quantidade || !itemTemporario.valorUnitario) {
+      Alert.alert('Erro', 'Preencha quantidade e valor unitário')
       return
     }
 
     const quantidade = parseFloat(itemTemporario.quantidade)
+    const valor = parseFloat(itemTemporario.valorUnitario)
+
     if (quantidade <= 0) {
       Alert.alert('Erro', 'A quantidade deve ser maior que zero')
       return
     }
 
-    // Busca o produto para verificar estoque
+    if (valor <= 0) {
+      Alert.alert('Erro', 'O valor unitário deve ser maior que zero')
+      return
+    }
+
+
     const produto = produtos.find(p => p.id === itemTemporario.produtoId)
     if (produto && produto.quantidade < quantidade) {
       Alert.alert(
@@ -194,8 +211,8 @@ const FormularioPedido = () => {
   }
 
   const validarFormulario = () => {
-    if (!nomeCliente.trim()) {
-      Alert.alert('Erro', 'Nome do cliente é obrigatório')
+    if (!clienteId) {
+      Alert.alert('Erro', 'Selecione um cliente cadastrado')
       return false
     }
 
@@ -204,18 +221,18 @@ const FormularioPedido = () => {
       return false
     }
 
-    // Verifica se todos os itens têm produtos válidos
-    const produtoInvalido = itens.find(item => {
-      const produto = produtos.find(p => p.id === item.produtoId)
-      return !produto
-    })
 
-    if (produtoInvalido) {
-      Alert.alert(
-        'Erro',
-        'Um ou mais produtos selecionados não estão mais disponíveis. Verifique os itens do pedido.'
-      )
-      return false
+    for (const item of itens) {
+      if (!item.produtoId) {
+        Alert.alert('Erro', 'Todos os itens devem ter um produto selecionado')
+        return false
+      }
+
+      const produto = produtos.find(p => p.id === item.produtoId)
+      if (!produto) {
+        Alert.alert('Erro', `O produto "${item.produtoNome}" não está mais disponível. Remova este item do pedido.`)
+        return false
+      }
     }
 
     return true
@@ -228,8 +245,10 @@ const FormularioPedido = () => {
       setCarregando(true)
 
       const dadosPedido = {
+        clienteId: clienteId,
         nomeCliente: nomeCliente.trim(),
         telefoneCliente: telefoneCliente.replace(/\D/g, ''),
+        enderecoCliente: enderecoCliente.trim(),
         observacoes: observacoes.trim(),
         itens: itens,
         formaPagamento,
@@ -246,7 +265,7 @@ const FormularioPedido = () => {
 
       router.back()
     } catch (error) {
-      // O contexto já mostra o erro
+
     } finally {
       setCarregando(false)
     }
@@ -266,60 +285,114 @@ const FormularioPedido = () => {
       >
         <ScrollView showsVerticalScrollIndicator={false}>
 
-          {/* Seção Cliente */}
           <View style={styles.secao}>
             <View style={styles.headerSecao}>
-              <Text style={styles.tituloSecao}>Dados do Cliente</Text>
-              {/* Futura integração com ClientesContext */}
+              <Text style={styles.tituloSecao}>Seleção de Cliente</Text>
               {!modoLeitura && (
                 <TouchableOpacity
                   style={styles.botaoSelecionarCliente}
-                  onPress={() => {
-                    Alert.alert(
-                      'Em Desenvolvimento',
-                      'A seleção de clientes cadastrados será implementada em breve!'
-                    )
-                  }}
+                  onPress={() => router.push('/clientes/form')}
                 >
-                  <Feather name="users" size={16} color={cores.white} />
-                  <Text style={styles.textoBotaoSelecionar}>Buscar</Text>
+                  <Feather name="user-plus" size={16} color={cores.white} />
+                  <Text style={styles.textoBotaoSelecionar}>Cadastrar</Text>
                 </TouchableOpacity>
               )}
             </View>
 
-            <Text style={styles.label}>Nome do Cliente *</Text>
-            <TextInput
-              style={[styles.input, modoLeitura && styles.inputDesabilitado]}
-              placeholder="Digite o nome do cliente"
-              value={nomeCliente}
-              onChangeText={setNomeCliente}
-              editable={!modoLeitura}
-            />
+            {!modoLeitura ? (
+              <>
+                <View style={{ zIndex: 10, position: 'relative' }}>
+                  <AutoCompleteInput
+                    label="Selecionar cliente"
+                    placeholder="Busque o cliente pelo nome"
+                    dados={clientes}
+                    campoChave="id"
+                    campoLabel="nome"
+                    valorInicial={nomeCliente}
+                    onSelecionar={(cliente) => {
+                      setClienteId(cliente.id)
+                      setNomeCliente(cliente.nome || '')
+                      setTelefoneCliente(cliente.telefone || '')
+                      setEnderecoCliente(cliente.endereco || '')
+                    }}
+                    onChangeText={(texto) => {
 
-            <Text style={styles.label}>Telefone</Text>
-            <TextInput
-              style={[styles.input, modoLeitura && styles.inputDesabilitado]}
-              placeholder="(00) 00000-0000"
-              value={telefoneCliente}
-              onChangeText={(texto) => setTelefoneCliente(formatarTelefone(texto))}
-              keyboardType="phone-pad"
-              maxLength={15}
-              editable={!modoLeitura}
-            />
+                      if (!clientes.find(c => c.nome === texto)) {
+                        setClienteId(null)
+                        setNomeCliente(texto)
+                        setTelefoneCliente('')
+                        setEnderecoCliente('')
+                      }
+                    }}
+                    obrigatorio
+                    icone="search"
+                    maxSugestoes={5}
+                  />
 
-            <Text style={styles.label}>Observações</Text>
-            <TextInput
-              style={[styles.input, styles.inputMultiline, modoLeitura && styles.inputDesabilitado]}
-              placeholder="Observações sobre o cliente ou pedido"
-              value={observacoes}
-              onChangeText={setObservacoes}
-              multiline
-              numberOfLines={3}
-              editable={!modoLeitura}
-            />
+                </View>
+
+                {clienteId && (
+                  <View style={styles.clienteSelecionadoInfo}>
+                    <View style={styles.infoRow}>
+                      <Feather name="user" size={16} color={cores.primary} />
+                      <Text style={styles.infoLabel}>Nome:</Text>
+                      <Text style={styles.infoValor}>{nomeCliente}</Text>
+                    </View>
+                    {telefoneCliente && (
+                      <View style={styles.infoRow}>
+                        <Feather name="phone" size={16} color={cores.primary} />
+                        <Text style={styles.infoLabel}>Telefone:</Text>
+                        <Text style={styles.infoValor}>{telefoneCliente}</Text>
+                      </View>
+                    )}
+                    {enderecoCliente && (
+                      <View style={styles.infoRow}>
+                        <Feather name="map-pin" size={16} color={cores.primary} />
+                        <Text style={styles.infoLabel}>Endereço:</Text>
+                        <Text style={styles.infoValor}>{enderecoCliente}</Text>
+                      </View>
+                    )}
+                  </View>
+                )}
+
+                {!clienteId && clientes.length === 0 && (
+                  <View style={styles.estadoVazio}>
+                    <Feather name="users" size={32} color={cores.gray400} />
+                    <Text style={styles.textoVazio}>Nenhum cliente cadastrado</Text>
+                    <TouchableOpacity
+                      style={styles.botaoAcao}
+                      onPress={() => router.push('/clientes/form')}
+                    >
+                      <Text style={styles.textoBotaoAcao}>Cadastrar primeiro cliente</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </>
+            ) : (
+              <View style={styles.clienteSelecionadoInfo}>
+                <View style={styles.infoRow}>
+                  <Feather name="user" size={16} color={cores.primary} />
+                  <Text style={styles.infoLabel}>Nome:</Text>
+                  <Text style={styles.infoValor}>{nomeCliente}</Text>
+                </View>
+                {telefoneCliente && (
+                  <View style={styles.infoRow}>
+                    <Feather name="phone" size={16} color={cores.primary} />
+                    <Text style={styles.infoLabel}>Telefone:</Text>
+                    <Text style={styles.infoValor}>{telefoneCliente}</Text>
+                  </View>
+                )}
+                {enderecoCliente && (
+                  <View style={styles.infoRow}>
+                    <Feather name="map-pin" size={16} color={cores.primary} />
+                    <Text style={styles.infoLabel}>Endereço:</Text>
+                    <Text style={styles.infoValor}>{enderecoCliente}</Text>
+                  </View>
+                )}
+              </View>
+            )}
           </View>
 
-          {/* Seção Itens */}
           <View style={styles.secao}>
             <View style={styles.headerSecao}>
               <Text style={styles.tituloSecao}>Itens do Pedido</Text>
@@ -402,7 +475,6 @@ const FormularioPedido = () => {
             )}
           </View>
 
-          {/* Seção Pagamento */}
           <View style={styles.secao}>
             <Text style={styles.tituloSecao}>Detalhes do Pedido</Text>
 
@@ -427,7 +499,19 @@ const FormularioPedido = () => {
             </TouchableOpacity>
           </View>
 
-          {/* Botões */}
+          <View style={styles.secao}>
+            <Text style={styles.label}>Observações do Pedido</Text>
+            <TextInput
+              style={[styles.input, styles.inputMultiline, modoLeitura && styles.inputDesabilitado]}
+              placeholder="Observações gerais sobre o pedido (opcional)"
+              value={observacoes}
+              onChangeText={setObservacoes}
+              multiline
+              numberOfLines={3}
+              editable={!modoLeitura}
+            />
+          </View>
+
           {!modoLeitura && (
             <View style={styles.botoes}>
               <TouchableOpacity
@@ -456,7 +540,6 @@ const FormularioPedido = () => {
           )}
         </ScrollView>
 
-        {/* Modal Produto */}
         <Modal
           visible={modalProdutoVisivel}
           transparent
@@ -475,54 +558,79 @@ const FormularioPedido = () => {
               </View>
 
               <ScrollView style={styles.modalContent}>
-                <Text style={styles.label}>Produto *</Text>
                 {produtos.length === 0 ? (
                   <View style={styles.emptyProdutos}>
                     <Feather name="package" size={32} color={cores.gray400} />
                     <Text style={styles.emptyText}>Nenhum produto cadastrado</Text>
                     <Text style={styles.emptySubtext}>Cadastre produtos primeiro</Text>
+                    <TouchableOpacity
+                      style={styles.botaoAdicionarProduto}
+                      onPress={() => {
+                        setModalProdutoVisivel(false)
+                        router.push('/produtos/form')
+                      }}
+                    >
+                      <Text style={styles.textoBotaoAdicionarProduto}>Cadastrar Produto</Text>
+                    </TouchableOpacity>
                   </View>
                 ) : (
-                  <FlatList
-                    data={produtos}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => (
-                      <TouchableOpacity
-                        style={[
-                          styles.produtoItem,
-                          itemTemporario.produtoId === item.id && styles.produtoSelecionado
-                        ]}
-                        onPress={() => setItemTemporario({
+                  <>
+                    <AutoCompleteInput
+                      label="Produto"
+                      placeholder="Busque o produto pelo nome"
+                      dados={produtos}
+                      campoChave="id"
+                      campoLabel="nome"
+                      valorInicial={itemTemporario.produtoNome}
+                      onSelecionar={(produto) => {
+                        setItemTemporario({
                           ...itemTemporario,
-                          produtoId: item.id,
-                          produtoNome: item.nome,
-                          valorUnitario: item.valorVenda ? parseFloat(item.valorVenda).toFixed(2) : itemTemporario.valorUnitario
-                        })}
-                      >
-                        <View style={styles.produtoInfo}>
-                          <Text style={styles.produtoNome}>{item.nome}</Text>
-                          <Text style={styles.produtoCodigo}>Código: {item.codigo}</Text>
-                          {item.valorVenda && (
-                            <Text style={styles.produtoValor}>
-                              Valor sugerido: R$ {parseFloat(item.valorVenda).toFixed(2)}
-                            </Text>
-                          )}
-                        </View>
-                        <View style={styles.produtoEstoque}>
-                          <Text style={styles.estoqueLabel}>Estoque:</Text>
-                          <Text style={[
-                            styles.estoqueValor,
-                            (item.quantidade || 0) < 5 && styles.estoqueBaixo,
-                            (item.quantidade || 0) === 0 && styles.estoqueZero
-                          ]}>
-                            {item.quantidade || 0}
-                          </Text>
-                        </View>
-                      </TouchableOpacity>
+                          produtoId: produto.id,
+                          produtoNome: produto.nome,
+                          valorUnitario: produto.valorVenda ? parseFloat(produto.valorVenda).toFixed(2) : ''
+                        })
+                      }}
+                      onChangeText={(texto) => {
+
+                        if (!produtos.find(p => p.nome === texto)) {
+                          setItemTemporario({
+                            ...itemTemporario,
+                            produtoId: '',
+                            produtoNome: texto,
+                            valorUnitario: ''
+                          })
+                        }
+                      }}
+                      obrigatorio
+                      icone="search"
+                      maxSugestoes={5}
+                    />
+
+                    {itemTemporario.produtoId && (
+                      <View style={styles.produtoSelecionadoInfo}>
+                        {(() => {
+                          const produto = produtos.find(p => p.id === itemTemporario.produtoId)
+                          return produto ? (
+                            <>
+                              <Text style={styles.produtoCodigo}>Código: {produto.codigo}</Text>
+                              {produto.valorVenda && (
+                                <Text style={styles.produtoValor}>
+                                  Valor sugerido: R$ {parseFloat(produto.valorVenda).toFixed(2)}
+                                </Text>
+                              )}
+                              <Text style={[
+                                styles.estoqueInfo,
+                                (produto.quantidade || 0) < 5 && styles.estoqueBaixo,
+                                (produto.quantidade || 0) === 0 && styles.estoqueZero
+                              ]}>
+                                Estoque: {produto.quantidade || 0} unidades
+                              </Text>
+                            </>
+                          ) : null
+                        })()}
+                      </View>
                     )}
-                    style={styles.listaProdutos}
-                    showsVerticalScrollIndicator={false}
-                  />
+                  </>
                 )}
 
                 <Text style={styles.label}>Quantidade *</Text>
@@ -570,7 +678,8 @@ const FormularioPedido = () => {
           </View>
         </Modal>
 
-        {/* Modal Forma de Pagamento */}
+
+
         <Modal
           visible={modalFormaPagamentoVisivel}
           transparent
@@ -599,7 +708,6 @@ const FormularioPedido = () => {
           </View>
         </Modal>
 
-        {/* Modal Tipo de Venda */}
         <Modal
           visible={modalTipoVendaVisivel}
           transparent
@@ -691,6 +799,10 @@ const styles = StyleSheet.create({
   pickerText: {
     fontSize: 16,
     color: cores.text,
+    flex: 1,
+  },
+  placeholderText: {
+    color: cores.gray500,
   },
   botaoAdicionarItem: {
     flexDirection: 'row',
@@ -831,7 +943,7 @@ const styles = StyleSheet.create({
   modalContainer: {
     backgroundColor: cores.white,
     borderRadius: 12,
-    maxHeight: '80%',
+    maxHeight: '75%',
   },
   modalHeader: {
     flexDirection: 'row',
@@ -848,10 +960,6 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     padding: 20,
-  },
-  listaProdutos: {
-    maxHeight: 200,
-    marginBottom: 16,
   },
   emptyProdutos: {
     alignItems: 'center',
@@ -928,6 +1036,96 @@ const styles = StyleSheet.create({
   modalItemText: {
     fontSize: 16,
     color: cores.text,
+  },
+  botaoAdicionarProduto: {
+    backgroundColor: cores.primary,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 8,
+    marginTop: 16,
+  },
+  textoBotaoAdicionarProduto: {
+    color: cores.white,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  produtoSelecionadoInfo: {
+    backgroundColor: cores.primaryLight,
+    padding: 12,
+    borderRadius: 8,
+    marginTop: 4,
+    borderWidth: 1,
+    borderColor: cores.primary,
+  },
+  estoqueInfo: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    marginTop: 4,
+    color: cores.success,
+  },
+  clienteSelecionadoInfo: {
+    backgroundColor: cores.white,
+    padding: 16,
+    borderRadius: 12,
+    marginTop: 8,
+    borderWidth: 1,
+    borderColor: cores.border,
+    shadowColor: cores.shadowColor,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  infoLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: cores.text,
+    marginLeft: 8,
+    marginRight: 8,
+    minWidth: 70,
+  },
+  infoValor: {
+    fontSize: 14,
+    color: cores.gray700,
+    flex: 1,
+  },
+  estadoVazio: {
+    alignItems: 'center',
+    paddingVertical: 32,
+    paddingHorizontal: 16,
+  },
+  textoVazio: {
+    fontSize: 16,
+    color: cores.gray600,
+    marginTop: 12,
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  botaoAcao: {
+    backgroundColor: cores.primary,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  textoBotaoAcao: {
+    color: cores.white,
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+  avisoSelecao: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: cores.warning + '20',
+    padding: 12,
+    borderRadius: 8,
+    marginTop: 8,
+    borderWidth: 1,
+    borderColor: cores.warning + '40',
   },
 })
 

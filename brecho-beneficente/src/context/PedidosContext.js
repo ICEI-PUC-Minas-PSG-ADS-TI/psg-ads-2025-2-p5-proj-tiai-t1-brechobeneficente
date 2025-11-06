@@ -2,6 +2,7 @@ import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc, serverTimestamp
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import { Alert } from 'react-native'
 import { db } from '../services/firebase'
+import { useProdutos } from './ProdutosContext'
 
 const PedidosContextDefaultValues = {
   pedidos: [],
@@ -25,9 +26,25 @@ export const PedidosProvider = ({ children }) => {
   const [carregando, setCarregando] = useState(false)
   const [erro, setErro] = useState(null)
 
+  const { adicionarSaidaAoProduto } = useProdutos()
+
   useEffect(() => {
     carregarPedidos()
   }, [])
+
+  const realizarBaixaEstoque = useCallback(async (pedido) => {
+    try {
+      if (pedido.status === 'finalizado' && pedido.tipoVenda === 'venda') {
+        for (const item of pedido.itens) {
+          if (item.produtoId && item.quantidade > 0) {
+            await adicionarSaidaAoProduto(item.produtoId, item.quantidade)
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Erro ao realizar baixa no estoque:', error)
+    }
+  }, [adicionarSaidaAoProduto])
 
   const carregarPedidos = useCallback(async () => {
     try {
@@ -72,19 +89,20 @@ export const PedidosProvider = ({ children }) => {
         throw new Error('Nome do cliente e itens são obrigatórios')
       }
 
-
       const total = pedido.itens.reduce((acc, item) => {
         return acc + (item.quantidade * item.valorUnitario)
       }, 0)
 
       const dadosPedido = {
+        clienteId: pedido.clienteId || null,
         nomeCliente: pedido.nomeCliente.trim(),
         telefoneCliente: pedido.telefoneCliente?.replace(/\D/g, '') || '',
+        enderecoCliente: pedido.enderecoCliente?.trim() || '',
         observacoes: pedido.observacoes?.trim() || '',
         itens: pedido.itens,
         total: total,
         status: 'pendente',
-        formaPagamento: pedido.formaPagamento || 'dinheiro',
+        formaPagamento: pedido.formaPagamento || 'Dinheiro',
         tipoVenda: pedido.tipoVenda || 'venda',
         criadoEm: serverTimestamp(),
         atualizadoEm: serverTimestamp()
@@ -222,6 +240,8 @@ export const PedidosProvider = ({ children }) => {
       setPedidos(prev =>
         prev.map(p => (p.id === id ? pedidoAtualizado : p))
       )
+
+      await realizarBaixaEstoque(pedidoAtualizado)
 
       return { success: true }
     } catch (error) {
