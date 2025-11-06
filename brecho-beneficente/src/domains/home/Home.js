@@ -41,7 +41,7 @@ export default function Home() {
                     <View style={[styles.card, styles.cardPrimario]}>
                         <View style={styles.cardHeader}>
                             <Feather name="dollar-sign" size={24} color={cores.white} />
-                            <Text style={styles.cardTitulo}>Receita do Mês</Text>
+                            <Text style={styles.cardTitulo}>Receita do mês</Text>
                         </View>
                         <Text style={styles.cardValor}>{formatarMoeda(dadosMockados.receitaMensal)}</Text>
                     </View>
@@ -49,7 +49,7 @@ export default function Home() {
                     <View style={[styles.card, styles.cardSecundario]}>
                         <View style={styles.cardHeader}>
                             <Feather name="heart" size={24} color={cores.white} />
-                            <Text style={styles.cardTitulo}>Doações Recebidas</Text>
+                            <Text style={styles.cardTitulo}>Doações recebidas</Text>
                         </View>
                         <Text style={styles.cardValor}>{dadosMockados.doacoesRecebidas}</Text>
                         <Text style={styles.cardDescricao}>Este mês</Text>
@@ -79,14 +79,14 @@ export default function Home() {
                 <View style={styles.cardLargo}>
                     <View style={styles.cardHeader}>
                         <Feather name="users" size={24} color={cores.primary} />
-                        <Text style={[styles.cardTitulo, { color: cores.text }]}>Beneficiários Cadastrados</Text>
+                        <Text style={[styles.cardTitulo, { color: cores.text }]}>Beneficiários cadastrados</Text>
                     </View>
                     <Text style={[styles.cardValorGrande, { color: cores.primary }]}>{dadosMockados.beneficiariosCadastrados}</Text>
                     <Text style={styles.cardDescricaoGrande}>Famílias atendidas pelo programa</Text>
                 </View>
 
                 <View style={styles.cardResumo}>
-                    <Text style={styles.resumoTitulo}>Resumo do Período</Text>
+                    <Text style={styles.resumoTitulo}>Resumo do período</Text>
                     <View style={styles.resumoItem}>
                         <View style={styles.resumoIcone}>
                             <Feather name="trending-up" size={16} color={cores.success} />

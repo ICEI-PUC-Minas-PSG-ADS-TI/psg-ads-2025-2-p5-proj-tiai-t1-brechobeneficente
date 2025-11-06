@@ -1,4 +1,14 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, updateDoc, serverTimestamp, query, orderBy } from 'firebase/firestore'
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  updateDoc,
+  serverTimestamp,
+  query,
+  orderBy
+} from 'firebase/firestore'
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import { Alert } from 'react-native'
 import { db } from '../services/firebase'
@@ -22,9 +32,12 @@ const PedidosContextDefaultValues = {
 export const PedidosContext = createContext(PedidosContextDefaultValues)
 
 export const PedidosProvider = ({ children }) => {
-  const [pedidos, setPedidos] = useState([])
-  const [carregando, setCarregando] = useState(false)
-  const [erro, setErro] = useState(null)
+  const [pedidos,
+    setPedidos] = useState([])
+  const [carregando,
+    setCarregando] = useState(false)
+  const [erro,
+    setErro] = useState(null)
 
   const { adicionarSaidaAoProduto } = useProdutos()
 
@@ -34,7 +47,7 @@ export const PedidosProvider = ({ children }) => {
 
   const realizarBaixaEstoque = useCallback(async (pedido) => {
     try {
-      if (pedido.status === 'finalizado' && pedido.tipoVenda === 'venda') {
+      if (pedido.status == 'finalizado' && pedido.tipoVenda == 'venda') {
         for (const item of pedido.itens) {
           if (item.produtoId && item.quantidade > 0) {
             await adicionarSaidaAoProduto(item.produtoId, item.quantidade)
@@ -51,22 +64,39 @@ export const PedidosProvider = ({ children }) => {
       setCarregando(true)
       setErro(null)
 
-
       const q = query(collection(db, 'pedidos'), orderBy('criadoEm', 'desc'))
       const snapshot = await getDocs(q)
 
-      const lista = snapshot.docs.map(docSnap => {
-        const data = docSnap.data()
-        return {
-          id: docSnap.id,
-          ...data,
-
-          itens: data.itens || [],
-
-          criadoEm: data.criadoEm?.toDate?.() || new Date(),
-          atualizadoEm: data.atualizadoEm?.toDate?.() || new Date()
-        }
-      })
+      const lista = snapshot
+        .docs
+        .map(docSnap => {
+          const data = docSnap.data()
+          return {
+            id: docSnap.id,
+            ...data,
+            itens: data.itens || [],
+            criadoEm: data.criadoEm
+              ?.toDate
+              ?.() || (data.criadoEm
+                ? new Date(data.criadoEm)
+                : new Date()),
+            atualizadoEm: data.atualizadoEm
+              ?.toDate
+              ?.() || (data.atualizadoEm
+                ? new Date(data.atualizadoEm)
+                : new Date()),
+            dataFinalizacao: data.dataFinalizacao
+              ?.toDate
+              ?.() || (data.dataFinalizacao
+                ? new Date(data.dataFinalizacao)
+                : null),
+            dataCancelamento: data.dataCancelamento
+              ?.toDate
+              ?.() || (data.dataCancelamento
+                ? new Date(data.dataCancelamento)
+                : null)
+          }
+        })
 
       setPedidos(lista)
     } catch (error) {
@@ -84,21 +114,27 @@ export const PedidosProvider = ({ children }) => {
       setCarregando(true)
       setErro(null)
 
-
-      if (!pedido.nomeCliente || !pedido.itens || pedido.itens.length === 0) {
+      if (!pedido.nomeCliente || !pedido.itens || pedido.itens.length == 0) {
         throw new Error('Nome do cliente e itens são obrigatórios')
       }
 
-      const total = pedido.itens.reduce((acc, item) => {
-        return acc + (item.quantidade * item.valorUnitario)
-      }, 0)
+      const total = pedido
+        .itens
+        .reduce((acc, item) => {
+          return acc + (item.quantidade * item.valorUnitario)
+        }, 0)
 
       const dadosPedido = {
         clienteId: pedido.clienteId || null,
-        nomeCliente: pedido.nomeCliente.trim(),
-        telefoneCliente: pedido.telefoneCliente?.replace(/\D/g, '') || '',
-        enderecoCliente: pedido.enderecoCliente?.trim() || '',
-        observacoes: pedido.observacoes?.trim() || '',
+        nomeCliente: pedido
+          .nomeCliente
+          .trim(),
+        telefoneCliente: pedido.telefoneCliente
+          ?.replace(/\D/g, '') || '',
+        enderecoCliente: pedido.enderecoCliente
+          ?.trim() || '',
+        observacoes: pedido.observacoes
+          ?.trim() || '',
         itens: pedido.itens,
         total: total,
         status: 'pendente',
@@ -115,7 +151,9 @@ export const PedidosProvider = ({ children }) => {
         criadoEm: new Date(),
         atualizadoEm: new Date()
       }
-      setPedidos(prev => [novoPedido, ...prev])
+      setPedidos(prev => [
+        novoPedido, ...prev
+      ])
       return { success: true, pedido: novoPedido }
     } catch (error) {
       console.error('Erro ao adicionar pedido:', error)
@@ -133,34 +171,40 @@ export const PedidosProvider = ({ children }) => {
       setCarregando(true)
       setErro(null)
 
-      if (!pedidoEditado?.id) {
+      if (!pedidoEditado
+        ?.id) {
         throw new Error('ID do pedido é obrigatório para edição')
       }
 
-
-      const total = pedidoEditado.itens.reduce((acc, item) => {
-        return acc + (item.quantidade * item.valorUnitario)
-      }, 0)
-
-      const { id, criadoEm, ...dadosParaAtualizar } = pedidoEditado
+      const total = pedidoEditado
+        .itens
+        .reduce((acc, item) => {
+          return acc + (item.quantidade * item.valorUnitario)
+        }, 0)
+      const {
+        id,
+        criadoEm,
+        atualizadoEm,
+        ...dadosParaAtualizar
+      } = pedidoEditado
       const dadosAtualizados = {
         ...dadosParaAtualizar,
         total: total,
         atualizadoEm: serverTimestamp()
       }
-
       const ref = doc(db, 'pedidos', id)
       await updateDoc(ref, dadosAtualizados)
 
       const pedidoAtualizado = {
         ...pedidoEditado,
         total: total,
-        atualizadoEm: new Date()
+        atualizadoEm: new Date(),
+        criadoEm: pedidoEditado.criadoEm || new Date()
       }
 
-      setPedidos(prev =>
-        prev.map(p => (p.id === id ? pedidoAtualizado : p))
-      )
+      setPedidos(prev => prev.map(p => (p.id == id
+        ? pedidoAtualizado
+        : p)))
 
       return { success: true, pedido: pedidoAtualizado }
     } catch (error) {
@@ -183,16 +227,12 @@ export const PedidosProvider = ({ children }) => {
         throw new Error('ID do pedido é obrigatório para exclusão')
       }
 
-      const pedido = pedidos.find(p => p.id === id)
+      const pedido = pedidos.find(p => p.id == id)
       if (!pedido) {
         throw new Error('Pedido não encontrado')
       }
-
-
-      if (pedido.status === 'finalizado') {
-        throw new Error('Não é possível excluir pedidos finalizados')
-      }
-
+      // if (pedido.status == 'finalizado') {   throw new Error('Não é possível
+      // excluir pedidos finalizados') }
       await deleteDoc(doc(db, 'pedidos', id))
       setPedidos(prev => prev.filter(p => p.id !== id))
 
@@ -213,12 +253,12 @@ export const PedidosProvider = ({ children }) => {
       setCarregando(true)
       setErro(null)
 
-      const pedido = pedidos.find(p => p.id === id)
+      const pedido = pedidos.find(p => p.id == id)
       if (!pedido) {
         throw new Error('Pedido não encontrado')
       }
 
-      if (pedido.status === 'finalizado') {
+      if (pedido.status == 'finalizado') {
         throw new Error('Pedido já finalizado')
       }
 
@@ -237,9 +277,9 @@ export const PedidosProvider = ({ children }) => {
         atualizadoEm: new Date()
       }
 
-      setPedidos(prev =>
-        prev.map(p => (p.id === id ? pedidoAtualizado : p))
-      )
+      setPedidos(prev => prev.map(p => (p.id == id
+        ? pedidoAtualizado
+        : p)))
 
       await realizarBaixaEstoque(pedidoAtualizado)
 
@@ -260,15 +300,12 @@ export const PedidosProvider = ({ children }) => {
       setCarregando(true)
       setErro(null)
 
-      const pedido = pedidos.find(p => p.id === id)
+      const pedido = pedidos.find(p => p.id == id)
       if (!pedido) {
         throw new Error('Pedido não encontrado')
       }
-
-      if (pedido.status === 'finalizado') {
-        throw new Error('Não é possível cancelar pedidos finalizados')
-      }
-
+      // if (pedido.status == 'finalizado') {   throw new Error('Não é possível
+      // cancelar pedidos finalizados') }
       const dadosAtualizados = {
         status: 'cancelado',
         dataCancelamento: serverTimestamp(),
@@ -284,9 +321,9 @@ export const PedidosProvider = ({ children }) => {
         atualizadoEm: new Date()
       }
 
-      setPedidos(prev =>
-        prev.map(p => (p.id === id ? pedidoAtualizado : p))
-      )
+      setPedidos(prev => prev.map(p => (p.id == id
+        ? pedidoAtualizado
+        : p)))
 
       return { success: true }
     } catch (error) {
@@ -301,7 +338,8 @@ export const PedidosProvider = ({ children }) => {
   }
 
   const calcularTotalPedido = useCallback((itens) => {
-    if (!Array.isArray(itens)) return 0
+    if (!Array.isArray(itens))
+      return 0
     return itens.reduce((total, item) => {
       return total + (item.quantidade * item.valorUnitario)
     }, 0)
@@ -309,12 +347,12 @@ export const PedidosProvider = ({ children }) => {
 
   const calcularTotalVendas = useCallback(() => {
     return pedidos
-      .filter(p => p.status === 'finalizado' && p.tipoVenda === 'venda')
+      .filter(p => p.status == 'finalizado' && p.tipoVenda == 'venda')
       .reduce((total, pedido) => total + (pedido.total || 0), 0)
   }, [pedidos])
 
   const buscarPedidoPorId = useCallback((id) => {
-    return pedidos.find(p => p.id === id) || null
+    return pedidos.find(p => p.id == id) || null
   }, [pedidos])
 
   const contextValue = {
@@ -332,18 +370,21 @@ export const PedidosProvider = ({ children }) => {
     buscarPedidoPorId,
 
     totalPedidos: pedidos.length,
-    pedidosPendentes: pedidos.filter(p => p.status === 'pendente').length,
-    pedidosFinalizados: pedidos.filter(p => p.status === 'finalizado').length,
-    pedidosCancelados: pedidos.filter(p => p.status === 'cancelado').length,
+    pedidosPendentes: pedidos
+      .filter(p => p.status == 'pendente')
+      .length,
+    pedidosFinalizados: pedidos
+      .filter(p => p.status == 'finalizado')
+      .length,
+    pedidosCancelados: pedidos
+      .filter(p => p.status == 'cancelado')
+      .length,
     totalVendas: calcularTotalVendas(),
-    vendaDia: pedidos
-      .filter(p => {
-        const hoje = new Date()
-        const dataPedido = p.criadoEm || new Date()
-        return p.status === 'finalizado' &&
-          dataPedido.toDateString() === hoje.toDateString()
-      })
-      .reduce((total, pedido) => total + (pedido.total || 0), 0)
+    vendaDia: pedidos.filter(p => {
+      const hoje = new Date()
+      const dataPedido = p.criadoEm || new Date()
+      return p.status == 'finalizado' && dataPedido.toDateString() == hoje.toDateString()
+    }).reduce((total, pedido) => total + (pedido.total || 0), 0)
   }
 
   return (

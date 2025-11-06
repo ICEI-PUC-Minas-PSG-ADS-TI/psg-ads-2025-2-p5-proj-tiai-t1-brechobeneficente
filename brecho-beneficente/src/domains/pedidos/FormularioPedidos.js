@@ -256,7 +256,17 @@ const FormularioPedido = () => {
       }
 
       if (editando) {
-        await editarPedido({ ...dadosPedido, id })
+        // Preservar dados importantes do pedido original
+        const pedidoOriginal = buscarPedidoPorId(id)
+        const dadosCompletos = {
+          ...dadosPedido,
+          id,
+          status: pedidoOriginal?.status || 'pendente',
+          criadoEm: pedidoOriginal?.criadoEm || new Date(),
+          dataFinalizacao: pedidoOriginal?.dataFinalizacao,
+          dataCancelamento: pedidoOriginal?.dataCancelamento
+        }
+        await editarPedido(dadosCompletos)
         Alert.alert('Sucesso', 'Pedido atualizado com sucesso!')
       } else {
         await adicionarPedido(dadosPedido)
@@ -287,7 +297,7 @@ const FormularioPedido = () => {
 
           <View style={styles.secao}>
             <View style={styles.headerSecao}>
-              <Text style={styles.tituloSecao}>Seleção de Cliente</Text>
+              <Text style={styles.tituloSecao}>Cliente</Text>
               {!modoLeitura && (
                 <TouchableOpacity
                   style={styles.botaoSelecionarCliente}
@@ -395,7 +405,7 @@ const FormularioPedido = () => {
 
           <View style={styles.secao}>
             <View style={styles.headerSecao}>
-              <Text style={styles.tituloSecao}>Itens do Pedido</Text>
+              <Text style={styles.tituloSecao}>Itens do pedido</Text>
               {!modoLeitura && (
                 <TouchableOpacity
                   style={[
@@ -468,7 +478,7 @@ const FormularioPedido = () => {
                 ))}
 
                 <View style={styles.totalPedido}>
-                  <Text style={styles.labelTotal}>Total do Pedido:</Text>
+                  <Text style={styles.labelTotal}>Total do pedido:</Text>
                   <Text style={styles.valorTotal}>R$ {calcularTotal().toFixed(2)}</Text>
                 </View>
               </>
@@ -476,7 +486,7 @@ const FormularioPedido = () => {
           </View>
 
           <View style={styles.secao}>
-            <Text style={styles.tituloSecao}>Detalhes do Pedido</Text>
+            <Text style={styles.tituloSecao}>Detalhes do pedido</Text>
 
             <Text style={styles.label}>Tipo</Text>
             <TouchableOpacity
@@ -687,23 +697,60 @@ const FormularioPedido = () => {
           onRequestClose={() => setModalFormaPagamentoVisivel(false)}
         >
           <View style={styles.modalOverlay}>
-            <View style={styles.modalContainer}>
-              <Text style={styles.modalTitulo}>Forma de Pagamento</Text>
-              {formasPagamento.map((forma, index) => (
-                <TouchableOpacity
-                  key={index}
-                  style={styles.modalItem}
-                  onPress={() => {
-                    setFormaPagamento(forma)
-                    setModalFormaPagamentoVisivel(false)
-                  }}
-                >
-                  <Text style={styles.modalItemText}>{forma}</Text>
-                  {formaPagamento === forma && (
-                    <Feather name="check" size={20} color={cores.primary} />
-                  )}
+            <View style={styles.modalContainerCompacto}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitulo}>Forma de pagamento</Text>
+                <TouchableOpacity onPress={() => setModalFormaPagamentoVisivel(false)}>
+                  <Feather name="x" size={24} color={cores.gray600} />
                 </TouchableOpacity>
-              ))}
+              </View>
+              
+              <View style={styles.modalContentCompacto}>
+                {formasPagamento.map((forma, index) => {
+                  const getIconeFormaPagamento = (forma) => {
+                    switch (forma.toLowerCase()) {
+                      case 'dinheiro': return 'dollar-sign'
+                      case 'cartão de débito': return 'credit-card'
+                      case 'cartão de crédito': return 'credit-card'
+                      case 'pix': return 'smartphone'
+                      case 'fiado': return 'clock'
+                      default: return 'dollar-sign'
+                    }
+                  }
+                  
+                  const isSelected = formaPagamento === forma
+                  
+                  return (
+                    <TouchableOpacity
+                      key={index}
+                      style={[
+                        styles.modalItemModerno,
+                        isSelected && styles.modalItemSelecionado
+                      ]}
+                      onPress={() => {
+                        setFormaPagamento(forma)
+                        setModalFormaPagamentoVisivel(false)
+                      }}
+                      activeOpacity={0.7}
+                    >
+                      <Feather 
+                        name={getIconeFormaPagamento(forma)} 
+                        size={20} 
+                        color={isSelected ? cores.white : cores.primary} 
+                      />
+                      <Text style={[
+                        styles.modalItemTextModerno,
+                        isSelected && styles.modalItemTextSelecionado
+                      ]}>
+                        {forma}
+                      </Text>
+                      {isSelected && (
+                        <Feather name="check" size={18} color={cores.white} />
+                      )}
+                    </TouchableOpacity>
+                  )
+                })}
+              </View>
             </View>
           </View>
         </Modal>
@@ -715,23 +762,65 @@ const FormularioPedido = () => {
           onRequestClose={() => setModalTipoVendaVisivel(false)}
         >
           <View style={styles.modalOverlay}>
-            <View style={styles.modalContainer}>
-              <Text style={styles.modalTitulo}>Tipo</Text>
-              {tiposVenda.map((tipo) => (
-                <TouchableOpacity
-                  key={tipo.value}
-                  style={styles.modalItem}
-                  onPress={() => {
-                    setTipoVenda(tipo.value)
-                    setModalTipoVendaVisivel(false)
-                  }}
-                >
-                  <Text style={styles.modalItemText}>{tipo.label}</Text>
-                  {tipoVenda === tipo.value && (
-                    <Feather name="check" size={20} color={cores.primary} />
-                  )}
+            <View style={styles.modalContainerCompacto}>
+              <View style={styles.modalHeader}>
+                <Text style={styles.modalTitulo}>Tipo da Venda</Text>
+                <TouchableOpacity onPress={() => setModalTipoVendaVisivel(false)}>
+                  <Feather name="x" size={24} color={cores.gray600} />
                 </TouchableOpacity>
-              ))}
+              </View>
+              
+              <View style={styles.modalContentCompacto}>
+                {tiposVenda.map((tipo) => {
+                  const getIconeTipoVenda = (value) => {
+                    switch (value) {
+                      case 'venda': return 'shopping-bag'
+                      case 'doacao': return 'heart'
+                      default: return 'shopping-bag'
+                    }
+                  }
+                  
+                  const getCorTipo = (value) => {
+                    switch (value) {
+                      case 'venda': return cores.primary
+                      case 'doacao': return cores.secondary
+                      default: return cores.primary
+                    }
+                  }
+                  
+                  const isSelected = tipoVenda === tipo.value
+                  
+                  return (
+                    <TouchableOpacity
+                      key={tipo.value}
+                      style={[
+                        styles.modalItemModerno,
+                        isSelected && styles.modalItemSelecionado
+                      ]}
+                      onPress={() => {
+                        setTipoVenda(tipo.value)
+                        setModalTipoVendaVisivel(false)
+                      }}
+                      activeOpacity={0.7}
+                    >
+                      <Feather 
+                        name={getIconeTipoVenda(tipo.value)} 
+                        size={20} 
+                        color={isSelected ? cores.white : getCorTipo(tipo.value)} 
+                      />
+                      <Text style={[
+                        styles.modalItemTextModerno,
+                        isSelected && styles.modalItemTextSelecionado
+                      ]}>
+                        {tipo.label}
+                      </Text>
+                      {isSelected && (
+                        <Feather name="check" size={18} color={cores.white} />
+                      )}
+                    </TouchableOpacity>
+                  )
+                })}
+              </View>
             </View>
           </View>
         </Modal>
@@ -1036,6 +1125,55 @@ const styles = StyleSheet.create({
   modalItemText: {
     fontSize: 16,
     color: cores.text,
+  },
+  modalContainerCompacto: {
+    backgroundColor: cores.white,
+    borderRadius: 16,
+    maxHeight: '50%',
+    elevation: 5,
+    shadowColor: cores.shadowColor,
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+  },
+  modalContentCompacto: {
+    padding: 20,
+    paddingTop: 0,
+  },
+  modalItemModerno: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    marginBottom: 12,
+    backgroundColor: cores.gray100,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: 'transparent',
+    elevation: 1,
+    shadowColor: cores.shadowColor,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+  modalItemSelecionado: {
+    backgroundColor: cores.primary,
+    borderColor: cores.primaryDark,
+    elevation: 3,
+    shadowColor: cores.primary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+  },
+  modalItemTextModerno: {
+    fontSize: 16,
+    fontWeight: '500',
+    color: cores.text,
+    marginLeft: 12,
+    flex: 1,
+  },
+  modalItemTextSelecionado: {
+    color: cores.white,
+    fontWeight: 'bold',
   },
   botaoAdicionarProduto: {
     backgroundColor: cores.primary,
