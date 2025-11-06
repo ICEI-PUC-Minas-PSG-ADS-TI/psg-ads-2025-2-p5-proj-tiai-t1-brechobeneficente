@@ -1,25 +1,29 @@
-# TÍTULO DO PROJETO
+# BRECHÓ BENEFICENTE
 
-`CURSO`
+`Análise e Desenvolvimento de Sistemas`
 
-`DISCIPLINA`
+`Trabalho Interdisciplinar: Aplicações Inovadoras`
 
-`SEMESTRE`
+`5º SEMESTRE`
 
-Descrever resumidamente, em um ou dois parágrafos, o projeto que está sendo desenvolvido.
+O projeto consiste em um aplicativo móvel para gestão de doações e distribuição de roupas em brechós beneficentes, permitindo que voluntários e gestores cadastrem peças, organizem o estoque e registrem a saída das roupas, simplificando a administração e reduzindo erros causados por controles manuais. Além de otimizar a gestão do brechó, o sistema gera relatórios de impacto social, contribuindo para que mais famílias em situação de vulnerabilidade tenham acesso a roupas em bom estado.
 
 ODS Alinhados:
 
+* ODS 1 – Erradicação da Pobreza: contribui para atender famílias em situação de vulnerabilidade, garantindo acesso a roupas em bom estado.
+* ODS 10 – Redução das Desigualdades: promove inclusão social e apoio a grupos em situação de desigualdade social.
+
 ## Integrantes
 
-* Nome completo do aluno 1
-* Nome completo do aluno 2
-* Nome completo do aluno 3
-* Nome completo do aluno 4
+* Amanda Carolina de Jesus Silva
+* César Augusto de Oliveira Barros Júnior
+* Leonardo de Oliveira Mudrik
+* Luiz Filipe Marques Nascimento
+* Marcella Magalhães Montalvão
 
-## Orientador
+## Orientadora
 
-* Nome completo do professor 1
+* Juliana Padilha
 
 ## Instruções de utilização
 
