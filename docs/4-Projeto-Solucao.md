@@ -101,30 +101,6 @@ O diagrama de classes ilustra graficamente como será a estrutura do software, e
 
 **BANCO DE DADOS**
 
-## 4.4. Modelo de Dados
-
-A solução proposta exige um banco de dados capaz de armazenar e relacionar as informações necessárias para os processos mapeados, garantindo integridade e controle de acesso por perfil de usuário.
-
-O desenvolvimento deve seguir **três etapas**:
-
----
-
-### 4.4.1 Diagrama Entidade-Relacionamento (DER)
-
-O **Diagrama Entidade-Relacionamento (DER)** descreve as entidades, atributos e relacionamentos do sistema.  
-Utilize a ferramenta **[BR Modelo Web](https://www.brmodeloweb.com/lang/pt-br/index.html)** para criar o diagrama.
-
-**Orientações:**
-- Todas as entidades devem possuir chave primária.
-- Relacionamentos devem estar corretamente cardinalizados.
-- O diagrama deve contemplar todas as funcionalidades levantadas nos processos de negócio.
-
-**Exemplo de imagem:**
-
-![Diagrama ER - Exemplo](./images/DER.png)
-
-📌 **Entrega:** gere o diagrama no BR Modelo, exporte em **.png** e inclua-o nesta seção.
-
 
 ---
 
