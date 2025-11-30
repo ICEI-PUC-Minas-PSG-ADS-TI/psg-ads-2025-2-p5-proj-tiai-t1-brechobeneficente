@@ -1,5 +1,28 @@
 {
+  "name": "brecho-fornecedores-template",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web"
+  },
   "dependencies": {
-    "firebase": "^12.4.0"
-  }
+    "@expo/vector-icons": "^14.0.2",
+    "expo": "^54.0.25",
+    "expo-router": "3.5.24",
+    "expo-status-bar": "~2.0.0",
+    "firebase": "^11.0.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-native": "0.76.0",
+    "react-native-safe-area-context": "~5.6.0",
+    "react-native-screens": "~4.16.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.0",
+    "babel-preset-expo": "^12.0.2"
+  },
+  "private": true
 }

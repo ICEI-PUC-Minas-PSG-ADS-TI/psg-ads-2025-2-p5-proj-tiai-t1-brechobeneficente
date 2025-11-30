@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "BrechoFornecedores",
+    "slug": "brecho-fornecedores-template",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "brechofornecedores",
+    "userInterfaceStyle": "light",
+    "entryPoint": "./index.js",
+
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+
+    "plugins": [
+      "expo-router"
+    ],
+
+    "extra": {
+      "router": {
+        "origin": "expo"
+      }
+    },
+
+    "sdkVersion": "54.0.0"
+  }
+}
