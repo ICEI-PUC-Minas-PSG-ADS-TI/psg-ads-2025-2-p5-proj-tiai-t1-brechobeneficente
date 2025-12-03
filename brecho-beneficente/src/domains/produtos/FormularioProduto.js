@@ -138,7 +138,6 @@ export default function FormularioProduto() {
         [{ text: 'OK', onPress: () => router.replace('/produtos') }]
       )
     } catch (error) {
-      // Erro já tratado no Context
       console.error('Erro ao salvar produto:', error)
     }
   }

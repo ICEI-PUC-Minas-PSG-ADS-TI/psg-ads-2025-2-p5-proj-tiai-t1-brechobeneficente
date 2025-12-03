@@ -7,10 +7,10 @@ const ClientesContextDefaultValues = {
   clientes: [],
   carregando: false,
   erro: null,
-  carregarClientes: async () => {},
-  adicionarCliente: async () => {},
-  editarCliente: async () => {},
-  excluirCliente: async () => {},
+  carregarClientes: async () => { },
+  adicionarCliente: async () => { },
+  editarCliente: async () => { },
+  excluirCliente: async () => { },
 }
 
 export const ClientesContext = createContext(ClientesContextDefaultValues)
@@ -20,7 +20,6 @@ export const ClientesProvider = ({ children }) => {
   const [carregando, setCarregando] = useState(false)
   const [erro, setErro] = useState(null)
 
-  // Carrega automaticamente os clientes ao iniciar o app
   useEffect(() => {
     carregarClientes()
   }, [])
@@ -36,7 +35,6 @@ export const ClientesProvider = ({ children }) => {
         ...docSnap.data(),
       }))
 
-      // Ordena alfabeticamente pelo nome
       lista.sort((a, b) => (a.nome || '').localeCompare(b.nome || ''))
       setClientes(lista)
     } catch (error) {
