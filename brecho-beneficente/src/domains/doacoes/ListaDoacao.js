@@ -106,7 +106,6 @@ const ListaDoacao = () => {
   return (
     <BaseLayout titulo="Doações">
       <View style={styles.container}>
-        {/* Estatísticas */}
         <View style={styles.estatisticas}>
           <View style={styles.cardEstatistica}>
             <Feather name="gift" size={20} color={cores.primary} />
@@ -115,7 +114,6 @@ const ListaDoacao = () => {
           </View>
         </View>
 
-        {/* Ações: botão + busca */}
         <View style={styles.areaAcoes}>
           <TouchableOpacity
             style={styles.botaoAdicionar}
@@ -138,7 +136,6 @@ const ListaDoacao = () => {
           </View>
         </View>
 
-        {/* Cabeçalho da tabela */}
         <View style={styles.headerRow}>
           <Text style={styles.cellNome}>Doador</Text>
           <Text style={styles.cellItem}>Item</Text>
@@ -147,7 +144,6 @@ const ListaDoacao = () => {
           <Text style={styles.cellAcoes}>Ações</Text>
         </View>
 
-        {/* Lista de doações */}
         {carregando && !refrescando ? (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color={cores.primary} />
@@ -189,7 +185,6 @@ const ListaDoacao = () => {
           />
         )}
 
-        {/* Paginação */}
         {totalPaginas > 1 && (
           <View style={styles.paginacao}>
             <TouchableOpacity onPress={paginaAnterior} disabled={paginaAtual == 1}>

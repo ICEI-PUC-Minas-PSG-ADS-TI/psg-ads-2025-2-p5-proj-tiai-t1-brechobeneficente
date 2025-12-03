@@ -12,15 +12,17 @@ import {
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import { Alert } from 'react-native'
 import { db } from '../services/firebase'
+import { useProdutos } from './ProdutosContext'
+import { useEstoque } from './EstoqueContext'
 
 const DoacoesContextDefaultValues = {
   doacoes: [],
   carregando: false,
   erro: null,
-  carregarDoacoes: async () => {},
-  adicionarDoacao: async () => {},
-  editarDoacao: async () => {},
-  excluirDoacao: async () => {},
+  carregarDoacoes: async () => { },
+  adicionarDoacao: async () => { },
+  editarDoacao: async () => { },
+  excluirDoacao: async () => { },
   buscarDoacaoPorId: () => null,
   buscarDoacaoPorNome: () => null,
   calcularValorTotalDoacoes: () => 0
@@ -32,6 +34,9 @@ export const DoacoesProvider = ({ children }) => {
   const [doacoes, setDoacoes] = useState([])
   const [carregando, setCarregando] = useState(false)
   const [erro, setErro] = useState(null)
+
+  const { adicionarEntradaAoProduto } = useProdutos()
+  const { registrarEntrada } = useEstoque()
 
   useEffect(() => {
     carregarDoacoes()
@@ -66,6 +71,24 @@ export const DoacoesProvider = ({ children }) => {
     }
   }, [])
 
+  const processarEntradaEstoque = useCallback(async (doacao) => {
+    try {
+      if (doacao.produtoId && doacao.quantidade > 0) {
+        await adicionarEntradaAoProduto(doacao.produtoId, doacao.quantidade)
+
+        await registrarEntrada({
+          produtoId: doacao.produtoId,
+          quantidade: doacao.quantidade,
+          origem: 'Doação',
+          observacao: `Doação de ${doacao.nomeDoador}`,
+          silencioso: true
+        })
+      }
+    } catch (error) {
+      console.error('Erro ao processar entrada de estoque:', error)
+    }
+  }, [adicionarEntradaAoProduto, registrarEntrada])
+
   const adicionarDoacao = async (doacao) => {
     try {
       setCarregando(true)
@@ -97,6 +120,8 @@ export const DoacoesProvider = ({ children }) => {
       }
 
       setDoacoes(prev => [novaDoacao, ...prev])
+
+      await processarEntradaEstoque(novaDoacao)
 
       return { success: true, doacao: novaDoacao }
     } catch (error) {

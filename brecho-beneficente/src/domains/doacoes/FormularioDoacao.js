@@ -191,7 +191,6 @@ export default function FormularioDoacao() {
               </Text>
             </View>
 
-            {/* IMAGEM */}
             <View style={styles.campoContainer}>
               <Text style={styles.label}>Imagem da Doação *</Text>
               {imagem ? (
@@ -216,7 +215,6 @@ export default function FormularioDoacao() {
               )}
             </View>
 
-            {/* CAMPOS */}
             {[
               {
                 label: 'Nome do Doador *',
@@ -262,7 +260,6 @@ export default function FormularioDoacao() {
               </View>
             ))}
 
-            {/* QUANTIDADE */}
             <View style={styles.campoContainer}>
               <Text style={styles.label}>Quantidade *</Text>
               <View style={[styles.inputContainer, erros.quantidade && styles.inputContainerErro]}>
@@ -288,7 +285,6 @@ export default function FormularioDoacao() {
               )}
             </View>
 
-            {/* VALOR */}
             <View style={styles.campoContainer}>
               <Text style={styles.label}>Valor Estimado *</Text>
               <View style={[styles.inputContainer, erros.valor && styles.inputContainerErro]}>
@@ -314,7 +310,6 @@ export default function FormularioDoacao() {
               )}
             </View>
 
-            {/* BOTÕES */}
             {!modoLeitura && (
               <View style={styles.botoesContainer}>
                 <TouchableOpacity

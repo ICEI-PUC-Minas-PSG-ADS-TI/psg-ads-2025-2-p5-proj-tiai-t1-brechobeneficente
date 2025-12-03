@@ -13,6 +13,7 @@ import { createContext, useContext, useEffect, useState, useCallback } from 'rea
 import { Alert } from 'react-native'
 import { db } from '../services/firebase'
 import { useProdutos } from './ProdutosContext'
+import { useEstoque } from './EstoqueContext'
 
 const PedidosContextDefaultValues = {
   pedidos: [],
@@ -39,7 +40,8 @@ export const PedidosProvider = ({ children }) => {
   const [erro,
     setErro] = useState(null)
 
-  const { adicionarSaidaAoProduto } = useProdutos()
+  const { adicionarSaidaAoProduto, adicionarEntradaAoProduto } = useProdutos()
+  const { registrarSaida, registrarEntrada } = useEstoque()
 
   useEffect(() => {
     carregarPedidos()
@@ -48,16 +50,69 @@ export const PedidosProvider = ({ children }) => {
   const realizarBaixaEstoque = useCallback(async (pedido) => {
     try {
       if (pedido.status == 'finalizado' && pedido.tipoVenda == 'venda') {
+        console.log(`🛒 Processando baixa de estoque - Pedido #${pedido.id?.slice(-8) || 'N/A'}`)
+
         for (const item of pedido.itens) {
           if (item.produtoId && item.quantidade > 0) {
             await adicionarSaidaAoProduto(item.produtoId, item.quantidade)
+
+            await registrarSaida({
+              produtoId: item.produtoId,
+              quantidade: item.quantidade,
+              origem: 'Venda',
+              observacao: `Venda - Pedido #${pedido.id?.slice(-8) || 'N/A'}`,
+              silencioso: true
+            })
+
+            console.log(`✅ Estoque atualizado: -${item.quantidade} un. (Produto: ${item.produtoId})`)
           }
         }
       }
     } catch (error) {
-      console.error('Erro ao realizar baixa no estoque:', error)
+      console.error('❌ Erro ao realizar baixa no estoque:', error)
+      Alert.alert('Erro', 'Erro ao atualizar estoque: ' + error.message)
     }
-  }, [adicionarSaidaAoProduto])
+  }, [adicionarSaidaAoProduto, registrarSaida])
+
+  const processarMudancaStatus = useCallback(async (pedidoAnterior, pedidoAtualizado) => {
+    try {
+      const statusAnterior = pedidoAnterior.status
+      const statusAtual = pedidoAtualizado.status
+
+      console.log(`📊 Mudança de status detectada: ${statusAnterior} → ${statusAtual}`)
+
+      // Se o pedido ERA finalizado e AGORA não é mais, fazer estorno
+      if (statusAnterior === 'finalizado' && statusAtual !== 'finalizado') {
+        console.log('🔄 Fazendo estorno de estoque...')
+        
+        for (const item of pedidoAtualizado.itens) {
+          if (item.produtoId && item.quantidade > 0) {
+            // Retorna as quantidades ao estoque
+            await adicionarEntradaAoProduto(item.produtoId, item.quantidade)
+            
+            // Registra no histórico como estorno
+            await registrarEntrada({
+              produtoId: item.produtoId,
+              quantidade: item.quantidade,
+              origem: 'Estorno',
+              observacao: `Estorno - Pedido #${pedidoAtualizado.id?.slice(-8) || 'N/A'} (${statusAnterior} → ${statusAtual})`,
+              silencioso: true
+            })
+            
+            console.log(`✅ Estorno realizado: +${item.quantidade} un. (Produto: ${item.produtoId})`)
+          }
+        }
+      }
+      
+      // Se o pedido NÃO ERA finalizado e AGORA é finalizado, dar baixa
+      else if (statusAnterior !== 'finalizado' && statusAtual === 'finalizado') {
+        console.log('📦 Realizando baixa de estoque...')
+        await realizarBaixaEstoque(pedidoAtualizado)
+      }
+    } catch (error) {
+      console.error('❌ Erro ao processar mudança de status:', error)
+    }
+  }, [adicionarEntradaAoProduto, registrarEntrada, realizarBaixaEstoque])
 
   const carregarPedidos = useCallback(async () => {
     try {
@@ -171,27 +226,27 @@ export const PedidosProvider = ({ children }) => {
       setCarregando(true)
       setErro(null)
 
-      if (!pedidoEditado
-        ?.id) {
+      if (!pedidoEditado?.id) {
         throw new Error('ID do pedido é obrigatório para edição')
       }
 
-      const total = pedidoEditado
-        .itens
-        .reduce((acc, item) => {
-          return acc + (item.quantidade * item.valorUnitario)
-        }, 0)
-      const {
-        id,
-        criadoEm,
-        atualizadoEm,
-        ...dadosParaAtualizar
-      } = pedidoEditado
+      // Buscar pedido atual para comparar status
+      const pedidoAtual = pedidos.find(p => p.id === pedidoEditado.id)
+      if (!pedidoAtual) {
+        throw new Error('Pedido não encontrado')
+      }
+
+      const total = pedidoEditado.itens.reduce((acc, item) => {
+        return acc + (item.quantidade * item.valorUnitario)
+      }, 0)
+
+      const { id, criadoEm, atualizadoEm, ...dadosParaAtualizar } = pedidoEditado
       const dadosAtualizados = {
         ...dadosParaAtualizar,
         total: total,
         atualizadoEm: serverTimestamp()
       }
+
       const ref = doc(db, 'pedidos', id)
       await updateDoc(ref, dadosAtualizados)
 
@@ -202,9 +257,10 @@ export const PedidosProvider = ({ children }) => {
         criadoEm: pedidoEditado.criadoEm || new Date()
       }
 
-      setPedidos(prev => prev.map(p => (p.id == id
-        ? pedidoAtualizado
-        : p)))
+      setPedidos(prev => prev.map(p => (p.id == id ? pedidoAtualizado : p)))
+
+      // Verificar se houve mudança de status que afeta estoque
+      await processarMudancaStatus(pedidoAtual, pedidoAtualizado)
 
       return { success: true, pedido: pedidoAtualizado }
     } catch (error) {
@@ -231,8 +287,6 @@ export const PedidosProvider = ({ children }) => {
       if (!pedido) {
         throw new Error('Pedido não encontrado')
       }
-      // if (pedido.status == 'finalizado') {   throw new Error('Não é possível
-      // excluir pedidos finalizados') }
       await deleteDoc(doc(db, 'pedidos', id))
       setPedidos(prev => prev.filter(p => p.id !== id))
 
@@ -304,8 +358,6 @@ export const PedidosProvider = ({ children }) => {
       if (!pedido) {
         throw new Error('Pedido não encontrado')
       }
-      // if (pedido.status == 'finalizado') {   throw new Error('Não é possível
-      // cancelar pedidos finalizados') }
       const dadosAtualizados = {
         status: 'cancelado',
         dataCancelamento: serverTimestamp(),

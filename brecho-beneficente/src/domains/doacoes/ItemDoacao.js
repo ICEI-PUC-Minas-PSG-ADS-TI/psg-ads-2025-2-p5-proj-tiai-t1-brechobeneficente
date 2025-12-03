@@ -34,7 +34,6 @@ const ItemDoacao = ({ doacao = {}, onEditar, onExcluir }) => {
   return (
     <View style={styles.container}>
       <View style={styles.conteudoPrincipal}>
-        {/* Imagem da doação */}
         {imagem ? (
           <Image source={{ uri: imagem }} style={styles.imagemDoacao} />
         ) : (
@@ -43,13 +42,11 @@ const ItemDoacao = ({ doacao = {}, onEditar, onExcluir }) => {
           </View>
         )}
 
-        {/* Informações principais */}
         <View style={styles.infoContainer}>
           <Text style={styles.nome}>{nomeDoador}</Text>
           <Text style={styles.item}>Item: {item}</Text>
         </View>
 
-        {/* Quantidade e Valor */}
         <View style={styles.valoresContainer}>
           <View style={styles.quantidadeContainer}>
             <View style={[styles.indicadorQtd, { backgroundColor: getCorQuantidade() }]} />
@@ -59,7 +56,6 @@ const ItemDoacao = ({ doacao = {}, onEditar, onExcluir }) => {
         </View>
       </View>
 
-      {/* Botões de ação */}
       <View style={styles.acoesContainer}>
         <TouchableOpacity
           style={styles.botaoEditar}

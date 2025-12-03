@@ -23,6 +23,7 @@ export const ProdutosProvider = ({ children }) => {
   const [produtos, setProdutos] = useState([])
   const [carregando, setCarregando] = useState(false)
   const [erro, setErro] = useState(null)
+  const [callbackEstoqueInicial, setCallbackEstoqueInicial] = useState(null)
 
   useEffect(() => {
     carregarProdutos()
@@ -81,6 +82,15 @@ export const ProdutosProvider = ({ children }) => {
         const novaLista = [...prev, novoProduto]
         return novaLista.sort((a, b) => (a.nome || '').localeCompare(b.nome || ''))
       })
+
+      // Notificar o EstoqueContext se houver estoque inicial
+      if (callbackEstoqueInicial && novoProduto.quantidade > 0) {
+        try {
+          await callbackEstoqueInicial(novoProduto.id, novoProduto.quantidade, novoProduto.nome)
+        } catch (error) {
+          console.warn('Erro ao registrar estoque inicial:', error)
+        }
+      }
 
       return { success: true, produto: novoProduto }
     } catch (error) {
@@ -229,6 +239,10 @@ export const ProdutosProvider = ({ children }) => {
     return produtos.find(p => p.codigo === codigo) || null
   }, [produtos])
 
+  const buscarProdutoPorId = useCallback((id) => {
+    return produtos.find(p => p.id === id) || null
+  }, [produtos])
+
   const calcularValorTotalEstoque = useCallback(() => {
     return produtos.reduce((total, produto) => {
       const quantidade = Number(produto.quantidade) || 0
@@ -248,10 +262,12 @@ export const ProdutosProvider = ({ children }) => {
     adicionarEntradaAoProduto,
     adicionarSaidaAoProduto,
     buscarProdutoPorCodigo,
+    buscarProdutoPorId,
     calcularValorTotalEstoque,
     totalProdutos: produtos.length,
     produtosComEstoqueBaixo: produtos.filter(p => (p.quantidade || 0) < 5).length,
-    produtosSemEstoque: produtos.filter(p => (p.quantidade || 0) === 0).length
+    produtosSemEstoque: produtos.filter(p => (p.quantidade || 0) === 0).length,
+    setCallbackEstoqueInicial
   }
 
   return (
