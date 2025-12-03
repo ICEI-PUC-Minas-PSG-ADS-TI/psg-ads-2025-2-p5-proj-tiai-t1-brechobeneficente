@@ -1,24 +1,106 @@
 import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import { isThisMonth, parseISO } from 'date-fns';
 import BaseLayout from '../shared/BaseLayout';
 import cores from '../../constants/colors';
+import { usePedidos } from '../../context/PedidosContext';
+import { useDoacoes } from '../../context/DoacoesContext';
+import { useProdutos } from '../../context/ProdutosContext';
 
 const { width } = Dimensions.get('window');
 
 export default function Home() {
-    // Dados mockados para demonstração
-    const dadosMockados = useMemo(() => {
+    const { pedidos } = usePedidos();
+    const { doacoes } = useDoacoes();
+    const { produtos } = useProdutos();
+
+    const dashboardData = useMemo(() => {
+        let totalVendas = 0;
+        let vendasMesAtual = 0;
+        let pedidosFinalizados = 0;
+        let pedidosEmAndamento = 0;
+
+
+        if (pedidos.length > 0) {
+            const pedidosSample = pedidos.slice(0, 2).map(p => ({
+                id: p.id,
+                status: p.status,
+                total: p.total,
+                tipoVenda: p.tipoVenda,
+                criadoEm: p.criadoEm
+            }));
+        }
+
+        pedidos.forEach(pedido => {
+            if (!pedido || !pedido.status) return;
+
+            const valor = Number(pedido.total || 0);
+            const status = pedido.status;
+            const data = pedido.criadoEm;
+            const isVenda = pedido.tipoVenda == 'venda';
+            const isFinalizado = status == 'finalizado';
+            const isPendente = status == 'pendente';
+
+            if (isFinalizado && isVenda) {
+                totalVendas += valor;
+                pedidosFinalizados++;
+
+
+                const dataParaVerificar = pedido.dataFinalizacao || data;
+                if (dataParaVerificar && isThisMonth(dataParaVerificar instanceof Date ? dataParaVerificar : parseISO(dataParaVerificar.toString()))) {
+                    vendasMesAtual += valor;
+                }
+            } else if (isPendente) {
+                pedidosEmAndamento++;
+            }
+        });
+
+        let totalDoacoes = doacoes.length;
+        let valorTotalDoacoes = 0;
+        let doacoesMesAtual = 0;
+
+        doacoes.forEach(doacao => {
+            if (!doacao) return;
+
+            const valor = Number(doacao.valor || 0);
+            valorTotalDoacoes += valor;
+
+            const data = doacao.criadoEm;
+            if (data && isThisMonth(data instanceof Date ? data : parseISO(data))) {
+                doacoesMesAtual++;
+            }
+        });
+
+        let totalProdutos = produtos.length;
+        let produtosDisponveis = 0;
+        let valorTotalEstoque = 0;
+
+        produtos.forEach(produto => {
+            if (!produto) return;
+
+            const estoque = Number(produto.estoque || 0);
+            const preco = Number(produto.preco || 0);
+
+            if (estoque > 0) {
+                produtosDisponveis++;
+                valorTotalEstoque += (estoque * preco);
+            }
+        });
+
         return {
-            vendasMes: 15680.50,
-            doacoesRecebidas: 127,
-            produtosCadastrados: 342,
-            beneficiariosCadastrados: 28,
-            receitaMensal: 8945.75,
-            produtosVendidos: 89,
-            estoqueDisponivel: 253
+            totalVendas,
+            vendasMesAtual,
+            pedidosFinalizados,
+            pedidosEmAndamento,
+            totalDoacoes,
+            valorTotalDoacoes,
+            doacoesMesAtual,
+            totalProdutos,
+            produtosDisponveis,
+            valorTotalEstoque
         };
-    }, []);
+    }, [pedidos, doacoes, produtos]);
 
     const formatarMoeda = (valor) => {
         return valor.toLocaleString('pt-BR', {
@@ -41,9 +123,9 @@ export default function Home() {
                     <View style={[styles.card, styles.cardPrimario]}>
                         <View style={styles.cardHeader}>
                             <Feather name="dollar-sign" size={24} color={cores.white} />
-                            <Text style={styles.cardTitulo}>Receita do mês</Text>
+                            <Text style={styles.cardTitulo}>Vendas do mês</Text>
                         </View>
-                        <Text style={styles.cardValor}>{formatarMoeda(dadosMockados.receitaMensal)}</Text>
+                        <Text style={styles.cardValor}>{formatarMoeda(dashboardData.vendasMesAtual)}</Text>
                     </View>
 
                     <View style={[styles.card, styles.cardSecundario]}>
@@ -51,7 +133,7 @@ export default function Home() {
                             <Feather name="heart" size={24} color={cores.white} />
                             <Text style={styles.cardTitulo}>Doações recebidas</Text>
                         </View>
-                        <Text style={styles.cardValor}>{dadosMockados.doacoesRecebidas}</Text>
+                        <Text style={styles.cardValor}>{dashboardData.doacoesMesAtual}</Text>
                         <Text style={styles.cardDescricao}>Este mês</Text>
                     </View>
                 </View>
@@ -62,45 +144,61 @@ export default function Home() {
                             <Feather name="package" size={24} color={cores.white} />
                             <Text style={styles.cardTitulo}>Produtos</Text>
                         </View>
-                        <Text style={styles.cardValor}>{dadosMockados.estoqueDisponivel}</Text>
+                        <Text style={styles.cardValor}>{dashboardData.produtosDisponveis}</Text>
                         <Text style={styles.cardDescricao}>Disponíveis</Text>
                     </View>
 
                     <View style={[styles.card, styles.cardSucesso]}>
                         <View style={styles.cardHeader}>
-                            <Feather name="shopping-bag" size={24} color={cores.white} />
-                            <Text style={styles.cardTitulo}>Vendas</Text>
+                            <Feather name="check-circle" size={24} color={cores.white} />
+                            <Text style={styles.cardTitulo}>Pedidos</Text>
                         </View>
-                        <Text style={styles.cardValor}>{dadosMockados.produtosVendidos}</Text>
-                        <Text style={styles.cardDescricao}>Este mês</Text>
+                        <Text style={styles.cardValor}>{dashboardData.pedidosFinalizados}</Text>
+                        <Text style={styles.cardDescricao}>Finalizados</Text>
                     </View>
                 </View>
 
                 <View style={styles.cardLargo}>
                     <View style={styles.cardHeader}>
-                        <Feather name="users" size={24} color={cores.primary} />
-                        <Text style={[styles.cardTitulo, { color: cores.text }]}>Beneficiários cadastrados</Text>
+                        <Feather name="trending-up" size={24} color={cores.primary} />
+                        <Text style={[styles.cardTitulo, { color: cores.text }]}>Total de vendas realizadas</Text>
                     </View>
-                    <Text style={[styles.cardValorGrande, { color: cores.primary }]}>{dadosMockados.beneficiariosCadastrados}</Text>
-                    <Text style={styles.cardDescricaoGrande}>Famílias atendidas pelo programa</Text>
+                    <Text style={[styles.cardValorGrande, { color: cores.primary }]}>{formatarMoeda(dashboardData.totalVendas)}</Text>
+                    <Text style={styles.cardDescricaoGrande}>Receita total do brechó</Text>
                 </View>
 
                 <View style={styles.cardResumo}>
                     <Text style={styles.resumoTitulo}>Resumo do período</Text>
                     <View style={styles.resumoItem}>
                         <View style={styles.resumoIcone}>
-                            <Feather name="trending-up" size={16} color={cores.success} />
+                            <Feather name="package" size={16} color={cores.success} />
                         </View>
                         <Text style={styles.resumoTexto}>
-                            Total de produtos cadastrados: <Text style={styles.resumoDestaque}>{dadosMockados.produtosCadastrados}</Text>
+                            Total de produtos cadastrados: <Text style={styles.resumoDestaque}>{dashboardData.totalProdutos}</Text>
                         </Text>
                     </View>
                     <View style={styles.resumoItem}>
                         <View style={styles.resumoIcone}>
-                            <Feather name="award" size={16} color={cores.primary} />
+                            <Feather name="heart" size={16} color={cores.primary} />
                         </View>
                         <Text style={styles.resumoTexto}>
-                            Impacto social: <Text style={styles.resumoDestaque}>R$ {formatarMoeda(dadosMockados.vendasMes).replace('R$ ', '')} arrecadados</Text>
+                            Total de doações recebidas: <Text style={styles.resumoDestaque}>{dashboardData.totalDoacoes} ({formatarMoeda(dashboardData.valorTotalDoacoes)})</Text>
+                        </Text>
+                    </View>
+                    <View style={styles.resumoItem}>
+                        <View style={styles.resumoIcone}>
+                            <Feather name="alert-circle" size={16} color="#f39c12" />
+                        </View>
+                        <Text style={styles.resumoTexto}>
+                            Pedidos em andamento: <Text style={styles.resumoDestaque}>{dashboardData.pedidosEmAndamento}</Text>
+                        </Text>
+                    </View>
+                    <View style={styles.resumoItem}>
+                        <View style={styles.resumoIcone}>
+                            <Feather name="dollar-sign" size={16} color={cores.secondary} />
+                        </View>
+                        <Text style={styles.resumoTexto}>
+                            Valor do estoque: <Text style={styles.resumoDestaque}>{formatarMoeda(dashboardData.valorTotalEstoque)}</Text>
                         </Text>
                     </View>
                 </View>
