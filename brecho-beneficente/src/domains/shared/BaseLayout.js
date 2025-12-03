@@ -33,7 +33,7 @@ const BaseLayout = ({ children, titulo = '', scrollable = false }) => {
         { label: 'Doações', route: 'doacoes', icon: 'heart' },
         { label: 'Estoque', route: 'estoque', icon: 'archive' },
         { label: 'Clientes', route: 'clientes', icon: 'users' },
-        { label: 'Formas de Pagamento', route: 'formas_pagamento', icon: 'credit-card' },
+        // { label: 'Formas de Pagamento', route: 'formas_pagamento', icon: 'credit-card' },
         { label: 'Relatórios', route: 'relatorios', icon: 'bar-chart-2' }
     ]
 
@@ -54,7 +54,7 @@ const BaseLayout = ({ children, titulo = '', scrollable = false }) => {
                             />
                             <View style={styles.menu}>
                                 <View style={styles.menuHeader}>
-                                    <Text style={styles.menuTitle}>Menu Navegação</Text>
+                                    <Text style={styles.menuTitle}>Menu</Text>
                                     <TouchableOpacity onPress={() => setMenuAberto(false)}>
                                         <Feather name="x" size={20} color={cores.gray600} />
                                     </TouchableOpacity>

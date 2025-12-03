@@ -7,6 +7,7 @@ import cores from '../../constants/colors';
 import { usePedidos } from '../../context/PedidosContext';
 import { useDoacoes } from '../../context/DoacoesContext';
 import { useProdutos } from '../../context/ProdutosContext';
+import { useEstoque } from '../../context/EstoqueContext';
 
 const { width } = Dimensions.get('window');
 
@@ -14,6 +15,7 @@ export default function Home() {
     const { pedidos } = usePedidos();
     const { doacoes } = useDoacoes();
     const { produtos } = useProdutos();
+    const { calcularEstoque } = useEstoque();
 
     const dashboardData = useMemo(() => {
         let totalVendas = 0;
@@ -75,16 +77,22 @@ export default function Home() {
         let totalProdutos = produtos.length;
         let produtosDisponveis = 0;
         let valorTotalEstoque = 0;
+        let totalUnidadesEstoque = 0;
 
         produtos.forEach(produto => {
             if (!produto) return;
 
-            const estoque = Number(produto.estoque || 0);
-            const preco = Number(produto.preco || 0);
+            // Calcular estoque dinâmico baseado no histórico
+            const { total: estoqueCalculado } = calcularEstoque(produto.id);
+            const estoqueAtual = estoqueCalculado || Number(produto.quantidade) || 0;
+            const preco = Number(produto.preco || produto.valorVenda || 0);
 
-            if (estoque > 0) {
+            // Somar total de unidades no estoque
+            totalUnidadesEstoque += estoqueAtual;
+
+            if (estoqueAtual > 0) {
                 produtosDisponveis++;
-                valorTotalEstoque += (estoque * preco);
+                valorTotalEstoque += (estoqueAtual * preco);
             }
         });
 
@@ -98,7 +106,8 @@ export default function Home() {
             doacoesMesAtual,
             totalProdutos,
             produtosDisponveis,
-            valorTotalEstoque
+            valorTotalEstoque,
+            totalUnidadesEstoque
         };
     }, [pedidos, doacoes, produtos]);
 
@@ -142,10 +151,10 @@ export default function Home() {
                     <View style={[styles.card, styles.cardInfo]}>
                         <View style={styles.cardHeader}>
                             <Feather name="package" size={24} color={cores.white} />
-                            <Text style={styles.cardTitulo}>Produtos</Text>
+                            <Text style={styles.cardTitulo}>Estoque Total</Text>
                         </View>
-                        <Text style={styles.cardValor}>{dashboardData.produtosDisponveis}</Text>
-                        <Text style={styles.cardDescricao}>Disponíveis</Text>
+                        <Text style={styles.cardValor}>{dashboardData.totalUnidadesEstoque}</Text>
+                        <Text style={styles.cardDescricao}>Unidades</Text>
                     </View>
 
                     <View style={[styles.card, styles.cardSucesso]}>
@@ -174,7 +183,9 @@ export default function Home() {
                             <Feather name="package" size={16} color={cores.success} />
                         </View>
                         <Text style={styles.resumoTexto}>
-                            Total de produtos cadastrados: <Text style={styles.resumoDestaque}>{dashboardData.totalProdutos}</Text>
+                            Produtos cadastrados: <Text style={styles.resumoDestaque}>{dashboardData.totalProdutos}</Text> | 
+                            Com estoque: <Text style={styles.resumoDestaque}>{dashboardData.produtosDisponveis}</Text> | 
+                            Total: <Text style={styles.resumoDestaque}>{dashboardData.totalUnidadesEstoque} un.</Text>
                         </Text>
                     </View>
                     <View style={styles.resumoItem}>
@@ -191,14 +202,6 @@ export default function Home() {
                         </View>
                         <Text style={styles.resumoTexto}>
                             Pedidos em andamento: <Text style={styles.resumoDestaque}>{dashboardData.pedidosEmAndamento}</Text>
-                        </Text>
-                    </View>
-                    <View style={styles.resumoItem}>
-                        <View style={styles.resumoIcone}>
-                            <Feather name="dollar-sign" size={16} color={cores.secondary} />
-                        </View>
-                        <Text style={styles.resumoTexto}>
-                            Valor do estoque: <Text style={styles.resumoDestaque}>{formatarMoeda(dashboardData.valorTotalEstoque)}</Text>
                         </Text>
                     </View>
                 </View>
@@ -253,10 +256,10 @@ const styles = StyleSheet.create({
         backgroundColor: cores.secondary,
     },
     cardInfo: {
-        backgroundColor: '#3498db',
+        backgroundColor: '#D4A574',
     },
     cardSucesso: {
-        backgroundColor: '#2ecc71',
+        backgroundColor: '#8B7355',
     },
     cardHeader: {
         flexDirection: 'row',

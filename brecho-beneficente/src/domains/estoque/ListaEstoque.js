@@ -144,7 +144,7 @@ const ListaEstoque = () => {
 
         <View style={styles.headerRow}>
           <Text style={styles.cellNome}>Produto</Text>
-          <Text style={styles.cellQtd}>Atual</Text>
+          {/* <Text style={styles.cellQtd}>Atual</Text> */}
           <Text style={styles.cellEntrada}>Entradas</Text>
           <Text style={styles.cellSaida}>Saídas</Text>
           <Text style={styles.cellAcoes}>Ações</Text>
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     marginTop: 8
   },
   labelEstatistica: {
-    fontSize: 12,
+    fontSize: 9.5,
     color: cores.gray600,
     marginTop: 4
   },
@@ -331,7 +331,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   cellNome: {
-    flex: 4,
+    flex: 2,
     fontWeight: 'bold',
     color: cores.white,
     fontSize: 14

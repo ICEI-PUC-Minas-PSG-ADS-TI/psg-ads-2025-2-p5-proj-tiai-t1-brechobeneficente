@@ -171,8 +171,8 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   botaoAcao: {
-    width: 32,
-    height: 32,
+    width: 30,
+    height: 30,
     borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
