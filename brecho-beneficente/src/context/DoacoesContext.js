@@ -5,7 +5,9 @@ import {
   doc,
   getDocs,
   updateDoc,
-  serverTimestamp
+  serverTimestamp,
+  query,
+  orderBy
 } from 'firebase/firestore'
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import { Alert } from 'react-native'
@@ -19,6 +21,7 @@ const DoacoesContextDefaultValues = {
   adicionarDoacao: async () => {},
   editarDoacao: async () => {},
   excluirDoacao: async () => {},
+  buscarDoacaoPorId: () => null,
   buscarDoacaoPorNome: () => null,
   calcularValorTotalDoacoes: () => 0
 }
@@ -30,24 +33,28 @@ export const DoacoesProvider = ({ children }) => {
   const [carregando, setCarregando] = useState(false)
   const [erro, setErro] = useState(null)
 
-  // 🔹 Carregar doações ao iniciar
   useEffect(() => {
     carregarDoacoes()
   }, [])
 
-  // 🔹 Função para buscar todas as doações do Firestore
   const carregarDoacoes = useCallback(async () => {
     try {
       setCarregando(true)
       setErro(null)
 
-      const snapshot = await getDocs(collection(db, 'doacoes'))
-      const lista = snapshot.docs.map(docSnap => ({
-        id: docSnap.id,
-        ...docSnap.data()
-      }))
+      const q = query(collection(db, 'doacoes'), orderBy('criadoEm', 'desc'))
+      const snapshot = await getDocs(q)
 
-      lista.sort((a, b) => (a.nomeDoador || '').localeCompare(b.nomeDoador || ''))
+      const lista = snapshot.docs.map(docSnap => {
+        const data = docSnap.data()
+        return {
+          id: docSnap.id,
+          ...data,
+          criadoEm: data.criadoEm?.toDate?.() || (data.criadoEm ? new Date(data.criadoEm) : new Date()),
+          atualizadoEm: data.atualizadoEm?.toDate?.() || (data.atualizadoEm ? new Date(data.atualizadoEm) : new Date())
+        }
+      })
+
       setDoacoes(lista)
     } catch (error) {
       console.error('Erro ao carregar doações:', error)
@@ -59,7 +66,6 @@ export const DoacoesProvider = ({ children }) => {
     }
   }, [])
 
-  // 🔹 Adicionar nova doação
   const adicionarDoacao = async (doacao) => {
     try {
       setCarregando(true)
@@ -83,12 +89,14 @@ export const DoacoesProvider = ({ children }) => {
       }
 
       const docRef = await addDoc(collection(db, 'doacoes'), dadosDoacao)
-      const novaDoacao = { ...dadosDoacao, id: docRef.id }
+      const novaDoacao = {
+        ...dadosDoacao,
+        id: docRef.id,
+        criadoEm: new Date(),
+        atualizadoEm: new Date()
+      }
 
-      setDoacoes(prev => {
-        const novaLista = [...prev, novaDoacao]
-        return novaLista.sort((a, b) => (a.nomeDoador || '').localeCompare(b.nomeDoador || ''))
-      })
+      setDoacoes(prev => [novaDoacao, ...prev])
 
       return { success: true, doacao: novaDoacao }
     } catch (error) {
@@ -102,7 +110,6 @@ export const DoacoesProvider = ({ children }) => {
     }
   }
 
-  // 🔹 Editar uma doação existente
   const editarDoacao = async (doacaoEditada) => {
     try {
       setCarregando(true)
@@ -112,7 +119,7 @@ export const DoacoesProvider = ({ children }) => {
         throw new Error('ID da doação é obrigatório para edição.')
       }
 
-      const { id, ...dadosParaAtualizar } = doacaoEditada
+      const { id, criadoEm, atualizadoEm, ...dadosParaAtualizar } = doacaoEditada
       const dadosAtualizados = {
         ...dadosParaAtualizar,
         atualizadoEm: serverTimestamp()
@@ -121,11 +128,13 @@ export const DoacoesProvider = ({ children }) => {
       const ref = doc(db, 'doacoes', id)
       await updateDoc(ref, dadosAtualizados)
 
-      const doacaoAtualizada = { ...doacaoEditada, atualizadoEm: new Date() }
-      setDoacoes(prev => {
-        const novaLista = prev.map(d => (d.id === id ? doacaoAtualizada : d))
-        return novaLista.sort((a, b) => (a.nomeDoador || '').localeCompare(b.nomeDoador || ''))
-      })
+      const doacaoAtualizada = {
+        ...doacaoEditada,
+        atualizadoEm: new Date(),
+        criadoEm: doacaoEditada.criadoEm || new Date()
+      }
+
+      setDoacoes(prev => prev.map(d => (d.id === id ? doacaoAtualizada : d)))
 
       return { success: true, doacao: doacaoAtualizada }
     } catch (error) {
@@ -139,7 +148,6 @@ export const DoacoesProvider = ({ children }) => {
     }
   }
 
-  // 🔹 Excluir doação
   const excluirDoacao = async (id) => {
     try {
       setCarregando(true)
@@ -169,13 +177,15 @@ export const DoacoesProvider = ({ children }) => {
     }
   }
 
-  // 🔹 Buscar doação pelo nome do doador
+  const buscarDoacaoPorId = useCallback((id) => {
+    return doacoes.find(d => d.id === id) || null
+  }, [doacoes])
+
   const buscarDoacaoPorNome = useCallback(
     (nome) => doacoes.find(d => d.nomeDoador?.toLowerCase() === nome?.toLowerCase()) || null,
     [doacoes]
   )
 
-  // 🔹 Calcular valor total de todas as doações
   const calcularValorTotalDoacoes = useCallback(() => {
     return doacoes.reduce((total, d) => {
       const valor = Number(d.valor) || 0
@@ -191,6 +201,7 @@ export const DoacoesProvider = ({ children }) => {
     adicionarDoacao,
     editarDoacao,
     excluirDoacao,
+    buscarDoacaoPorId,
     buscarDoacaoPorNome,
     calcularValorTotalDoacoes,
     totalDoacoes: doacoes.length

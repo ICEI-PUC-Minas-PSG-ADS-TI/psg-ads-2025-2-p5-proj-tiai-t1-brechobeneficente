@@ -23,19 +23,19 @@ import BaseLayout from '../shared/BaseLayout'
 
 export default function FormularioDoacao() {
   const router = useRouter()
-  const { doacao } = useLocalSearchParams()
-  const { adicionarDoacao, atualizarDoacao, carregando } = useContext(DoacoesContext)
+  const { id, readonly } = useLocalSearchParams()
+  const { adicionarDoacao, editarDoacao, buscarDoacaoPorId, carregando } = useContext(DoacoesContext)
 
-  const [id, setId] = useState(null)
   const [nomeDoador, setNomeDoador] = useState('')
   const [item, setItem] = useState('')
   const [quantidade, setQuantidade] = useState('1')
   const [valor, setValor] = useState('R$ 0,00')
   const [imagem, setImagem] = useState(null)
-  const [editando, setEditando] = useState(false)
+  const [carregandoLocal, setCarregandoLocal] = useState(false)
+  const [editando, setEditando] = useState(!!id)
+  const [modoLeitura, setModoLeitura] = useState(readonly === 'true')
   const [erros, setErros] = useState({})
 
-  // --- FORMATAÇÃO DE VALOR ---
   const formatarParaReal = (valor) => {
     const somenteNumeros = valor.toString().replace(/[^\d]/g, '')
     const valorNumerico = parseFloat(somenteNumeros) / 100
@@ -45,25 +45,19 @@ export default function FormularioDoacao() {
     })
   }
 
-  // --- CARREGAR DADOS PARA EDIÇÃO ---
   useEffect(() => {
-    try {
-      if (doacao && typeof doacao === 'string' && doacao.includes('{')) {
-        const obj = JSON.parse(doacao)
-        setEditando(true)
-        setId(obj.id)
-        setNomeDoador(obj.nomeDoador || '')
-        setItem(obj.item || '')
-        setQuantidade(obj.quantidade?.toString() || '')
-        setValor(obj.valor ? formatarParaReal(obj.valor) : 'R$ 0,00')
-        setImagem(obj.imagem || null)
+    if (id) {
+      const doacaoExistente = buscarDoacaoPorId(id)
+      if (doacaoExistente) {
+        setNomeDoador(doacaoExistente.nomeDoador || '')
+        setItem(doacaoExistente.item || '')
+        setQuantidade(doacaoExistente.quantidade?.toString() || '1')
+        setValor(doacaoExistente.valor ? formatarParaReal(doacaoExistente.valor * 100) : 'R$ 0,00')
+        setImagem(doacaoExistente.imagem || null)
       }
-    } catch (e) {
-      console.error('Erro ao carregar doação para edição:', e)
     }
-  }, [doacao])
+  }, [id, buscarDoacaoPorId])
 
-  // --- VALIDAÇÃO ---
   const validarCampos = () => {
     const novosErros = {}
 
@@ -98,7 +92,6 @@ export default function FormularioDoacao() {
     }
   }
 
-  // --- ESCOLHER IMAGEM ---
   const escolherImagem = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
     if (status !== 'granted') {
@@ -124,7 +117,6 @@ export default function FormularioDoacao() {
     }
   }
 
-  // --- SALVAR OU ATUALIZAR ---
   const salvarDoacao = async () => {
     if (!validarCampos()) {
       Alert.alert('Atenção', 'Por favor, corrija os erros antes de continuar.')
@@ -133,8 +125,7 @@ export default function FormularioDoacao() {
 
     const valorNumerico = Number((valor || '').replace(/\D/g, '')) / 100
 
-    const novaDoacao = {
-      id,
+    const dadosDoacao = {
       nomeDoador: nomeDoador.trim(),
       item: item.trim(),
       quantidade: Number(quantidade),
@@ -143,25 +134,42 @@ export default function FormularioDoacao() {
     }
 
     try {
+      setCarregandoLocal(true)
+      
       if (editando) {
-        await atualizarDoacao(id, novaDoacao)
+        const doacaoOriginal = buscarDoacaoPorId(id)
+        const dadosCompletos = {
+          ...dadosDoacao,
+          id,
+          criadoEm: doacaoOriginal?.criadoEm || new Date(),
+          ativo: doacaoOriginal?.ativo !== undefined ? doacaoOriginal.ativo : true
+        }
+        await editarDoacao(dadosCompletos)
         Alert.alert('Sucesso!', 'Doação atualizada com sucesso!', [
-          { text: 'OK', onPress: () => router.replace('/doacoes') }
+          { text: 'OK', onPress: () => router.back() }
         ])
       } else {
-        await adicionarDoacao(novaDoacao)
+        await adicionarDoacao(dadosDoacao)
         Alert.alert('Sucesso!', 'Doação cadastrada com sucesso!', [
-          { text: 'OK', onPress: () => router.replace('/doacoes') }
+          { text: 'OK', onPress: () => router.back() }
         ])
       }
     } catch (error) {
       console.error('Erro ao salvar doação:', error)
       Alert.alert('Erro', 'Não foi possível salvar a doação.')
+    } finally {
+      setCarregandoLocal(false)
     }
   }
 
+  const titulo = modoLeitura
+    ? 'Visualizar Doação'
+    : editando
+      ? 'Editar Doação'
+      : 'Nova Doação'
+
   return (
-    <BaseLayout titulo={editando ? 'Editar Doação' : 'Cadastrar Doação'}>
+    <BaseLayout titulo={titulo}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{ flex: 1 }}
@@ -172,12 +180,14 @@ export default function FormularioDoacao() {
             <View style={styles.header}>
               <Feather name="heart" size={48} color={cores.primary} />
               <Text style={styles.titulo}>
-                {editando ? 'Editar Doação' : 'Nova Doação'}
+                {titulo}
               </Text>
               <Text style={styles.subtitulo}>
-                {editando
-                  ? 'Atualize as informações da doação'
-                  : 'Preencha os dados da nova doação'}
+                {modoLeitura
+                  ? 'Visualize os detalhes da doação'
+                  : editando
+                    ? 'Atualize as informações da doação'
+                    : 'Preencha os dados da nova doação'}
               </Text>
             </View>
 
@@ -192,10 +202,12 @@ export default function FormularioDoacao() {
                   <Text style={styles.textoPlaceholder}>Nenhuma imagem selecionada</Text>
                 </View>
               )}
-              <TouchableOpacity style={styles.botaoImagem} onPress={escolherImagem}>
-                <Feather name="upload" size={20} color={cores.white} />
-                <Text style={styles.textoBotaoImagem}>Selecionar Imagem</Text>
-              </TouchableOpacity>
+              {!modoLeitura && (
+                <TouchableOpacity style={styles.botaoImagem} onPress={escolherImagem}>
+                  <Feather name="upload" size={20} color={cores.white} />
+                  <Text style={styles.textoBotaoImagem}>Selecionar Imagem</Text>
+                </TouchableOpacity>
+              )}
               {erros.imagem && (
                 <View style={styles.erroContainer}>
                   <Feather name="alert-circle" size={14} color={cores.error} />
@@ -238,6 +250,7 @@ export default function FormularioDoacao() {
                       limparErro(f.campo)
                     }}
                     placeholderTextColor={cores.gray500}
+                    editable={!modoLeitura}
                   />
                 </View>
                 {f.erro && (
@@ -264,6 +277,7 @@ export default function FormularioDoacao() {
                     limparErro('quantidade')
                   }}
                   placeholderTextColor={cores.gray500}
+                  editable={!modoLeitura}
                 />
               </View>
               {erros.quantidade && (
@@ -289,6 +303,7 @@ export default function FormularioDoacao() {
                   }}
                   keyboardType="numeric"
                   placeholderTextColor={cores.gray500}
+                  editable={!modoLeitura}
                 />
               </View>
               {erros.valor && (
@@ -300,34 +315,36 @@ export default function FormularioDoacao() {
             </View>
 
             {/* BOTÕES */}
-            <View style={styles.botoesContainer}>
-              <TouchableOpacity
-                style={styles.botaoSalvar}
-                onPress={salvarDoacao}
-                disabled={carregando}
-                activeOpacity={0.8}
-              >
-                {carregando ? (
-                  <ActivityIndicator color={cores.white} size="small" />
-                ) : (
-                  <>
-                    <Feather name="check" size={20} color={cores.white} />
-                    <Text style={styles.textoBotaoSalvar}>
-                      {editando ? 'Atualizar' : 'Cadastrar'}
-                    </Text>
-                  </>
-                )}
-              </TouchableOpacity>
+            {!modoLeitura && (
+              <View style={styles.botoesContainer}>
+                <TouchableOpacity
+                  style={styles.botaoSalvar}
+                  onPress={salvarDoacao}
+                  disabled={carregando}
+                  activeOpacity={0.8}
+                >
+                  {carregando ? (
+                    <ActivityIndicator color={cores.white} size="small" />
+                  ) : (
+                    <>
+                      <Feather name="check" size={20} color={cores.white} />
+                      <Text style={styles.textoBotaoSalvar}>
+                        {editando ? 'Atualizar' : 'Cadastrar'}
+                      </Text>
+                    </>
+                  )}
+                </TouchableOpacity>
 
-              <TouchableOpacity
-                style={styles.botaoCancelar}
-                onPress={() => router.replace('/doacoes')}
-                activeOpacity={0.8}
-              >
-                <Feather name="x" size={20} color={cores.primary} />
-                <Text style={styles.textoBotaoCancelar}>Cancelar</Text>
-              </TouchableOpacity>
-            </View>
+                <TouchableOpacity
+                  style={styles.botaoCancelar}
+                  onPress={() => router.replace('/doacoes')}
+                  activeOpacity={0.8}
+                >
+                  <Feather name="x" size={20} color={cores.primary} />
+                  <Text style={styles.textoBotaoCancelar}>Cancelar</Text>
+                </TouchableOpacity>
+              </View>
+            )}
           </ScrollView>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>

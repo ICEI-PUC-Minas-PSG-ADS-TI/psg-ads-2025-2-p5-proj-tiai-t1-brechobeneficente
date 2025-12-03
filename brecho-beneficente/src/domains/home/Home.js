@@ -26,7 +26,7 @@ export default function Home() {
             currency: 'BRL'
         });
     };
-    
+
     return (
         <BaseLayout titulo="Dashboard" scrollable>
             <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>

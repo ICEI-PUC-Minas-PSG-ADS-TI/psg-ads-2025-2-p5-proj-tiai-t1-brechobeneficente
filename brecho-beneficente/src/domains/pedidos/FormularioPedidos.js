@@ -256,7 +256,6 @@ const FormularioPedido = () => {
       }
 
       if (editando) {
-        // Preservar dados importantes do pedido original
         const pedidoOriginal = buscarPedidoPorId(id)
         const dadosCompletos = {
           ...dadosPedido,

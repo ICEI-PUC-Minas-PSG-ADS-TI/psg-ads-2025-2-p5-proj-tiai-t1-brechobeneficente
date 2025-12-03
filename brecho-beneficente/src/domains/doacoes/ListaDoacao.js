@@ -12,13 +12,9 @@ import {
   RefreshControl
 } from 'react-native'
 import { Feather } from '@expo/vector-icons'
-
 import { DoacoesContext } from '../../context/DoacoesContext'
 import cores from '../../constants/colors'
 import BaseLayout from '../shared/BaseLayout'
-
-
-// 🔹 ItemDoacao está na mesma pasta domains/
 import ItemDoacao from './ItemDoacao'
 
 const doacoesPorPagina = 5
@@ -37,30 +33,23 @@ const ListaDoacao = () => {
   const [refrescando, setRefrescando] = useState(false)
   const router = useRouter()
 
-  // ✅ Envia a doação (ou vazio) para o formulário via params
   const atualizarDoacao = (doacao) => {
     try {
       if (!doacao || typeof doacao !== 'object') return
 
-      const json = JSON.stringify({
-        id: doacao.id || '',
-        nomeDoador: doacao.nomeDoador || '',
-        item: doacao.item || [],
-        valor: doacao.valor ?? 0,
-        imagem: doacao.imagem || null
-      })
-
       router.push({
         pathname: '/doacoes/forms',
-        params: { doacao: json }
+        params: { 
+          id: doacao.id,
+          editando: 'true'
+        }
       })
     } catch (error) {
-      console.error('Erro ao preparar doação para edição:', error)
+      console.error('Erro ao navegar para edição:', error)
       Alert.alert('Erro', 'Não foi possível editar a doação.')
     }
   }
 
-  // ✅ Confirmação antes da exclusão
   const confirmarExclusao = (id, nome) => {
     Alert.alert(
       'Confirmar Exclusão',
@@ -76,7 +65,6 @@ const ListaDoacao = () => {
     )
   }
 
-  // ✅ Chama o contexto para excluir
   const handleExcluirDoacao = async (id) => {
     try {
       await excluirDoacao(id)
@@ -87,7 +75,6 @@ const ListaDoacao = () => {
     }
   }
 
-  // ✅ Recarrega lista com “puxar para atualizar”
   const handleRefresh = async () => {
     setRefrescando(true)
     try {
@@ -97,7 +84,6 @@ const ListaDoacao = () => {
     }
   }
 
-  // ✅ Filtro e paginação
   const doacoesFiltradas = doacoes.filter((d) =>
     (d.nomeDoador?.toLowerCase() || '').includes(filtro.toLowerCase())
   )

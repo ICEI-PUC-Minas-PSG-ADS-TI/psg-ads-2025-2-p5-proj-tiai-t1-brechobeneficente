@@ -148,19 +148,15 @@ const ListaPedidos = () => {
     
     try {
       let dataObj
-      // Se já é um objeto Date
       if (data instanceof Date) {
         dataObj = data
       }
-      // Se é um Timestamp do Firebase
       else if (data && typeof data.toDate === 'function') {
         dataObj = data.toDate()
       }
-      // Se é uma string ou número
       else {
         dataObj = new Date(data)
       }
-      // Verificar se a data é válida
       if (isNaN(dataObj.getTime())) {
         return 'Data inválida'
       }
