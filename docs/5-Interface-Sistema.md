@@ -55,7 +55,8 @@ Legenda: 🟢 Concluído | 🟡 Em andamento | 🔴 Não iniciado
 
 #### 5.3.2 Tela de login
 **Descrição:** Permite acesso de usuários registrados.  
-[`Tela de login`](images/)
+![Tela Login](https://github.com/user-attachments/assets/e82988ce-c6c8-4320-9919-88574b21f22b)
+
 
 ---
 
