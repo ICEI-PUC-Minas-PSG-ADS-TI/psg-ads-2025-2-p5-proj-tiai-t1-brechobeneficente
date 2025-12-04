@@ -8,7 +8,7 @@ import cores from '../../../constants/colors'
 
 export default function RelatorioDoacao() {
   const { resultados } = useRelatorioDoacao()
-  const colunas = ['Código', 'Categoria', 'Tipo', 'Status', 'Valor', 'Data']
+  const colunas = ['Código', 'Categoria',  'Status', 'Valor', 'Data']
 
   const exportarCSV = async () => {
     if (!resultados || resultados.length === 0) return
@@ -17,7 +17,7 @@ export default function RelatorioDoacao() {
       resultados.map((doacao) => ({
         Código: doacao.codigo,
         Categoria: doacao.categoria,
-        Tipo: doacao.tipo,
+        // Tipo: doacao.tipo,
         Status: doacao.status,
         Valor: doacao.valor,
         Data: doacao.data
@@ -54,9 +54,8 @@ export default function RelatorioDoacao() {
             <View style={styles.table}>
               <View style={styles.tableHeader}>
                 <Text style={[styles.headerCell, styles.colCodigo]}>Código</Text>
-                <Text style={[styles.headerCell, styles.colCategoria]}>Categoria</Text>
                 <Text style={[styles.headerCell, styles.colStatus]}>Status</Text>
-                <Text style={[styles.headerCell, styles.colTipo]}>Tipo</Text>
+                {/* <Text style={[styles.headerCell, styles.colTipo]}>Tipo</Text> */}
                 <Text style={[styles.headerCell, styles.colValor]}>Valor</Text>
                 <Text style={[styles.headerCell, styles.colData]}>Data</Text>
               </View>
@@ -70,9 +69,8 @@ export default function RelatorioDoacao() {
                   ]}
                 >
                   <Text style={[styles.cell, styles.colCodigo]} numberOfLines={1}>{linha.codigo}</Text>
-                  <Text style={[styles.cell, styles.colCategoria]} numberOfLines={2}>{linha.categoria}</Text>
                   <Text style={[styles.cell, styles.colStatus]} numberOfLines={1}>{linha.status}</Text>
-                  <Text style={[styles.cell, styles.colTipo]} numberOfLines={1}>{linha.tipo}</Text>
+                  {/* <Text style={[styles.cell, styles.colTipo]} numberOfLines={1}>{linha.tipo}</Text> */}
                   <Text style={[styles.cell, styles.colValor]} numberOfLines={1}>{linha.valor}</Text>
                   <Text style={[styles.cell, styles.colData]} numberOfLines={1}>{linha.data}</Text>
                 </View>
@@ -113,7 +111,7 @@ export default function RelatorioDoacao() {
 
 const styles = StyleSheet.create({
   table: {
-    minWidth: 710, // Soma das larguras das colunas (100+150+120+120+120+100)
+    minWidth: 710,
     borderWidth: 1,
     borderColor: cores.border || '#ccc',
     borderRadius: 8,
@@ -153,11 +151,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     justifyContent: 'center'
   },
-  // Larguras específicas para cada coluna
+
   colCodigo: { width: 100, textAlign: 'center' },
-  colCategoria: { width: 150, textAlign: 'left', paddingHorizontal: 12 },
   colStatus: { width: 120, textAlign: 'center' },
-  colTipo: { width: 120, textAlign: 'center' },
+  // colTipo: { width: 120, textAlign: 'center' },
   colValor: { width: 120, textAlign: 'right' },
   colData: { width: 100, textAlign: 'center' },
   totalizadores: {

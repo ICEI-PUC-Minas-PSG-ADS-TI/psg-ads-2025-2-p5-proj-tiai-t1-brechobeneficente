@@ -13,7 +13,6 @@ import BaseLayout from '../../shared/BaseLayout'
 import cores from '../../../constants/colors'
 
 export default function FiltroDoacao() {
-  const [categoria, setCategoria] = useState('')
   const [status, setStatus] = useState('')
   const [tipo, setTipo] = useState('')
   const [valorMin, setValorMin] = useState('')
@@ -23,14 +22,14 @@ export default function FiltroDoacao() {
   const router = useRouter()
 
   const aplicarFiltro = () => {
-    aplicarFiltros({ categoria, status, tipo, valorMin, valorMax })
+    aplicarFiltros({ status, tipo, valorMin, valorMax })
     router.push('/relatorios/doacoes/relatorio')
   }
 
   return (
     <BaseLayout titulo="Relatório de Doações">
       <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.field}>
+        {/* <View style={styles.field}>
           <Text style={styles.label}>Categoria</Text>
           <TextInput
             style={styles.input}
@@ -38,7 +37,7 @@ export default function FiltroDoacao() {
             value={categoria}
             onChangeText={setCategoria}
           />
-        </View>
+        </View> */}
 
         <View style={styles.field}>
           <Text style={styles.label}>Status</Text>

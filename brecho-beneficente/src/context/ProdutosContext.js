@@ -83,7 +83,6 @@ export const ProdutosProvider = ({ children }) => {
         return novaLista.sort((a, b) => (a.nome || '').localeCompare(b.nome || ''))
       })
 
-      // Notificar o EstoqueContext se houver estoque inicial
       if (callbackEstoqueInicial && novoProduto.quantidade > 0) {
         try {
           await callbackEstoqueInicial(novoProduto.id, novoProduto.quantidade, novoProduto.nome)

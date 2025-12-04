@@ -17,6 +17,7 @@ const BaseLayout = ({ children, titulo = '', scrollable = false }) => {
         switch (item.route) {
             case 'home': router.push('/home'); break
             case 'clientes': router.push('/clientes'); break
+            case 'fornecedores': router.push('/fornecedores'); break
             case 'produtos': router.push('/produtos'); break
             case 'pedidos': router.push('/pedidos'); break
             case 'estoque': router.push('/estoque'); break
@@ -28,11 +29,12 @@ const BaseLayout = ({ children, titulo = '', scrollable = false }) => {
 
     const menuItens = [
         { label: 'Início', route: 'home', icon: 'home' },
+        { label: 'Clientes', route: 'clientes', icon: 'users' },
+        { label: 'Fornecedores', route: 'fornecedores', icon: 'user-plus' },
         { label: 'Produtos', route: 'produtos', icon: 'package' },
         { label: 'Pedidos', route: 'pedidos', icon: 'shopping-cart' },
         { label: 'Doações', route: 'doacoes', icon: 'heart' },
         { label: 'Estoque', route: 'estoque', icon: 'archive' },
-        { label: 'Clientes', route: 'clientes', icon: 'users' },
         // { label: 'Formas de Pagamento', route: 'formas_pagamento', icon: 'credit-card' },
         { label: 'Relatórios', route: 'relatorios', icon: 'bar-chart-2' }
     ]

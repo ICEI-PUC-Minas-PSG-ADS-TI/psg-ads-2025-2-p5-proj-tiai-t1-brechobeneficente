@@ -81,16 +81,16 @@ export const PedidosProvider = ({ children }) => {
 
       console.log(`📊 Mudança de status detectada: ${statusAnterior} → ${statusAtual}`)
 
-      // Se o pedido ERA finalizado e AGORA não é mais, fazer estorno
+      
       if (statusAnterior === 'finalizado' && statusAtual !== 'finalizado') {
         console.log('🔄 Fazendo estorno de estoque...')
         
         for (const item of pedidoAtualizado.itens) {
           if (item.produtoId && item.quantidade > 0) {
-            // Retorna as quantidades ao estoque
+            
             await adicionarEntradaAoProduto(item.produtoId, item.quantidade)
             
-            // Registra no histórico como estorno
+            
             await registrarEntrada({
               produtoId: item.produtoId,
               quantidade: item.quantidade,
@@ -104,7 +104,7 @@ export const PedidosProvider = ({ children }) => {
         }
       }
       
-      // Se o pedido NÃO ERA finalizado e AGORA é finalizado, dar baixa
+      
       else if (statusAnterior !== 'finalizado' && statusAtual === 'finalizado') {
         console.log('📦 Realizando baixa de estoque...')
         await realizarBaixaEstoque(pedidoAtualizado)
@@ -230,7 +230,7 @@ export const PedidosProvider = ({ children }) => {
         throw new Error('ID do pedido é obrigatório para edição')
       }
 
-      // Buscar pedido atual para comparar status
+      
       const pedidoAtual = pedidos.find(p => p.id === pedidoEditado.id)
       if (!pedidoAtual) {
         throw new Error('Pedido não encontrado')
@@ -259,7 +259,7 @@ export const PedidosProvider = ({ children }) => {
 
       setPedidos(prev => prev.map(p => (p.id == id ? pedidoAtualizado : p)))
 
-      // Verificar se houve mudança de status que afeta estoque
+      
       await processarMudancaStatus(pedidoAtual, pedidoAtualizado)
 
       return { success: true, pedido: pedidoAtualizado }

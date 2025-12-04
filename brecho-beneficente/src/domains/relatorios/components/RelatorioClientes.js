@@ -83,7 +83,7 @@ export default function RelatorioClientes() {
 
 const styles = StyleSheet.create({
   table: {
-    minWidth: 950, // Soma das larguras das colunas
+    minWidth: 950,
     borderWidth: 1,
     borderColor: cores.border || '#ccc',
     borderRadius: 8,
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     justifyContent: 'center'
   },
-  // Larguras específicas para cada coluna
+ 
   colCodigo: { width: 100, textAlign: 'center' },
   colNome: { width: 200, textAlign: 'left', paddingHorizontal: 12 },
   colDocumento: { width: 150, textAlign: 'center' },

@@ -108,7 +108,7 @@ export default function RelatorioProdutos() {
 
 const styles = StyleSheet.create({
   table: {
-    minWidth: 810, // Soma das larguras das colunas
+    minWidth: 810, 
     borderWidth: 1,
     borderColor: cores.border || '#ccc',
     borderRadius: 8,
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     justifyContent: 'center'
   },
-  // Larguras específicas para cada coluna
+  
   colCodigo: { width: 100, textAlign: 'center' },
   colProduto: { width: 250, textAlign: 'left', paddingHorizontal: 12 },
   colEstoque: { width: 100, textAlign: 'center' },

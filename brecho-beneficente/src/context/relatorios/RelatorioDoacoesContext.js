@@ -7,7 +7,7 @@ export const RelatorioDoacoesProvider = ({ children }) => {
   const [filtros, setFiltros] = useState({
     categoria: '',
     status: '',
-    tipo: '',
+    // tipo: '',
     valorMin: '',
     valorMax: ''
   })
@@ -30,8 +30,8 @@ export const RelatorioDoacoesProvider = ({ children }) => {
       const matchStatus = filtrosAtivos.status.trim() == '' ||
         doacao.status?.toLowerCase().includes(filtrosAtivos.status.toLowerCase())
 
-      const matchTipo = filtrosAtivos.tipo.trim() == '' ||
-        doacao.tipo?.toLowerCase().includes(filtrosAtivos.tipo.toLowerCase())
+      // const matchTipo = filtrosAtivos.tipo.trim() == '' ||
+      //   doacao.tipo?.toLowerCase().includes(filtrosAtivos.tipo.toLowerCase())
 
       const valorDoacao = parseFloat(doacao.valor) || 0
       const matchValorMin = filtrosAtivos.valorMin.trim() == '' ||
@@ -40,13 +40,13 @@ export const RelatorioDoacoesProvider = ({ children }) => {
       const matchValorMax = filtrosAtivos.valorMax.trim() == '' ||
         valorDoacao <= parseFloat(filtrosAtivos.valorMax)
 
-      return matchCategoria && matchStatus && matchTipo && matchValorMin && matchValorMax
+      return matchCategoria && matchStatus && matchValorMin && matchValorMax
     })
 
     const resultadosFormatados = filtrados.map((d, i) => ({
       codigo: String(d.id || i + 1).padStart(3, '0'),
       categoria: d.categoria || 'Não informada',
-      tipo: d.tipo || 'Não informado',
+      // tipo: d.tipo || 'Não informado',
       status: d.status || 'Pendente',
       valor: d.valor ? `R$ ${parseFloat(d.valor).toFixed(2)}` : 'R$ 0,00',
       data: d.criado_em?.toDate ? 
