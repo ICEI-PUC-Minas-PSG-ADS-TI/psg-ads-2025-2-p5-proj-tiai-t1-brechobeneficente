@@ -8,6 +8,8 @@ import { ClientesProvider } from '../src/context/ClientesContext';
 import { PedidosProvider } from '../src/context/PedidosContext';
 import { DoacoesProvider } from '../src/context/DoacoesContext';
 import { EstoqueProvider } from '../src/context/EstoqueContext';
+import { FormasPagamentoProvider } from '../src/context/FormasPagamentoContext';
+import { RelatoriosProvider } from '../src/context/relatorios/RelatoriosProvider';
 
 export default function RootLayout() {
   return (
@@ -15,9 +17,11 @@ export default function RootLayout() {
       <ProdutosProvider>
         <EstoqueProvider>
           <ClientesProvider>
-            <PedidosProvider>
-              <DoacoesProvider>
-                <Stack screenOptions={{ headerShown: false }}>
+            <FormasPagamentoProvider>
+              <PedidosProvider>
+                <DoacoesProvider>
+                  <RelatoriosProvider>
+                  <Stack screenOptions={{ headerShown: false }}>
                   <Stack.Screen name="index" />
                   {/* Rotas de autenticação */}
                   <Stack.Screen name="login" />
@@ -37,12 +41,20 @@ export default function RootLayout() {
                   <Stack.Screen name="estoque/entrada" />
                   <Stack.Screen name="estoque/saida" />
                   <Stack.Screen name="estoque/historico" />
+                  <Stack.Screen name="relatorios/index" />
+                  <Stack.Screen name="relatorios/vendas/index" />
+                  <Stack.Screen name="relatorios/produtos/index" />
+                  <Stack.Screen name="relatorios/clientes/index" />
+                  <Stack.Screen name="relatorios/doacoes/filtro" />
+                  <Stack.Screen name="relatorios/doacoes/relatorio" />
                   <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                   <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
                 </Stack>
                 <StatusBar style="auto" />
-              </DoacoesProvider>
-            </PedidosProvider>
+                  </RelatoriosProvider>
+                </DoacoesProvider>
+              </PedidosProvider>
+            </FormasPagamentoProvider>
           </ClientesProvider>
         </EstoqueProvider>
       </ProdutosProvider>

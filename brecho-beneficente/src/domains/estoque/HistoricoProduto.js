@@ -5,7 +5,7 @@ import { useContext, useMemo } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import { EstoqueContext } from '../../../context/EstoqueContext'
 import { ProdutosContext } from '../../../context/ProdutosContext'
-import BaseLayout from '../../shared/BaseLayout'
+import BaseLayout from '../shared/BaseLayout'
 
 const HistoricoProduto = () => {
   const { produtoId } = useLocalSearchParams()

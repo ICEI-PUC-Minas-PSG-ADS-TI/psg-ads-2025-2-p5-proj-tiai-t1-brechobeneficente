@@ -14,7 +14,7 @@ import {
 } from 'react-native'
 import { EstoqueContext } from '../../../context/EstoqueContext'
 import { ProdutosContext } from '../../../context/ProdutosContext'
-import AutoCompleteInput from '../../shared/AutoCompleteInput'
+import AutoCompleteInput from '../shared/AutoCompleteInput'
 
 const FormularioEntrada = () => {
   const { produtos } = useContext(ProdutosContext)

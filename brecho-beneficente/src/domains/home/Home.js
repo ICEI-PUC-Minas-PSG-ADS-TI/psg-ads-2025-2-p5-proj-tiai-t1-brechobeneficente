@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { isThisMonth, parseISO } from 'date-fns';
 import BaseLayout from '../shared/BaseLayout';
 import cores from '../../constants/colors';
@@ -12,6 +13,7 @@ import { useEstoque } from '../../context/EstoqueContext';
 const { width } = Dimensions.get('window');
 
 export default function Home() {
+    const router = useRouter();
     const { pedidos } = usePedidos();
     const { doacoes } = useDoacoes();
     const { produtos } = useProdutos();
@@ -82,12 +84,10 @@ export default function Home() {
         produtos.forEach(produto => {
             if (!produto) return;
 
-            // Calcular estoque dinâmico baseado no histórico
             const { total: estoqueCalculado } = calcularEstoque(produto.id);
             const estoqueAtual = estoqueCalculado || Number(produto.quantidade) || 0;
             const preco = Number(produto.preco || produto.valorVenda || 0);
 
-            // Somar total de unidades no estoque
             totalUnidadesEstoque += estoqueAtual;
 
             if (estoqueAtual > 0) {
@@ -175,6 +175,23 @@ export default function Home() {
                     <Text style={[styles.cardValorGrande, { color: cores.primary }]}>{formatarMoeda(dashboardData.totalVendas)}</Text>
                     <Text style={styles.cardDescricaoGrande}>Receita total do brechó</Text>
                 </View>
+
+                <TouchableOpacity
+                    style={styles.cardRelatorios}
+                    onPress={() => router.push('/relatorios')}
+                >
+                    <View style={styles.cardHeader}>
+                        <Feather name="bar-chart-2" size={24} color={cores.white} />
+                        <Text style={styles.cardTitulo}>Relatórios Gerenciais</Text>
+                    </View>
+                    <Text style={styles.cardDescricaoRelatorios}>
+                        Visualize relatórios detalhados de vendas, doações, produtos e clientes
+                    </Text>
+                    <View style={styles.cardFooter}>
+                        <Text style={styles.cardFooterTexto}>Acessar relatórios</Text>
+                        <Feather name="arrow-right" size={16} color={cores.white} />
+                    </View>
+                </TouchableOpacity>
 
                 <View style={styles.cardResumo}>
                     <Text style={styles.resumoTitulo}>Resumo do período</Text>
@@ -368,5 +385,33 @@ const styles = StyleSheet.create({
     resumoDestaque: {
         fontWeight: 'bold',
         color: cores.primary,
+    },
+    cardRelatorios: {
+        backgroundColor: '#D4A574',
+        padding: 20,
+        borderRadius: 12,
+        marginBottom: 20,
+        shadowColor: cores.shadowColor,
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.2,
+        shadowRadius: 5,
+        elevation: 4,
+    },
+    cardDescricaoRelatorios: {
+        fontSize: 14,
+        color: cores.white + 'DD',
+        marginTop: 8,
+        marginBottom: 16,
+        lineHeight: 20,
+    },
+    cardFooter: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    cardFooterTexto: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: cores.white,
     },
 });
