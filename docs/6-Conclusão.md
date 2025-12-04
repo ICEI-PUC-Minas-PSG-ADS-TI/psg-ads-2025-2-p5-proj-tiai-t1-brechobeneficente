@@ -1,22 +1,7 @@
 ## 6. Conclusão
 
-<span style="color:red">Pré-requisitos: Ter terminado o desenvolvimento do projeto</a></span>
+A implementação do aplicativo de gestão para brechós beneficentes representou um avanço significativo na organização e transparência dos processos de doação, estoque e distribuição de roupas. A ferramenta substituiu com sucesso os métodos manuais anteriores, oferecendo um sistema digital confiável que melhorou a eficiência operacional e ampliou o potencial de impacto social do brechó. Através do cadastro completo de peças, controle de estoque em tempo real e geração de relatórios claros, a solução não apenas otimizou a gestão interna, mas também fortaleceu a capacidade de atendimento a famílias em situação de vulnerabilidade, alinhando-se diretamente aos Objetivos de Desenvolvimento Sustentável da ONU.
 
-_Apresentem, aqui, a conclusão do trabalho, que deve conter uma síntese dos principais resultados obtidos com a melhoria dos processos, uma discussão das limitações da solução proposta e sugestões de novas linhas de estudo._
+No entanto, algumas limitações foram identificadas ao longo do desenvolvimento, principalmente relacionadas à ausência de funcionalidades consideradas essenciais para a maturidade do sistema. Dentre elas, destacam-se a falta de autenticação de usuários com perfis diferenciados, como voluntários e gestores, o que limita o controle de acesso e a segurança das informações. Outra limitação relevante é a indisponibilidade de relatórios gráficos de impacto social e financeiro, que poderiam oferecer uma visão mais intuitiva e analítica dos resultados alcançados. A versão atual também não é totalmente responsiva para tablets e computadores, restringindo seu uso a smartphones, e não oferece sincronização offline, o que a torna dependente de conexão com a internet. Por fim, a integração com meios de pagamento para vendas beneficentes ainda não foi implementada, o que poderia agilizar e formalizar transações.
 
-_🗑️ **RECOMENDA-SE** apagar os textos dos exemplos antes de enviar, para deixar mais claras as informações sobre o projeto de software do grupo._
-
-
----
-
-**🗑️Exemplo 1 – Comércio eletrônico**  
-> A implementação da nova plataforma de vendas online resultou em um aumento de 35% no volume de pedidos e reduziu o tempo de finalização da compra de 7 para 4 minutos.  
-> Apesar dos avanços, ainda há necessidade de melhorar a experiência em dispositivos móveis, pois 20% dos clientes relataram dificuldades na navegação.  
-> Como trabalhos futuros, recomenda-se a otimização responsiva da interface e a integração com um sistema de recomendação baseado em inteligência artificial.
-
-**🗑️Exemplo 2 – Área da saúde**  
-> A criação do sistema de agendamento de consultas online reduziu em 50% o número de ligações telefônicas e melhorou a organização dos atendimentos.  
-> Entretanto, observou-se que pacientes idosos ainda apresentam dificuldades em utilizar a plataforma de forma autônoma.  
-> Sugere-se, para próximas etapas, a criação de um tutorial em vídeo e a disponibilização de um canal de suporte por chat.
----
-
+Para futuros estudos e desenvolvimentos, iremos focar na priorização dessas funcionalidades, começando pela implementação de autenticação com perfis de acesso e pela criação de relatórios visuais que comuniquem com clareza o impacto gerado. Em seguida, o desenvolvimento de uma versão responsiva e com suporte offline permitiria maior flexibilidade de uso, enquanto a integração com soluções de pagamento digital ampliaria as possibilidades de captação de recursos. Essas melhorias não apenas aumentariam a usabilidade e a segurança do sistema, mas também fortaleceriam sua capacidade de escala e sustentabilidade a longo prazo, consolidando o aplicativo como uma ferramenta completa e adaptada às reais necessidades de gestão social.
