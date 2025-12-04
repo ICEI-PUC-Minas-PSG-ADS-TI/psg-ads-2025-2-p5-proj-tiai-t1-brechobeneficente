@@ -35,18 +35,26 @@ export default function RelatorioClientes() {
           <ScrollView horizontal>
             <View style={styles.table}>
               <View style={styles.tableHeader}>
-                {colunas.map((col, index) => (
-                  <Text key={index} style={styles.headerCell}>{col}</Text>
-                ))}
+                <Text style={[styles.headerCell, styles.colCodigo]}>Código</Text>
+                <Text style={[styles.headerCell, styles.colNome]}>Nome</Text>
+                <Text style={[styles.headerCell, styles.colDocumento]}>Documento</Text>
+                <Text style={[styles.headerCell, styles.colTelefone]}>Telefone</Text>
+                <Text style={[styles.headerCell, styles.colEndereco]}>Endereço</Text>
               </View>
 
               {(resultados || []).map((linha, i) => (
-                <View key={i} style={styles.tableRow}>
-                  <Text style={styles.cell}>{linha.codigo}</Text>
-                  <Text style={styles.cell}>{linha.nome}</Text>
-                  <Text style={styles.cell}>{linha.documento || '-'}</Text>
-                  <Text style={styles.cell}>{linha.telefone || '-'}</Text>
-                  <Text style={styles.cell}>{linha.endereco || '-'}</Text>
+                <View 
+                  key={i} 
+                  style={[
+                    styles.tableRow,
+                    i % 2 === 1 && styles.tableRowAlternate
+                  ]}
+                >
+                  <Text style={[styles.cell, styles.colCodigo]} numberOfLines={1}>{linha.codigo}</Text>
+                  <Text style={[styles.cell, styles.colNome]} numberOfLines={2}>{linha.nome}</Text>
+                  <Text style={[styles.cell, styles.colDocumento]} numberOfLines={1}>{linha.documento || '-'}</Text>
+                  <Text style={[styles.cell, styles.colTelefone]} numberOfLines={1}>{linha.telefone || '-'}</Text>
+                  <Text style={[styles.cell, styles.colEndereco]} numberOfLines={3}>{linha.endereco || '-'}</Text>
                 </View>
               ))}
             </View>
@@ -75,38 +83,52 @@ export default function RelatorioClientes() {
 
 const styles = StyleSheet.create({
   table: {
-    minWidth: 700,
+    minWidth: 950, // Soma das larguras das colunas
     borderWidth: 1,
     borderColor: cores.border || '#ccc',
-    borderRadius: 6,
-    overflow: 'hidden'
+    borderRadius: 8,
+    overflow: 'hidden',
+    backgroundColor: cores.white
   },
   tableHeader: {
     flexDirection: 'row',
-    backgroundColor: cores.primary
+    backgroundColor: cores.primary,
+    minHeight: 50
   },
   tableRow: {
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderBottomColor: cores.border || '#ddd'
+    borderBottomColor: cores.border || '#ddd',
+    minHeight: 45,
+    backgroundColor: cores.white
+  },
+  tableRowAlternate: {
+    backgroundColor: '#f8f9fa'
   },
   headerCell: {
-    flex: 1,
-    paddingVertical: 12,
+    paddingVertical: 15,
     paddingHorizontal: 8,
     fontWeight: 'bold',
-    fontSize: 13,
-    textAlign: 'center',
-    color: cores.white
-  },
-  cell: {
-    flex: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 8,
     fontSize: 12,
     textAlign: 'center',
-    color: cores.text
+    color: cores.white,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
+  cell: {
+    paddingVertical: 12,
+    paddingHorizontal: 8,
+    fontSize: 11,
+    color: cores.text,
+    textAlign: 'center',
+    justifyContent: 'center'
+  },
+  // Larguras específicas para cada coluna
+  colCodigo: { width: 100, textAlign: 'center' },
+  colNome: { width: 200, textAlign: 'left', paddingHorizontal: 12 },
+  colDocumento: { width: 150, textAlign: 'center' },
+  colTelefone: { width: 150, textAlign: 'center' },
+  colEndereco: { width: 350, textAlign: 'left', paddingHorizontal: 12 },
   totalizadores: {
     marginTop: 20,
     padding: 16,
@@ -132,7 +154,7 @@ const styles = StyleSheet.create({
   totalValor: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: cores.text
+    color: cores.primary
   },
   botaoExportar: {
     marginTop: 20,
@@ -153,6 +175,7 @@ const styles = StyleSheet.create({
   },
   semDadosTexto: {
     fontSize: 16,
-    color: '#888'
+    color: cores.text,
+    textAlign: 'center'
   }
 })

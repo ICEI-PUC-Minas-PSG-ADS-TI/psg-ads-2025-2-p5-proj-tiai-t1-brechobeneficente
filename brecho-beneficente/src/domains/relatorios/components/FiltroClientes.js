@@ -12,6 +12,7 @@ import { ClientesContext } from '../../../context/ClientesContext'
 import { useRelatorioClientes } from '../../../context/relatorios/RelatorioClientesContext'
 import AutoCompleteInput from '../../shared/AutoCompleteInput'
 import BaseLayout from '../../shared/BaseLayout'
+import cores from '../../../constants/colors'
 
 export default function FiltroClientes() {
   const [nome, setNome] = useState('')
@@ -93,24 +94,27 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: 'bold',
     fontSize: 14,
-    marginBottom: 6
+    marginBottom: 6,
+    color: cores.text
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: cores.border || '#ccc',
     borderRadius: 6,
     padding: 12,
-    fontSize: 16
+    fontSize: 16,
+    color: cores.text,
+    backgroundColor: cores.white
   },
   button: {
-    backgroundColor: '#007bff',
+    backgroundColor: cores.primary,
     paddingVertical: 14,
     borderRadius: 6,
     alignItems: 'center',
     marginTop: 20
   },
   buttonText: {
-    color: '#fff',
+    color: cores.white,
     fontWeight: 'bold',
     fontSize: 16
   }

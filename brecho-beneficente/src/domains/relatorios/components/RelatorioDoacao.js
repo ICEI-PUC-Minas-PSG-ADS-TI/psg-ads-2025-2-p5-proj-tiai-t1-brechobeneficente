@@ -53,19 +53,28 @@ export default function RelatorioDoacao() {
           <ScrollView horizontal>
             <View style={styles.table}>
               <View style={styles.tableHeader}>
-                {colunas.map((col, index) => (
-                  <Text key={index} style={styles.headerCell}>{col}</Text>
-                ))}
+                <Text style={[styles.headerCell, styles.colCodigo]}>Código</Text>
+                <Text style={[styles.headerCell, styles.colCategoria]}>Categoria</Text>
+                <Text style={[styles.headerCell, styles.colStatus]}>Status</Text>
+                <Text style={[styles.headerCell, styles.colTipo]}>Tipo</Text>
+                <Text style={[styles.headerCell, styles.colValor]}>Valor</Text>
+                <Text style={[styles.headerCell, styles.colData]}>Data</Text>
               </View>
 
               {(resultados || []).map((linha, i) => (
-                <View key={i} style={styles.tableRow}>
-                  <Text style={styles.cell}>{linha.codigo}</Text>
-                  <Text style={styles.cell}>{linha.categoria}</Text>
-                  <Text style={styles.cell}>{linha.tipo}</Text>
-                  <Text style={styles.cell}>{linha.status}</Text>
-                  <Text style={styles.cell}>{linha.valor}</Text>
-                  <Text style={styles.cell}>{linha.data}</Text>
+                <View 
+                  key={i} 
+                  style={[
+                    styles.tableRow,
+                    i % 2 === 1 && styles.tableRowAlternate
+                  ]}
+                >
+                  <Text style={[styles.cell, styles.colCodigo]} numberOfLines={1}>{linha.codigo}</Text>
+                  <Text style={[styles.cell, styles.colCategoria]} numberOfLines={2}>{linha.categoria}</Text>
+                  <Text style={[styles.cell, styles.colStatus]} numberOfLines={1}>{linha.status}</Text>
+                  <Text style={[styles.cell, styles.colTipo]} numberOfLines={1}>{linha.tipo}</Text>
+                  <Text style={[styles.cell, styles.colValor]} numberOfLines={1}>{linha.valor}</Text>
+                  <Text style={[styles.cell, styles.colData]} numberOfLines={1}>{linha.data}</Text>
                 </View>
               ))}
             </View>
@@ -104,38 +113,53 @@ export default function RelatorioDoacao() {
 
 const styles = StyleSheet.create({
   table: {
-    minWidth: 700,
+    minWidth: 710, // Soma das larguras das colunas (100+150+120+120+120+100)
     borderWidth: 1,
     borderColor: cores.border || '#ccc',
-    borderRadius: 6,
-    overflow: 'hidden'
+    borderRadius: 8,
+    overflow: 'hidden',
+    backgroundColor: cores.white
   },
   tableHeader: {
     flexDirection: 'row',
-    backgroundColor: cores.primary
+    backgroundColor: cores.primary,
+    minHeight: 50
   },
   tableRow: {
     flexDirection: 'row',
     borderBottomWidth: 1,
-    borderBottomColor: cores.border || '#ddd'
+    borderBottomColor: cores.border || '#ddd',
+    minHeight: 45,
+    backgroundColor: cores.white
+  },
+  tableRowAlternate: {
+    backgroundColor: '#f8f9fa'
   },
   headerCell: {
-    flex: 1,
-    paddingVertical: 12,
+    paddingVertical: 15,
     paddingHorizontal: 8,
     fontWeight: 'bold',
-    fontSize: 13,
-    textAlign: 'center',
-    color: cores.white
-  },
-  cell: {
-    flex: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 8,
     fontSize: 12,
     textAlign: 'center',
-    color: cores.text
+    color: cores.white,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
+  cell: {
+    paddingVertical: 12,
+    paddingHorizontal: 8,
+    fontSize: 11,
+    color: cores.text,
+    textAlign: 'center',
+    justifyContent: 'center'
+  },
+  // Larguras específicas para cada coluna
+  colCodigo: { width: 100, textAlign: 'center' },
+  colCategoria: { width: 150, textAlign: 'left', paddingHorizontal: 12 },
+  colStatus: { width: 120, textAlign: 'center' },
+  colTipo: { width: 120, textAlign: 'center' },
+  colValor: { width: 120, textAlign: 'right' },
+  colData: { width: 100, textAlign: 'center' },
   totalizadores: {
     marginTop: 20,
     padding: 16,
@@ -161,7 +185,7 @@ const styles = StyleSheet.create({
   totalValor: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: cores.text
+    color: cores.primary
   },
   botaoExportar: {
     marginTop: 20,
@@ -182,6 +206,7 @@ const styles = StyleSheet.create({
   },
   semDadosTexto: {
     fontSize: 16,
-    color: '#888'
+    color: cores.text,
+    textAlign: 'center'
   }
 })
